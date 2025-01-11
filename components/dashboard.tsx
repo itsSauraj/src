@@ -1,51 +1,53 @@
 "use client";
 import React, { useState } from "react";
-import {
-  IconArrowLeft,
-  IconBrandTabler,
-  IconSettings,
-  IconUserBolt,
-} from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { MdSpaceDashboard } from "react-icons/md";
+import { FaPeopleRoof } from "react-icons/fa6";
+import { PiStudentFill } from "react-icons/pi";
 
 import {
   Sidebar as SidebarUI,
   SidebarBody,
   SidebarLink,
 } from "@/components/ui/sidebar";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { cn } from "@/lib/utils";
+
 
 export function SideBar() {
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/",
       icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <MdSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Profile",
-      href: "#",
+      label: "Mentors",
+      href: "/mentors",
       icon: (
-        <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <FaPeopleRoof className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Settings",
-      href: "#",
+      label: "Trainees",
+      href: "/trainees",
       icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <PiStudentFill className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
+    },
+    {
+      child: <ThemeSwitch />,
+      label: "Change Theme",
     },
     {
       label: "Logout",
-      href: "#",
-      icon: (
-        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      href: "/logout",
+      icon: <IconArrowLeft className="text-red-500 h-5 w-5 flex-shrink-0" />,
     },
   ];
   const [open, setOpen] = useState(false);
@@ -62,9 +64,13 @@ export function SideBar() {
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => (
-                <SidebarLink key={idx} link={link} />
-              ))}
+              {links.map((link, idx) => {
+                if (link.child) {
+                  return <SidebarLink key={idx} link={link} />;
+                } else {
+                  return <SidebarLink key={idx} link={link} />;
+                }
+              })}
             </div>
           </div>
           <div>
@@ -102,7 +108,7 @@ export const Logo = () => {
         className="font-medium text-black dark:text-white whitespace-pre"
         initial={{ opacity: 0 }}
       >
-        Acet Labs
+        Abra
       </motion.span>
     </Link>
   );

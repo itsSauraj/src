@@ -63,7 +63,7 @@ const config = {
 			},
 		},
 	},
-	darkMode: ["class", "class"],
+	darkMode: "class",
 	plugins: [addVariablesForColors, require("tailwindcss-animate")],
 };
 
