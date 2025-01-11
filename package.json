@@ -20,10 +20,12 @@
 		"@nextui-org/switch": "2.2.7",
 		"@nextui-org/system": "2.4.5",
 		"@nextui-org/theme": "2.4.4",
+		"@radix-ui/react-slot": "^1.1.1",
 		"@react-aria/ssr": "3.9.7",
 		"@react-aria/visually-hidden": "3.8.18",
 		"@reduxjs/toolkit": "^2.5.0",
 		"@tabler/icons-react": "^3.28.1",
+		"axios": "^1.7.9",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"framer-motion": "^11.16.6",
@@ -37,7 +39,8 @@
 		"react-redux": "^9.2.0",
 		"redux-persist": "^6.0.0",
 		"tailwind-merge": "^2.6.0",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"yup": "^1.6.1"
 	},
 	"devDependencies": {
 		"@next/eslint-plugin-next": "15.0.4",

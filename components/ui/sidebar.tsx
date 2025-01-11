@@ -11,6 +11,7 @@ interface Links {
   href?: string;
   icon?: React.JSX.Element | React.ReactNode;
   child?: React.JSX.Element;
+  type?: string;
 }
 
 interface SidebarContextProps {
@@ -171,49 +172,70 @@ export const MobileSidebar = ({
 export const SidebarLink = ({
   link,
   className,
+  onClick,
   ...props
 }: {
   link: Links;
   className?: string;
-  child?: React.JSX.Element;
+  onClick?: () => void;
   props?: LinkProps;
 }) => {
-  const { open, animate } = useSidebar();
-
   return (
     <>
       {link.child ? (
         link.child
       ) : (
-        <Link
-          className={cn(
-            "flex items-center justify-start gap-2  group/sidebar py-2",
-            className,
+        <>
+          {link.type === "button" ? (
+            <button
+              className={cn(
+                "flex items-center justify-start gap-2  group/sidebar py-2",
+                className,
+              )}
+              onClick={onClick}
+            >
+              <LinkContent link={link} />
+            </button>
+          ) : (
+            <Link
+              className={cn(
+                "flex items-center justify-start gap-2  group/sidebar py-2",
+                className,
+              )}
+              href={link.href || "#"}
+              {...props}
+            >
+              <LinkContent link={link} />
+            </Link>
           )}
-          href={link.href || "#"}
-          {...props}
-        >
-          <span className={`${link.href === "/logout" && "text-red-500"}`}>
-            {link.icon}
-          </span>
-
-          <motion.span
-            animate={{
-              display: animate
-                ? open
-                  ? "inline-block"
-                  : "none"
-                : "inline-block",
-              opacity: animate ? (open ? 1 : 0) : 1,
-            }}
-            className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-          >
-            <span className={`${link.href === "/logout" && "text-red-500"}`}>
-              {link.label}
-            </span>
-          </motion.span>
-        </Link>
+        </>
       )}
+    </>
+  );
+};
+
+export const LinkContent = ({ link }: { link: Links }) => {
+  const { open, animate } = useSidebar();
+
+  return (
+    <>
+      <span className={`${link.href === "/logout" && "text-red-500"}`}>
+        {link.icon}
+      </span>
+
+      <motion.span
+        animate={{
+          display: animate ? (open ? "inline-block" : "none") : "inline-block",
+          opacity: animate ? (open ? 1 : 0) : 1,
+        }}
+        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+      >
+        <span
+          className={`${link.label.toLowerCase() === "logout" && "text-red-500"}`}
+        >
+          {link.label}
+        </span>
+      </motion.span>
     </>
   );
 };

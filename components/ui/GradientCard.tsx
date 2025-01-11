@@ -11,18 +11,22 @@ export function GradientCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full h-full md:w-[75%] md:h-[75%] lg:w-[50%] lg:h-[50%] xl:w-[40%] xl:h-[40%] 2xl:w-[30%] 2xl:h-[30%]">
+    <div className="w-full h-full md:w-[50%] md:h-[50%] xl:w-[40%] xl:h-[40%] 2xl:w-[30%] 2xl:h-[30%]">
       <div
         key={title}
-        className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-6 md:rounded-3xl overflow-hidden flex flex-col justify-center items-center"
+        className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-6 md:rounded-3xl overflow-hidden flex flex-col justify-center items-center w-full h-full md:w-auto md:h-auto 
+        "
         style={{
-          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         }}
       >
-        <p className="text-base font-bold text-neutral-800 dark:text-white relative z-20">
+        <p className="text-xl lg:text-3xl font-bold text-neutral-800 dark:text-white relative z-20 mt-6">
           {title}
         </p>
-        <Grid size={20} />
+        <Grid
+          pattern={Array.from({ length: 20 }, (_, i) => [i + 1, i + 1])}
+          size={20}
+        />
         {children}
       </div>
     </div>
@@ -85,9 +89,9 @@ export function GridPattern({ width, height, x, y, squares, ...props }: any) {
       />
       {squares && (
         <svg className="overflow-visible" x={x} y={y}>
-          {squares.map(([x, y]: any) => (
+          {squares.map(([x, y]: any, index: number) => (
             <rect
-              key={`${x}-${y}`}
+              key={`${x}-${y}-${index}`}
               height={height + 1}
               strokeWidth="0"
               width={width + 1}
