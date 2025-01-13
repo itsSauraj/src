@@ -1,10 +1,12 @@
 "use client";
 import Link, { LinkProps } from "next/link";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { useSelector } from "react-redux";
 
 import { cn } from "@/lib/utils";
+import { ReduxStore } from "@/types/redux";
 
 interface Links {
   label: string;
@@ -91,18 +93,26 @@ export const DesktopSidebar = ({
 }: React.ComponentProps<typeof motion.div>) => {
   const { open, setOpen, animate } = useSidebar();
 
+  const sidebarPinned = useSelector(
+    (state: ReduxStore) => state.app.settings.sidebar,
+  );
+
+  useEffect(() => {
+    setOpen(sidebarPinned);
+  }, [sidebarPinned]);
+
   return (
     <>
       <motion.div
         animate={{
-          width: animate ? (open ? "300px" : "60px") : "300px",
+          width: animate ? (open ? "200px" : "60px") : "200px",
         }}
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] flex-shrink-0",
+          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[200px] flex-shrink-0",
           className,
         )}
         onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+        onMouseLeave={() => !sidebarPinned && setOpen(false)}
         {...props}
       >
         {children}

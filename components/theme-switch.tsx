@@ -5,6 +5,7 @@ import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { SwitchProps, useSwitch } from "@nextui-org/switch";
 import { useTheme } from "next-themes";
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
 
 import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
 
@@ -19,6 +20,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const dispatch = useDispatch<StoreDispatch>();
 
   const onChange = () => {
     const newTheme = theme === "light" ? "dark" : "light";
