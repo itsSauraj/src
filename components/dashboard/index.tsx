@@ -11,12 +11,11 @@ import {
   SidebarBody,
   SidebarLink,
 } from "@/components/ui/sidebar";
-import { Dashboard } from "@/components/dashboard/content";
 import { cn } from "@/lib/utils";
 import { links } from "@/lib/constants/dashboard";
 import { StoreDispatch } from "@/redux/store";
 
-export function SideBar() {
+export function SideBar({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<StoreDispatch>();
   const user = useSelector((state: ReduxStore) => state.user);
 
@@ -42,7 +41,7 @@ export function SideBar() {
                     <SidebarLink
                       key={idx}
                       link={link}
-                      onClick={() => dispatch(logoutUser())}
+                      onClick={() => dispatch(logoutUser(user.token))}
                     />
                   );
                 } else {
@@ -70,7 +69,7 @@ export function SideBar() {
           </div>
         </SidebarBody>
       </SidebarUI>
-      <Dashboard />
+      {children}
     </div>
   );
 }

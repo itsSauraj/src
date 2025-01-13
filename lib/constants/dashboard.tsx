@@ -8,21 +8,21 @@ import { ThemeSwitch } from "@/components/theme-switch";
 export const links = [
   {
     label: "Dashboard",
-    href: "/",
+    href: "/dashboard",
     icon: (
       <MdSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
   },
   {
     label: "Mentors",
-    href: "/mentors",
+    href: "/dashboard/mentors",
     icon: (
       <FaPeopleRoof className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
   },
   {
     label: "Trainees",
-    href: "/trainees",
+    href: "/dashboard/trainees",
     icon: (
       <PiStudentFill className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
