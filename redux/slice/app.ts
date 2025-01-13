@@ -1,3 +1,5 @@
+"use client";
+
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
 
 const appSlice = createSlice({

@@ -7,8 +7,9 @@ import { NextUIProvider } from "@nextui-org/system";
 import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Provider as ReduxProvder } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
-import { store } from "@/redux/store";
+import { store, persistor } from "@/redux/store";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -26,11 +27,29 @@ declare module "@react-types/shared" {
 export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
 
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return (
+      <ReduxProvder store={store}>
+        <NextUIProvider navigate={router.push}>
+          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        </NextUIProvider>
+      </ReduxProvder>
+    );
+  }
+
   return (
     <ReduxProvder store={store}>
-      <NextUIProvider navigate={router.push}>
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-      </NextUIProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <NextUIProvider navigate={router.push}>
+          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        </NextUIProvider>
+      </PersistGate>
     </ReduxProvder>
   );
 }

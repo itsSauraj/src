@@ -5,7 +5,7 @@ export interface App {
 }
 
 export type User = {
-  token?: string;
+  token?: string | any;
   user?: string;
 };
 

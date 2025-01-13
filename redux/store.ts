@@ -1,15 +1,30 @@
-// src/store/store.ts
-import { configureStore } from "@reduxjs/toolkit";
+"use client";
 
-import appReducer from "@/redux/slice/app";
-import userReducer from "@/redux/slice/user";
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import { REGISTER } from "redux-persist/es/constants";
+
+import rootReducer from "./rootReducer";
+
+import { customStorage } from "@/redux/customStorage";
+
+const persistConfig = {
+  key: "root",
+  storage: customStorage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    app: appReducer,
-    user: userReducer,
-  },
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [REGISTER, "persist/PERSIST", "persist/REHYDRATE"],
+      },
+    }),
 });
 
+export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type StoreDispatch = typeof store.dispatch;

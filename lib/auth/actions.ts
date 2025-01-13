@@ -26,6 +26,8 @@ export const validateToken = async (token: string): Promise<string | any> => {
       token: token,
     });
 
+    console.log(response.data);
+
     return response.data.token as string;
   } catch (error) {
     return error;

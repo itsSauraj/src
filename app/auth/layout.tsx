@@ -1,46 +1,33 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 
-import { validateToken } from "@/lib/auth/actions";
 import { StoreDispatch } from "@/redux/store";
-import { setToken } from "@/redux/slice/user";
+import { validateToken } from "@/redux/slice/user";
 import { GradientCard } from "@/components/ui/GradientCard";
 import { ReduxStore } from "@/types/redux";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useDispatch<StoreDispatch>();
   const user = useSelector((state: ReduxStore) => state.user);
 
   useEffect(() => {
-    const validate = async () => {
-      try {
-        const new_token = await validateToken(user.token as string);
+    if (!user.token) {
+      return;
+    }
 
-        dispatch(setToken(new_token));
-        router.push("/");
-      } catch (error: any) {
-        router.push("/auth/login");
-      }
-    };
-
-    if (user.token) validate();
-
-    return () => {
-      validate;
-    };
+    dispatch(validateToken(user.token));
   }, []);
 
   useEffect(() => {
     if (user.token) {
-      router.push("/");
+      router.push("/dashboard");
     }
   }, [user.token]);
-
-  const pathname = usePathname();
 
   const title = pathname === "/auth/login" ? "Login" : "Register";
 
