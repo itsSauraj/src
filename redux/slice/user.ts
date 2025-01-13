@@ -6,10 +6,16 @@ import { validateToken as ValidateToken } from "@/lib/auth/actions";
 import { LoginRequest } from "@/types/auth/actions";
 import { login, logout } from "@/lib/auth/actions";
 import { setAuthLoading } from "@/redux/slice/app";
+import { User } from "@/types/redux";
+
+const initialState: User = {
+  token: null,
+  user: null,
+};
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { token: null, user: null },
+  initialState: initialState,
   reducers: {
     toggleToken: (state, action) => {
       state.token = action.payload;
@@ -29,11 +35,6 @@ const validateToken = (token: string) => async (dispatch: Dispatch) => {
     if (new_token === token) {
       return;
     }
-
-    // try {
-    //   if (new_token) {
-    // }
-
     dispatch(toggleToken(new_token));
   } catch (error: any) {
     return error;

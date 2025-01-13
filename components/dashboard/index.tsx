@@ -30,23 +30,17 @@ export function SideBar({ children }: { children: React.ReactNode }) {
     >
       <SidebarUI open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden pt-4">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => {
-                if (link.child) {
-                  return <SidebarLink key={idx} link={link} />;
-                } else if (link.label === "Logout") {
-                  return (
-                    <SidebarLink
-                      key={idx}
-                      link={link}
-                      onClick={() => dispatch(logoutUser(user.token))}
-                    />
-                  );
-                } else {
-                  return <SidebarLink key={idx} link={link} />;
-                }
+                return (
+                  <SidebarLink
+                    key={idx}
+                    link={link}
+                    onClick={() => dispatch(logoutUser(user.token))}
+                  />
+                );
               })}
             </div>
           </div>

@@ -25,7 +25,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (user.token) {
-      router.push("/dashboard");
+      router.replace("/dashboard");
     }
   }, [user.token]);
 
