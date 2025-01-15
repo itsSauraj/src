@@ -1,20 +1,19 @@
 "use client";
 
-import type { ReduxStore } from "@/types/redux";
+import type { StoreDispatch, RootState } from "@/redux/store";
 
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import { SideBar } from "@/components/dashboard";
-import { StoreDispatch } from "@/redux/store";
 import { validateToken } from "@/redux/slice/user";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const dispatch = useDispatch<StoreDispatch>();
-  const user = useSelector((state: ReduxStore) => state.user);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (!user.token) {

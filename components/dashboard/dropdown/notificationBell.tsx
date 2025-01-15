@@ -1,4 +1,4 @@
-import type { ReduxStore } from "@/types/redux";
+import type { RootState } from "@/redux/store";
 
 import * as React from "react";
 import { IoIosNotifications } from "react-icons/io";
@@ -32,7 +32,7 @@ export const NotiicationBell = ({
 export function NotificationGrid({
   notifications,
 }: {
-  notifications: ReduxStore["app"]["notifications"];
+  notifications: RootState["app"]["notifications"];
 }) {
   return (
     <ScrollArea className="h-72 w-48 rounded-md border">

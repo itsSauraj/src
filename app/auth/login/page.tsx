@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReduxStore } from "@/types/redux";
+import type { StoreDispatch, RootState } from "@/redux/store";
 import type { LoginRequest } from "@/types/auth/actions";
 
 import React, { useState, ChangeEvent } from "react";
@@ -16,11 +16,9 @@ import { logInUser } from "@/redux/slice/user";
 // Import the ui components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// Import the types
-import { StoreDispatch } from "@/redux/store";
 
 const LoginPage = () => {
-  const app = useSelector((state: ReduxStore) => state.app);
+  const app = useSelector((state: RootState) => state.app);
 
   const dispatch = useDispatch<StoreDispatch>();
 

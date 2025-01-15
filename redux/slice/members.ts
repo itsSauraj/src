@@ -1,11 +1,13 @@
 "use client";
 
 import type { Members } from "@/types/redux";
+import type { RootState } from "@/redux/store";
 
-import { createSlice, Dispatch, GetState } from "@reduxjs/toolkit";
+import { createSlice, Dispatch } from "@reduxjs/toolkit";
 
 //API CALLs
 
+//Initial States
 const initialMentors: Members = [];
 const initialTrainees: Members = [];
 
@@ -37,8 +39,12 @@ const memberSlice = createSlice({
   },
 });
 
-export const { toggleMentorIsLoading, toggleTraineeIsLoading } =
-  memberSlice.actions;
+export const {
+  toggleMentorIsLoading,
+  toggleTraineeIsLoading,
+  setMentors,
+  setTrainees,
+} = memberSlice.actions;
 
 const setLoading =
   (page: string, isLoading: boolean) => (dispatch: Dispatch) => {
@@ -47,8 +53,9 @@ const setLoading =
   };
 
 const setMembers =
-  (page: string) =>
-  async (dispatch: Dispatch, getState: GetState<typeof initialState>) => {};
+  (type: string) => async (dispatch: Dispatch, getState: () => RootState) => {
+    const token = getState().user.token;
+  };
 
-export { setLoading };
+export { setLoading, setMembers };
 export default memberSlice.reducer;

@@ -1,12 +1,11 @@
 "use client";
 
-import type { ReduxStore } from "@/types/redux";
+import type { StoreDispatch, RootState } from "@/redux/store";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 
-import { StoreDispatch } from "@/redux/store";
 import { validateToken } from "@/redux/slice/user";
 import { GradientCard } from "@/components/ui/GradientCard";
 
@@ -14,7 +13,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch<StoreDispatch>();
-  const user = useSelector((state: ReduxStore) => state.user);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (!user.token) {

@@ -1,5 +1,6 @@
 "use client";
-import type { ReduxStore } from "@/types/redux";
+
+import type { RootState } from "@/redux/store";
 
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext, useEffect } from "react";
@@ -97,7 +98,7 @@ export const DesktopSidebar = ({
   const { open, setOpen, animate } = useSidebar();
 
   const sidebarPinned = useSelector(
-    (state: ReduxStore) => state.app.settings.sidebar,
+    (state: RootState) => state.app.settings.sidebar,
   );
 
   useEffect(() => {

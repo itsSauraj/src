@@ -1,6 +1,6 @@
 "use clinet";
 
-import type { ReduxStore } from "@/types/redux";
+import type { StoreDispatch, RootState } from "@/redux/store";
 
 import React from "react";
 import { BiDockLeft, BiSolidDockLeft } from "react-icons/bi";
@@ -9,15 +9,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { cn } from "@/lib/utils";
 import { BreadcrumbResponsive } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { StoreDispatch } from "@/redux/store";
 import { toogleSideBarPin } from "@/redux/slice/app";
 import { ProfileDropDown } from "@/components/dashboard/dropdown/profile";
 import { NotificationDropdown } from "@/components/dashboard/dropdown/noification";
 
 export const PagePanel = ({ className }: { className: string }) => {
-  const sidebar = useSelector(
-    (state: ReduxStore) => state.app.settings.sidebar,
-  );
+  const sidebar = useSelector((state: RootState) => state.app.settings.sidebar);
   const dispatch = useDispatch<StoreDispatch>();
 
   return (

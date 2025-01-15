@@ -2,12 +2,14 @@
 
 import type { User } from "@/types/redux";
 import type { LoginRequest } from "@/types/auth/actions";
+import type { RootState } from "@/redux/store";
 
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
-import { login, logout } from "@/lib/auth/actions";
+import { login } from "@/lib/auth/actions";
 import { setAuthLoading } from "@/redux/slice/app";
+import { logout } from "@/lib/auth/actions";
 
 const initialState: User = {
   token: null,
@@ -59,11 +61,14 @@ const logInUser = (formData: LoginRequest) => async (dispatch: Dispatch) => {
   }
 };
 
-const logoutUser = (token: string) => async (dispatch: Dispatch) => {
-  await logout(token);
-  dispatch(toggleToken(null));
-  dispatch(toggleUser(null));
-};
+const logoutUser =
+  () => async (dispatch: Dispatch, getState: () => RootState) => {
+    const token = getState().user.token;
+
+    await logout(token);
+    dispatch(toggleToken(null));
+    dispatch(toggleUser(null));
+  };
 
 export { logInUser, logoutUser, validateToken };
 export default userSlice.reducer;

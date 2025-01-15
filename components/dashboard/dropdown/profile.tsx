@@ -1,7 +1,5 @@
-import type { ReduxStore } from "@/types/redux";
-
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {
   DropdownMenu,
@@ -19,10 +17,9 @@ import { ThemeSwitch } from "@/components/theme-switch";
 
 export function ProfileDropDown() {
   const dispatch = useDispatch<StoreDispatch>();
-  const token = useSelector((state: ReduxStore) => state.user.token);
 
   const handleLogout = () => {
-    dispatch(logoutUser(token));
+    dispatch(logoutUser());
   };
 
   return (
@@ -42,7 +39,12 @@ export function ProfileDropDown() {
           <ThemeSwitch />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
+        <DropdownMenuItem
+          className="text-red-500 hover:text-red-500"
+          onClick={handleLogout}
+        >
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

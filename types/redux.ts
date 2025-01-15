@@ -34,9 +34,9 @@ export type Member = {
 };
 export type Members = Member[];
 
-export type ReduxStore = {
-  app: App;
-  user: User;
-  member: Member;
-  members: Members;
-};
+// export type ReduxStore = {
+//   app: App;
+//   user: User;
+//   member: Member;
+//   members: Members;
+// };

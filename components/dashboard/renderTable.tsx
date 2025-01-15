@@ -2,16 +2,27 @@
 
 import type { ColDef } from "ag-grid-community";
 import type { Member } from "@/types/compoents/table";
+import type { RootState, StoreDispatch } from "@/redux/store";
 
 import { useState, useEffect } from "react";
 
 // loader
+import { useDispatch, useSelector } from "react-redux";
+
 import Loader from "@/components/ui/loader";
 // componets
 import { dateFormatter } from "@/components/ui/table/formater";
 import { Table } from "@/components/ui/table/AgCustomTable";
+import { setMembers } from "@/redux/slice/members";
 
-const RenderTable = () => {
+const RenderTable = ({ type }: { type: "mentor" | "trainee" }) => {
+  const dispatch = useDispatch<StoreDispatch>();
+  const {
+    members: { mentors, trainees },
+  } = useSelector((state: RootState) => state.members);
+
+  console.log(mentors, trainees);
+
   const [rowData, setRowData] = useState<Member[]>([]);
   const [colDefs] = useState<ColDef[]>([
     {
@@ -43,8 +54,12 @@ const RenderTable = () => {
   ]);
 
   useEffect(() => {
-    setRowData(DemoData);
+    dispatch(setMembers("mentors"));
+    // if (type === "mentor") setRowData(DemoData);
+    // else if (type === "trainee") setRowData([]);
+    // else setRowData([]);
   }, []);
+
 
   if (rowData.length === 0) return <Loader />;
 

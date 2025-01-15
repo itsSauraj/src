@@ -1,12 +1,6 @@
-"use client";
-
-import type { ReduxStore } from "@/types/redux";
-
 import React, { useState } from "react";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
 
-import { logoutUser } from "@/redux/slice/user";
 import { Logo, LogoIcon } from "@/components/ui/appLogo";
 import {
   Sidebar as SidebarUI,
@@ -15,13 +9,9 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { links } from "@/lib/constants/dashboard";
-import { StoreDispatch } from "@/redux/store";
 import { PagePanel } from "@/components/dashboard/panel";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
-  const dispatch = useDispatch<StoreDispatch>();
-  const user = useSelector((state: ReduxStore) => state.user);
-
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,13 +27,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => {
-                return (
-                  <SidebarLink
-                    key={idx}
-                    link={link}
-                    onClick={() => dispatch(logoutUser(user.token))}
-                  />
-                );
+                return <SidebarLink key={idx} link={link} />;
               })}
             </div>
           </div>

@@ -42,8 +42,6 @@ export const Table = ({
     };
   }, []);
 
-  console.log("themeIsDark", themeIsDark);
-
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <AgGridReact
@@ -54,11 +52,14 @@ export const Table = ({
         rowSelection={rowSelection}
         theme={themeIsDark ? customDark : undefined}
         onCellValueChanged={(event) => {
-          if (event.colDef.field === "price") {
-            console.log(`New Cell Value: ${event.value}`);
-          }
+          console.log(event.data);
         }}
-        onSelectionChanged={(event) => console.log("Row Selected!")}
+        onSelectionChanged={(event) => {
+          const selected_rows = event.api.getSelectedRows();
+          const selected_rows_id = selected_rows.map((row) => row.id);
+
+          console.log(selected_rows_id);
+        }}
       />
     </div>
   );
