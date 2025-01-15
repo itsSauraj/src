@@ -7,3 +7,5 @@ export interface BreadcrumbItem {
   label: string;
   href?: string;
 }
+
+export type members = "mentor" | "trainee";

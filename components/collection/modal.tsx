@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -29,9 +28,6 @@ export function AddDialog({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children}
-        <DialogFooter>
-          <Button type="submit">Save</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

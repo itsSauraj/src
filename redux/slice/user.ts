@@ -2,9 +2,9 @@
 
 import type { User } from "@/types/redux";
 import type { LoginRequest } from "@/types/auth/actions";
-import type { RootState } from "@/redux/store";
+import type { RootState, StoreDispatch } from "@/redux/store";
 
-import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
 import { login } from "@/lib/auth/actions";
@@ -31,7 +31,7 @@ const userSlice = createSlice({
 
 const { toggleToken, toggleUser } = userSlice.actions;
 
-const validateToken = (token: string) => async (dispatch: Dispatch) => {
+const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
   try {
     const new_token = await ValidateToken(token);
 
@@ -44,25 +44,26 @@ const validateToken = (token: string) => async (dispatch: Dispatch) => {
   }
 };
 
-const logInUser = (formData: LoginRequest) => async (dispatch: Dispatch) => {
-  try {
-    const userObj = await login(formData);
+const logInUser =
+  (formData: LoginRequest) => async (dispatch: StoreDispatch) => {
+    try {
+      const userObj = await login(formData);
 
-    // TODO: Error Notification
-    if (!userObj) {
-      return;
+      // TODO: Error Notification
+      if (!userObj) {
+        return;
+      }
+      dispatch(toggleToken(userObj.token));
+      dispatch(toggleUser(userObj.user));
+    } catch (error: any) {
+      // TODO: Error Notification
+    } finally {
+      dispatch(setAuthLoading(false));
     }
-
-    dispatch(setAuthLoading(false) as any);
-    dispatch(toggleToken(userObj.token));
-    dispatch(toggleUser(userObj.user));
-  } catch (error: any) {
-    // TODO: Error Notification
-  }
-};
+  };
 
 const logoutUser =
-  () => async (dispatch: Dispatch, getState: () => RootState) => {
+  () => async (dispatch: StoreDispatch, getState: () => RootState) => {
     const token = getState().user.token;
 
     await logout(token);

@@ -14,7 +14,7 @@ import { loginSchema } from "@/dependencies/yup";
 import { setAuthLoading } from "@/redux/slice/app";
 import { logInUser } from "@/redux/slice/user";
 // Import the ui components
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/custom-input";
 import { Button } from "@/components/ui/button";
 
 const LoginPage = () => {

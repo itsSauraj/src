@@ -11,6 +11,7 @@ import { customStorage } from "@/redux/customStorage";
 const persistConfig = {
   key: "root",
   storage: customStorage,
+  blacklist: ["app.user.isloading"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

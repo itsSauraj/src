@@ -1,3 +1,3 @@
-import AddMentor from "./AddMentor";
+import AddMember from "./AddMember";
 
-export { AddMentor };
+export { AddMember };
