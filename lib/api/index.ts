@@ -1,3 +1,3 @@
-import { fetchMentors } from "./mentor";
+import { getMentors, getTrainees } from "./members";
 
-export { fetchMentors };
+export { getMentors, getTrainees };

@@ -1,5 +1,5 @@
-import type { Member } from "@/types/redux";
+import type { IMemberForm } from "@/dependencies/yup";
 
-type IRows = Member;
+type IRows = IMemberForm;
 
-export type { IRows, Member };
+export type { IRows };

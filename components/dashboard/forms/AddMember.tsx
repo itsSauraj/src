@@ -3,6 +3,7 @@
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { members } from "@/types";
 import type { IMemberForm } from "@/dependencies/yup";
+import type { SetStateAction } from "react";
 
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -32,7 +33,13 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-const AddMember = ({ type }: { type: members }) => {
+const AddMember = ({
+  type,
+  setData,
+}: {
+  type: members;
+  setData: (value: SetStateAction<IMemberForm[]>) => void;
+}) => {
   const app = useSelector((state: RootState) => state.app);
   const dispatch = useDispatch<StoreDispatch>();
 
