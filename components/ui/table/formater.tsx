@@ -36,7 +36,7 @@ export const ActionsFormatter = (props: CustomCellRendererProps) => {
         <TbViewportWide />
       </Button>
       <Button
-        className="text-lg bg-red-500 dark:bg-red-600/80 dark:text-white h-auto p-2 hover:opacity-70"
+        className="text-lg bg-red-500 dark:bg-red-600/80 dark:text-white h-auto p-2 hover:bg-red-600/80 hover:opacity-70"
         onClick={handleDelete}
       >
         <MdDelete />

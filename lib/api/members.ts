@@ -2,6 +2,7 @@
 
 import type { IMemberForm } from "@/dependencies/yup";
 import type { StoreDispatch } from "@/redux/store";
+import type { FormType } from "@/types/dashboard/forms";
 
 import axios from "axios";
 
@@ -10,7 +11,7 @@ import { RootState } from "@/redux/store";
 
 const getMentors =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    const response = await axios.get(`${apiConfig.url}user/mentor/`, {
+    const response = await axios.get(`${apiConfig.url}/user/mentor/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getState().user.token}`,
@@ -26,7 +27,7 @@ const getMentors =
 
 const getTrainees =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    const response = await axios.get(`${apiConfig.url}user/trainee/`, {
+    const response = await axios.get(`${apiConfig.url}/user/trainee/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getState().user.token}`,
@@ -41,21 +42,30 @@ const getTrainees =
   };
 
 const addMember =
-  (formData: IMemberForm) =>
-  async (dispatch: StoreDispatch, getState: () => RootState) => {
-    const response = await axios.post(`${apiConfig.url}user/member/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().user.token}`,
+  (formData: IMemberForm, type: FormType) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<IMemberForm> => {
+    const response = await axios.post(
+      `${apiConfig.url}/auth/user/member/`,
+      {
+        ...formData,
+        role: type
       },
-      data: formData,
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        }
+      }
+    );
 
     if (response.status === 200) {
       return response.data;
+    } else {
+      throw new Error("Failed to add member");
     }
-
-    return [];
   };
 
 export { getMentors, getTrainees, addMember };

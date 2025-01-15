@@ -9,16 +9,20 @@ import {
 } from "@/components/ui/dialog";
 
 export function AddDialog({
+  state,
+  setState,
   title,
   description,
   children,
 }: {
+  state: boolean;
+  setState: (value: boolean) => void;
   title: string;
   description: string;
   children?: React.JSX.Element;
 }) {
   return (
-    <Dialog>
+    <Dialog open={state} onOpenChange={setState}>
       <DialogTrigger asChild>
         <Button variant="outline">{title}</Button>
       </DialogTrigger>

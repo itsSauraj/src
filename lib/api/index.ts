@@ -1,3 +1,3 @@
-import { getMentors, getTrainees } from "./members";
+import { getMentors, getTrainees, addMember } from "./members";
 
-export { getMentors, getTrainees };
+export { getMentors, getTrainees, addMember };

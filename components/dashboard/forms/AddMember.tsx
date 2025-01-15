@@ -31,14 +31,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+// Lib function
 import { cn } from "@/lib/utils";
+// API function
+import { addMember } from "@/lib/api";
+
 
 const AddMember = ({
   type,
   setData,
+  setState,
 }: {
   type: members;
   setData: (value: SetStateAction<IMemberForm[]>) => void;
+  setState: (value: boolean) => void;
 }) => {
   const app = useSelector((state: RootState) => state.app);
   const dispatch = useDispatch<StoreDispatch>();
@@ -59,12 +65,15 @@ const AddMember = ({
   });
 
   const onSubmit = async (data: IMemberForm) => {
-    dispatch(setAuthLoading(true));
     try {
+      dispatch(setAuthLoading(true));
       data.joining_date = format(data.joining_date, "yyyy-MM-dd");
-      console.log(data);
+      const response: IMemberForm = dispatch(addMember(data, type));
+
+      setData((prev) => [...prev, response]);
+      setState(false);
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error(error);
     } finally {
       dispatch(setAuthLoading(false));
     }

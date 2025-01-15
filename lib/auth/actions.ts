@@ -11,7 +11,7 @@ export const login = async (
 ): Promise<LoginResponse | any> => {
   try {
     const response = await axios.post<LoginResponse>(
-      `${apiConfig.url}auth/user/login/`,
+      `${apiConfig.url}/auth/user/login/`,
       credentials,
     );
 
@@ -23,7 +23,7 @@ export const login = async (
 
 export const validateToken = async (token: string): Promise<string | any> => {
   try {
-    const response = await axios.post(`${apiConfig.url}auth/user/refresh/`, {
+    const response = await axios.post(`${apiConfig.url}/auth/user/refresh/`, {
       token: token,
     });
 
@@ -35,7 +35,7 @@ export const validateToken = async (token: string): Promise<string | any> => {
 
 export const logout = async (token: string): Promise<void> => {
   try {
-    await axios.post(`${apiConfig.url}auth/user/logout/`, {
+    await axios.post(`${apiConfig.url}/auth/user/logout/`, {
       token: token,
     });
   } catch (error) {
