@@ -1,4 +1,6 @@
 "use client";
+import type { ReduxStore } from "@/types/redux";
+
 import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -6,7 +8,8 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 
 import { cn } from "@/lib/utils";
-import { ReduxStore } from "@/types/redux";
+import { NotificationDropdown } from "@/components/dashboard/dropdown/noification";
+import { BreadcrumbResponsive } from "@/components/breadcrumb";
 
 interface Links {
   label: string;
@@ -128,15 +131,23 @@ export const MobileSidebar = ({
 }: React.ComponentProps<"div">) => {
   const { open, setOpen } = useSidebar();
 
+  useEffect(() => {
+    setOpen(false);
+  }, []);
+
   return (
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full",
+          "h-10 px-4 py-4 flex md:hidden items-center justify-between bg-neutral-100 dark:bg-neutral-800",
         )}
         {...props}
       >
-        <div className="flex justify-end z-20 w-full">
+        <div>
+          <BreadcrumbResponsive />
+        </div>
+        <div className="flex z-20 items-center gap-2">
+          <NotificationDropdown className="text-xl" />
           <IconMenu2
             className="text-neutral-800 dark:text-neutral-200"
             onClick={() => setOpen(!open)}

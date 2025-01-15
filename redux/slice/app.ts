@@ -1,8 +1,8 @@
 "use client";
 
-import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import type { App } from "@/types/redux";
 
-import { App } from "@/types/redux";
+import { createSlice, Dispatch } from "@reduxjs/toolkit";
 
 const initialState: App = {
   auth: {

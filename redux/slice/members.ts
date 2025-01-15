@@ -1,8 +1,9 @@
 "use client";
 
+import type { Members } from "@/types/redux";
+
 import { createSlice, Dispatch, GetState } from "@reduxjs/toolkit";
 
-import { Members } from "@/types/redux";
 //API CALLs
 
 const initialMentors: Members = [];

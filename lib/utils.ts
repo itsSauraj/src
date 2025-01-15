@@ -1,7 +1,7 @@
+import type { BreadcrumbItem } from "@/types/index";
+
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-
-import { BreadcrumbItem } from "@/types/index";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

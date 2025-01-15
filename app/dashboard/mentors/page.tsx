@@ -1,14 +1,10 @@
-import { Table } from "@/components/ui/AgCustomTable";
+// componets
+import RenderTable from "./renderTable";
+
 import { AddDialog } from "@/components/collection/modal";
 import { AddMentor } from "@/components/dashboard/forms";
-//lib/api.ts
-import { fetchMentors } from "@/lib/api";
 
-export const Dashboard = async () => {
-  
-  const mentors = await fetchMentors();
-  console.log(mentors);
-
+export const Dashboard = () => {
   return (
     <div className="flex flex-col w-full h-full gap-3">
       <div className="flex justify-end">
@@ -20,7 +16,7 @@ export const Dashboard = async () => {
         </AddDialog>
       </div>
       <div className="flex flex-col w-full h-full">
-        <Table />
+        <RenderTable />
       </div>
     </div>
   );

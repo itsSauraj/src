@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReduxStore } from "@/types/redux";
+
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
@@ -7,7 +9,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { StoreDispatch } from "@/redux/store";
 import { validateToken } from "@/redux/slice/user";
 import { GradientCard } from "@/components/ui/GradientCard";
-import { ReduxStore } from "@/types/redux";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();

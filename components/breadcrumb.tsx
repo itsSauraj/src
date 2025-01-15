@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
@@ -30,14 +31,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { generateBreadcrumbs } from "@/lib/utils";
 
 const ITEMS_TO_DISPLAY = 3;
 
-export function BreadcrumbResponsive({
-  items,
-}: {
-  items: { label: string; href?: string }[];
-}) {
+export function BreadcrumbResponsive() {
+  const pathname = usePathname();
+  const items = generateBreadcrumbs(pathname);
+
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 

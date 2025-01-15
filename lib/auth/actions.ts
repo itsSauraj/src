@@ -1,9 +1,10 @@
 "use server";
 
+import type { LoginRequest, LoginResponse } from "@/types/auth/actions";
+
 import axios from "axios";
 
 import { apiConfig } from "@/config/api";
-import { LoginRequest, LoginResponse } from "@/types/auth/actions";
 
 export const login = async (
   credentials: LoginRequest,

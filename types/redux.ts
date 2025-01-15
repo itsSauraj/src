@@ -26,10 +26,11 @@ export type Member = {
   first_name: string;
   last_name: string;
   email: string;
-  address: string;
-  birth_date: string;
-  phone_number: string;
-  groups: Array<number | string>;
+  address?: string;
+  birth_date?: string;
+  phone_number?: string;
+  joining_date?: string;
+  groups?: Array<number | string>;
 };
 export type Members = Member[];
 

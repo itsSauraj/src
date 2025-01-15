@@ -1,5 +1,8 @@
 "use client";
 
+import type { ReduxStore } from "@/types/redux";
+import type { LoginRequest } from "@/types/auth/actions";
+
 import React, { useState, ChangeEvent } from "react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -15,8 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 // Import the types
 import { StoreDispatch } from "@/redux/store";
-import { ReduxStore } from "@/types/redux";
-import { LoginRequest } from "@/types/auth/actions";
 
 const LoginPage = () => {
   const app = useSelector((state: ReduxStore) => state.app);

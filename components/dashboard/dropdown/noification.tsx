@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReduxStore } from "@/types/redux";
+
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,14 +10,14 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ReduxStore } from "@/types/redux";
 import { StoreDispatch } from "@/redux/store";
 import {
   NotiicationBell,
   NotificationGrid,
 } from "@/components/dashboard/dropdown/notificationBell";
 
-export const NotificationDropdown = () => {
+export const NotificationDropdown = ({ className }: { className?: string }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dispatch = useDispatch<StoreDispatch>();
   const notification = useSelector(
     (state: ReduxStore) => state.app.notifications,
@@ -26,7 +28,7 @@ export const NotificationDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <NotiicationBell notify={notify} />
+        <NotiicationBell className={className} notify={notify} />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         {notify ? (

@@ -1,5 +1,7 @@
 "use clinet";
 
+import type { ReduxStore } from "@/types/redux";
+
 import React from "react";
 import { BiDockLeft, BiSolidDockLeft } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,20 +9,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { cn } from "@/lib/utils";
 import { BreadcrumbResponsive } from "@/components/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { BreadcrumbItem } from "@/types";
 import { StoreDispatch } from "@/redux/store";
 import { toogleSideBarPin } from "@/redux/slice/app";
-import { ReduxStore } from "@/types/redux";
 import { ProfileDropDown } from "@/components/dashboard/dropdown/profile";
 import { NotificationDropdown } from "@/components/dashboard/dropdown/noification";
 
-export const PagePanel = ({
-  className,
-  breadCrumb,
-}: {
-  className: string;
-  breadCrumb: BreadcrumbItem[];
-}) => {
+export const PagePanel = ({ className }: { className: string }) => {
   const sidebar = useSelector(
     (state: ReduxStore) => state.app.settings.sidebar,
   );
@@ -30,23 +24,25 @@ export const PagePanel = ({
     <div
       className={cn("w-full flex justify-between p-2 items-center", className)}
     >
-      <div className="flex gap-2 items-center">
-        {sidebar ? (
-          <BiDockLeft
-            className="text-2xl"
-            onClick={() => dispatch(toogleSideBarPin())}
-          />
-        ) : (
-          <BiSolidDockLeft
-            className="text-2xl"
-            onClick={() => dispatch(toogleSideBarPin())}
-          />
-        )}
+      <div className="gap-2 items-center hidden md:flex">
+        <div className="rounded-lg hover:bg-gray-700/10 hover:dark:bg-gray-300/10 transition-[background-color] duration-300 ease p-2">
+          {sidebar ? (
+            <BiDockLeft
+              className="text-2xl cursor-pointer"
+              onClick={() => dispatch(toogleSideBarPin())}
+            />
+          ) : (
+            <BiSolidDockLeft
+              className="text-2xl cursor-pointer"
+              onClick={() => dispatch(toogleSideBarPin())}
+            />
+          )}
+        </div>
         <Separator
-          className="h-[25px] border-[1px] border-l-gray-600 dark:border-l-gray-300 flex-1"
+          className="h-[25px] border-[1px] border-l-gray-600 dark:border-l-gray-300 flex-1 hidden md:flex"
           orientation="vertical"
         />
-        <BreadcrumbResponsive items={breadCrumb} />
+        <BreadcrumbResponsive />
       </div>
       <div className="flex items-center gap-6">
         <NotificationDropdown />

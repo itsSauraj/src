@@ -1,12 +1,13 @@
 "use client";
 
+import type { User } from "@/types/redux";
+import type { LoginRequest } from "@/types/auth/actions";
+
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
-import { LoginRequest } from "@/types/auth/actions";
 import { login, logout } from "@/lib/auth/actions";
 import { setAuthLoading } from "@/redux/slice/app";
-import { User } from "@/types/redux";
 
 const initialState: User = {
   token: null,
