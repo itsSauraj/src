@@ -1,4 +1,5 @@
 import type { StoreDispatch } from "@/redux/store";
+import type { CourseFormData } from "@/dependencies/yup";
 
 import { UUID } from "crypto";
 
@@ -39,4 +40,21 @@ const getCourseDetails =
     return [];
   };
 
-export { getCourses, getCourseDetails };
+const createNewCourse =
+  (courseData: CourseFormData) =>
+  async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
+    const response = await axios.post(`${apiConfig.url}/course/`, courseData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getState().user.token}`,
+      },
+    });
+
+    if (response.status === 201) {
+      return response.data;
+    } else {
+      throw new Error("Failed to add member");
+    }
+  };
+
+export { getCourses, getCourseDetails, createNewCourse };

@@ -1,6 +1,6 @@
-import React from "react";
+import type { CourseData } from "@/types/dashboard/view";
 
-import { DemoCourseData } from "./demo";
+import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -10,7 +10,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 
-export const CourseLayout = ({ course }: { course: typeof DemoCourseData }) => {
+export const CourseLayout = ({ course }: { course: CourseData }) => {
   return (
     <div className="p-6">
       <Card className="mb-6">
@@ -27,7 +27,7 @@ export const CourseLayout = ({ course }: { course: typeof DemoCourseData }) => {
       </Card>
 
       <Accordion collapsible type="single">
-        {course.modules.map((module, moduleIndex) => (
+        {course.modules.map((module, moduleIndex: number) => (
           <AccordionItem key={moduleIndex} value={`module-${moduleIndex}`}>
             <AccordionTrigger>
               {module.metadata.sequence}. {module.metadata.title}
@@ -97,7 +97,7 @@ const LessonCard = ({
   lesson,
   index,
 }: {
-  lesson: (typeof DemoCourseData)["modules"][0]["lessons"][0];
+  lesson: CourseData["modules"][0]["lessons"][0];
   index: number;
 }) => (
   <Card className="mb-4">

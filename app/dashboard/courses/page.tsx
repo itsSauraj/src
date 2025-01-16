@@ -17,7 +17,7 @@ import { AddCouse } from "@/components/dashboard/forms";
 import { AddDialog } from "@/components/collection/modal";
 import { Button } from "@/components/ui/button";
 import MyDrawer from "@/components/ui/next-drawer";
-import Loader from "@/components/ui/loader";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const CourseDashboard = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -48,17 +48,24 @@ export const CourseDashboard = () => {
           title="Add Course"
         >
           <div className="h-full">
-            <AddCouse />
+            <AddCouse setCourses={setCourses} setState={setOpen} />
           </div>
         </AddDialog>
       </div>
       {courses.length === 0 ? (
-        <Loader />
+        <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 h-full overflow-y-scroll justify-center">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 h-full overflow-y-scroll justify-center max-h-[260px]">
-            {courses.map((course, index) => (
-              <div key={course.id} className="flex justify-center p-3">
+          <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 h-full overflow-y-scroll justify-center">
+            {courses.map((course) => (
+              <div
+                key={course.id}
+                className="flex justify-center p-3 max-h-[260px]"
+              >
                 <CourseCard
                   className="min-w-full"
                   course={course}
@@ -91,3 +98,11 @@ export const CourseDashboard = () => {
 };
 
 export default CourseDashboard;
+
+export function SkeletonCard() {
+  return (
+    <div className="flex justify-center p-3">
+      <Skeleton className="min-h-[200px] rounded-xl min-w-full" />
+    </div>
+  );
+}

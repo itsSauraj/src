@@ -39,12 +39,12 @@ export interface IMemberForm
 // Course
 export const moduleSchema = yup.object({
   title: yup.string().required("Module title is required"),
-  description: yup.string().required("Module description is required"),
+  description: yup.string(),
   parent_module: yup.string().nullable(),
   lessons: yup.array().of(
     yup.object({
       title: yup.string().required("Lesson title is required"),
-      description: yup.string().required("Lesson description is required"),
+      description: yup.string(),
       hours: yup.number().min(0).max(23).required(),
       minutes: yup.number().min(0).max(59).required(),
       seconds: yup.number().min(0).max(59).required(),

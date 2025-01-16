@@ -26,7 +26,7 @@ export default function CourseCard({
   course: Course;
 }) {
   return (
-    <Card className={cn("max-w-[400px]", className)}>
+    <Card className={cn("dark:bg-neutral-800", className)}>
       <CardHeader className="flex gap-3">
         <Avatar name={course.title} />
         <div className="flex items-center">

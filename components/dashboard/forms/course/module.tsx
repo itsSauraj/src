@@ -24,7 +24,6 @@ const ModuleSection: React.FC<IModuleSectionProps> = ({
   moduleIndex,
   form,
   removeModule,
-  existingModules,
 }) => {
   const {
     fields: lessonFields,
@@ -78,11 +77,7 @@ const ModuleSection: React.FC<IModuleSectionProps> = ({
           )}
         />
 
-        <ModuleCombobox
-          existingModules={existingModules}
-          form={form}
-          moduleIndex={moduleIndex}
-        />
+        {/* <ModuleCombobox form={form} moduleIndex={moduleIndex} /> */}
 
         {/* Lessons Section */}
         <div className="space-y-4">

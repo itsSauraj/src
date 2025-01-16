@@ -11,6 +11,7 @@ interface ILesson {
 }
 
 interface IModule {
+  id: string;
   title: string;
   description: string;
   parent_module: string | null;
@@ -32,7 +33,6 @@ interface IModuleSectionProps {
   moduleIndex: number;
   form: UseFormReturn<ICourse>;
   removeModule: () => void;
-  existingModules: IExistingModule[];
 }
 
 interface ILessonSectionProps {

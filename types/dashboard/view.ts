@@ -5,3 +5,30 @@ export interface Course {
   title: string;
   description: string;
 }
+
+export interface Metadata {
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  parent_module?: string | null;
+  sequence?: number;
+}
+
+export interface Lesson {
+  title: string;
+  description: string;
+  sequence: number;
+  duration: string;
+}
+
+export interface Module {
+  metadata: Metadata;
+  sub_modules: Module[];
+  lessons: Lesson[];
+}
+
+export interface CourseData {
+  metadata: Metadata;
+  modules: Module[];
+}

@@ -89,7 +89,7 @@ const config = {
     		}
     	}
     },
-	darkMode: ["class", "class"],
+	darkMode: "class",
 	plugins: [nextui(), tailwindcss],
 };
 

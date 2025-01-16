@@ -2,7 +2,7 @@
 
 import type { ICourse, IExistingModule } from "@/types/dashboard/forms";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -32,9 +32,21 @@ import { cn } from "@/lib/utils";
 const ModuleCombobox: React.FC<{
   form: UseFormReturn<ICourse>;
   moduleIndex: number;
-  existingModules: IExistingModule[];
-}> = ({ form, moduleIndex, existingModules }) => {
+}> = ({ form, moduleIndex }) => {
+  const [existingModules, setExistingModules] = useState<IExistingModule[]>([]);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const modules = form.watch("modules").filter((module, index) => {
+      return index !== moduleIndex;
+    });
+    const existingModules = modules.map((module) => ({
+      id: module.id,
+      title: module.title,
+    }));
+
+    console.log(existingModules);
+  }, [form.watch("modules")]);
 
   return (
     <FormField
