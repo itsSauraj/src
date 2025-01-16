@@ -1,20 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import { useDisclosure } from "@nextui-org/react";
+import type { StoreDispatch } from "@/redux/store";
+import type { Course } from "@/types/dashboard/view";
 
-import { Button } from "@/components/ui/button";
-import MyDrawer from "@/components/ui/next-drawer";
+import { UUID } from "crypto";
+
+import { useEffect, useState } from "react";
+import { useDisclosure } from "@nextui-org/react";
+import { useDispatch } from "react-redux";
+
+import CourseCard from "../../../components/dashboard/course/courseCard";
+import ViewCourse from "../../../components/dashboard/course/view";
+
+import { getCourses } from "@/lib/api";
 import { AddCouse } from "@/components/dashboard/forms";
 import { AddDialog } from "@/components/collection/modal";
+import { Button } from "@/components/ui/button";
+import MyDrawer from "@/components/ui/next-drawer";
+import Loader from "@/components/ui/loader";
 
 export const CourseDashboard = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
+  const [openCourseID, setOpenCourseID] = useState<UUID | null>(null);
+
+  const dispatch = useDispatch<StoreDispatch>();
 
   const handleBackdropChange = () => {
     onOpen();
   };
+
+  useEffect(() => {
+    dispatch(getCourses()).then((data) => {
+      setCourses(data);
+    });
+  }, []);
 
   return (
     <div className="flex flex-col w-full h-[80svh]">
@@ -30,32 +51,41 @@ export const CourseDashboard = () => {
             <AddCouse />
           </div>
         </AddDialog>
-        <div className="flex gap-2">
-          <Button
-            className="capitalize"
-            color="primary"
-            onClick={() => handleBackdropChange()}
-          >
-            View Course
-          </Button>
-        </div>
-        <MyDrawer
-          footer={
-            <Button
-              className="capitalize"
-              color="primary"
-              onClick={() => onOpenChange()}
-            >
-              Close
-            </Button>
-          }
-          isOpen={isOpen}
-          title="Add Course"
-          onOpenChange={onOpenChange}
-        >
-          Course Detaile here
-        </MyDrawer>
       </div>
+      {courses.length === 0 ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 h-full overflow-y-scroll justify-center max-h-[260px]">
+            {courses.map((course, index) => (
+              <div key={course.id} className="flex justify-center p-3">
+                <CourseCard
+                  className="min-w-full"
+                  course={course}
+                  openCourse={handleBackdropChange}
+                  setOpenCourseID={setOpenCourseID}
+                />
+              </div>
+            ))}
+          </div>
+          <MyDrawer
+            footer={
+              <Button
+                className="capitalize"
+                color="primary"
+                onClick={() => onOpenChange()}
+              >
+                Close
+              </Button>
+            }
+            isOpen={isOpen}
+            title="Course View"
+            onOpenChange={onOpenChange}
+          >
+            <ViewCourse courseId={openCourseID as UUID} />
+          </MyDrawer>
+        </>
+      )}
     </div>
   );
 };
