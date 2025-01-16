@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 export function AddDialog({
   state,
@@ -14,19 +15,21 @@ export function AddDialog({
   title,
   description,
   children,
+  className,
 }: {
   state: boolean;
   setState: (value: boolean) => void;
   title: string;
   description: string;
   children?: React.JSX.Element;
+  className?: string;
 }) {
   return (
     <Dialog open={state} onOpenChange={setState}>
       <DialogTrigger asChild>
         <Button variant="outline">{title}</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className={cn("sm:max-w-[425px]", className)}>
         <DialogHeader>
           <DialogTitle className="captalize">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

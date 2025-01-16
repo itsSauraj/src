@@ -4,9 +4,8 @@ import { FC, useState, useEffect } from "react";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { SwitchProps, useSwitch } from "@nextui-org/switch";
 import { useTheme } from "next-themes";
-import clsx from "clsx";
-import { useDispatch } from "react-redux";
 
+import { cn } from "@/lib/utils";
 import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
 
 export interface ThemeSwitchProps {
@@ -20,7 +19,6 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const dispatch = useDispatch<StoreDispatch>();
 
   const onChange = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -74,37 +72,41 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   if (!isMounted) return <div className="w-6 h-6" />;
 
   return (
-    <Component
+    <div
       aria-label={isSelected ? "Switch to dark mode" : "Switch to light mode"}
-      {...getBaseProps({
-        className: clsx(
-          "px-px transition-opacity hover:opacity-80 cursor-pointer",
-          className,
-          classNames?.base,
-        ),
-      })}
+      className={cn(
+        "px-px transition-opacity hover:opacity-80 cursor-pointer",
+        className,
+        classNames?.base,
+      )}
+      role="button"
+      tabIndex={0}
+      onClick={onChange}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          onChange();
+        }
+      }}
+      {...getBaseProps()}
     >
       <VisuallyHidden>
         <input {...getInputProps()} />
       </VisuallyHidden>
       <div
         {...getWrapperProps()}
-        className={slots.wrapper({
-          class: clsx(
-            [
-              "w-auto h-auto",
-              "bg-transparent",
-              "rounded-lg",
-              "flex items-center justify-center",
-              "group-data-[selected=true]:bg-transparent",
-              "!text-default-500",
-              "pt-px",
-              "px-0",
-              "mx-0",
-            ],
-            classNames?.wrapper,
-          ),
-        })}
+        className={cn(
+          "w-auto h-auto",
+          "bg-transparent",
+          "rounded-lg",
+          "flex items-center justify-center",
+          "group-data-[selected=true]:bg-transparent",
+          "!text-default-500",
+          "pt-px",
+          "px-0",
+          "mx-0",
+          classNames?.wrapper,
+        )}
       >
         {isSelected ? (
           <>
@@ -122,6 +124,6 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
           </>
         )}
       </div>
-    </Component>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Member } from "@/types/compoents/table";
+import type { IMemberForm } from "@/dependencies/yup";
 import type { StoreDispatch } from "@/redux/store";
 
 import { useState, useEffect } from "react";
@@ -13,8 +13,10 @@ import { AddMember } from "@/components/dashboard/forms";
 import { getTrainees } from "@/lib/api";
 
 export const Dashboard = () => {
+  const [rowData, setRowData] = useState<IMemberForm[]>([]);
+  const [open, setOpen] = useState(false);
+
   const dispatch = useDispatch<StoreDispatch>();
-  const [rowData, setRowData] = useState<Member[]>([]);
 
   useEffect(() => {
     dispatch(getTrainees()).then((data) => {
@@ -27,9 +29,11 @@ export const Dashboard = () => {
       <div className="flex justify-end">
         <AddDialog
           description="Add a new trainee to your training group"
+          setState={setOpen}
+          state={open}
           title="Add Trainee"
         >
-          <AddMember type="trainee" />
+          <AddMember setData={setRowData} setState={setOpen} type="trainee" />
         </AddDialog>
       </div>
       <div className="flex flex-col w-full h-full">

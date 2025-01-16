@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import { nextui } from "@nextui-org/theme";
-import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
+import tailwindcss from "tailwindcss";
 
 const config = {
 	content: [
@@ -64,18 +64,7 @@ const config = {
 		},
 	},
 	darkMode: "class",
-	plugins: [addVariablesForColors, require("tailwindcss-animate")],
+	plugins: [nextui(), tailwindcss],
 };
 
 export default config;
-
-function addVariablesForColors({ addBase, theme }) {
-	let allColors = flattenColorPalette(theme("colors"));
-	let newVars = Object.fromEntries(
-		Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
-	);
-
-	addBase({
-		":root": newVars,
-	});
-}

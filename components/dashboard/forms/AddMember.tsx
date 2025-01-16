@@ -36,7 +36,6 @@ import { cn } from "@/lib/utils";
 // API function
 import { addMember } from "@/lib/api";
 
-
 const AddMember = ({
   type,
   setData,
@@ -52,7 +51,7 @@ const AddMember = ({
   const form = useForm<IMemberForm>({
     resolver: yupResolver(memberSchema),
     defaultValues: {
-      emp_id: "",
+      employee_id: "",
       first_name: "",
       last_name: "",
       email: "",
@@ -68,11 +67,12 @@ const AddMember = ({
     try {
       dispatch(setAuthLoading(true));
       data.joining_date = format(data.joining_date, "yyyy-MM-dd");
-      const response: IMemberForm = dispatch(addMember(data, type));
+      const response: IMemberForm = await dispatch(addMember(data, type));
 
       setData((prev) => [...prev, response]);
       setState(false);
     } catch (error) {
+      // TODO: Handle error properly with notification
       console.error(error);
     } finally {
       dispatch(setAuthLoading(false));
@@ -88,7 +88,7 @@ const AddMember = ({
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="emp_id"
+            name="employee_id"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -170,7 +170,7 @@ const AddMember = ({
                         {field.value ? (
                           format(field.value, "PPP")
                         ) : (
-                          <span>Pick a date</span>
+                          <span>Pick joining date</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -180,7 +180,7 @@ const AddMember = ({
                     <Calendar
                       initialFocus
                       mode="single"
-                      selected={field.value}
+                      selected={field.value as any}
                       onSelect={field.onChange}
                     />
                   </PopoverContent>

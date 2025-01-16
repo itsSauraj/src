@@ -51,17 +51,17 @@ const addMember =
       `${apiConfig.url}/auth/user/member/`,
       {
         ...formData,
-        role: type
+        role: type,
       },
       {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getState().user.token}`,
-        }
-      }
+        },
+      },
     );
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       return response.data;
     } else {
       throw new Error("Failed to add member");

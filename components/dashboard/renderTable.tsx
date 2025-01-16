@@ -17,9 +17,17 @@ import {
 import { Table } from "@/components/ui/table/AgCustomTable";
 
 const RenderTable = ({ rowData }: { rowData: IMemberForm[] }) => {
-  const isSmallScreen = useMediaQuery("(max-width: 600px)");
+  const isSmallScreen = useMediaQuery("(max-width: 1300px)");
 
   const [colDefs] = useState<ColDef[]>([
+    {
+      headerName: "Employee ID",
+      field: "employee_id",
+      width: 150,
+      cellClass: "font-bold",
+      headerClass: "font-bold",
+      editable: false,
+    },
     {
       headerName: "First Name",
       field: "first_name",

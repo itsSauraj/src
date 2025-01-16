@@ -1,3 +1,4 @@
 import AddMember from "./AddMember";
+import AddCouse from "./AddCourse";
 
-export { AddMember };
+export { AddMember, AddCouse };
