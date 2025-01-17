@@ -41,13 +41,13 @@ export const CourseDashboard = () => {
     <div className="flex flex-col w-full h-[80svh]">
       <div className="flex justify-end">
         <AddDialog
-          className="sm:min-w-[100svw] lg:min-w-[80svw] sm:max-h-full lg:max-h-[80svh] overflow-y-scroll"
+          className="sm:min-w-[100svw] lg:min-w-[80svw]"
           description="Add a new mentor to your training group"
           setState={setOpen}
           state={open}
           title="Add Course"
         >
-          <div className="h-full">
+          <div className="flex justify-center max-h-[70svh] overflow-y-scroll">
             <AddCouse setCourses={setCourses} setState={setOpen} />
           </div>
         </AddDialog>

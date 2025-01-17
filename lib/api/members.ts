@@ -1,16 +1,21 @@
 "use client";
 
 import type { IMemberForm } from "@/dependencies/yup";
-import type { StoreDispatch } from "@/redux/store";
+import type { StoreDispatch, RootState } from "@/redux/store";
 import type { FormType } from "@/types/dashboard/forms";
+import type { UUID } from "crypto";
+
 
 import axios from "axios";
 
+import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
-import { RootState } from "@/redux/store";
 
 const getMentors =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
+
+    dispatch(setAuthLoading(true));
+
     const response = await axios.get(`${apiConfig.url}/user/mentor/`, {
       headers: {
         "Content-Type": "application/json",
@@ -18,6 +23,7 @@ const getMentors =
       },
     });
 
+    dispatch(setAuthLoading(false));
     if (response.status === 200) {
       return response.data;
     }
@@ -27,6 +33,7 @@ const getMentors =
 
 const getTrainees =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
+    // dispatch(setAuthLoading(true));
     const response = await axios.get(`${apiConfig.url}/user/trainee/`, {
       headers: {
         "Content-Type": "application/json",
@@ -34,6 +41,7 @@ const getTrainees =
       },
     });
 
+    // dispatch(setAuthLoading(false));
     if (response.status === 200) {
       return response.data;
     }
@@ -68,4 +76,37 @@ const addMember =
     }
   };
 
-export { getMentors, getTrainees, addMember };
+const deleteMember =
+  (id: UUID | UUID[], many = false) =>
+  async (dispatch: StoreDispatch, getState: () => RootState) => {
+    if (many) {
+      const response = await axios.delete(`${apiConfig.url}/member/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+        data: id,
+      });
+
+      if (response.status === 204) {
+        return true;
+      } else {
+        throw new Error("Failed to delete members");
+      }
+    } else {
+      const response = await axios.delete(`${apiConfig.url}/member/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      });
+
+      if (response.status === 204) {
+        return true;
+      } else {
+        throw new Error("Failed to delete member");
+      }
+    }
+  };
+
+export { getMentors, getTrainees, addMember, deleteMember };

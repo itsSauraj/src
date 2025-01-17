@@ -14,6 +14,7 @@ import { logout } from "@/lib/auth/actions";
 const initialState: User = {
   token: null,
   user: null,
+  userType: null,
 };
 
 const userSlice = createSlice({
@@ -26,10 +27,13 @@ const userSlice = createSlice({
     toggleUser: (state, action) => {
       state.user = action.payload;
     },
+    setUserType: (state, action) => {
+      state.userType = action.payload
+    },
   },
 });
 
-const { toggleToken, toggleUser } = userSlice.actions;
+const { toggleToken, toggleUser, setUserType } = userSlice.actions;
 
 const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
   try {
@@ -38,6 +42,9 @@ const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
     if (new_token === token) {
       return;
     }
+
+    console.log("Token refreshed", token);
+
     dispatch(toggleToken(new_token));
   } catch (error: any) {
     return error;
@@ -55,6 +62,7 @@ const logInUser =
       }
       dispatch(toggleToken(userObj.token));
       dispatch(toggleUser(userObj.user));
+      dispatch(setUserType(userObj.userType));
     } catch (error: any) {
       // TODO: Error Notification
     } finally {
@@ -69,6 +77,7 @@ const logoutUser =
     await logout(token);
     dispatch(toggleToken(null));
     dispatch(toggleUser(null));
+    dispatch(setUserType(null));
   };
 
 export { logInUser, logoutUser, validateToken };

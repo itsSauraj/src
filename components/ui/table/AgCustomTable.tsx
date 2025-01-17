@@ -2,6 +2,7 @@
 
 import type { ColDef, RowSelectionOptions } from "ag-grid-community";
 import type { IRows } from "@/types/compoents/table";
+import type { UUID } from "crypto";
 
 import React, { useMemo } from "react";
 import { useTheme } from "next-themes";
@@ -29,9 +30,11 @@ const rowSelection: RowSelectionOptions = {
 export const Table = ({
   rowData,
   colDefs,
+  setSelectedRowId,
 }: {
   rowData: IRows[];
   colDefs: ColDef[];
+  setSelectedRowId: (id: UUID[]) => void;
 }) => {
   const themeIsDark = useTheme().theme === "dark";
 
@@ -58,7 +61,7 @@ export const Table = ({
           const selected_rows = event.api.getSelectedRows();
           const selected_rows_id = selected_rows.map((row) => row.id);
 
-          console.log(selected_rows_id);
+          setSelectedRowId(selected_rows_id);
         }}
       />
     </div>

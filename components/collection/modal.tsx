@@ -30,7 +30,7 @@ export function AddDialog({
         <Button variant="outline">{title}</Button>
       </DialogTrigger>
       <DialogContent className={cn("sm:max-w-[425px]", className)}>
-        <DialogHeader>
+        <DialogHeader className="">
           <DialogTitle className="captalize">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>

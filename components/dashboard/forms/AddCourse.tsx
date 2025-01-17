@@ -107,7 +107,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ setCourses, setState }) => {
   };
 
   return (
-    <div className="w-full max-w-[90%] mx-auto p-6">
+    <div className="w-full max-w-[90%] mx-auto p-0 md:p-4 lg:p-6 h-[100%]">
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
           {/* Course Details */}

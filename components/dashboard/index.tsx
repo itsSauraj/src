@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+"use clinet";
+
+import type { RootState } from "@/redux/store";
+
 import Image from "next/image";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 import { Logo, LogoIcon } from "@/components/ui/appLogo";
 import {
@@ -13,6 +18,7 @@ import { PagePanel } from "@/components/dashboard/panel";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const userType = useSelector((state: RootState) => state.user.userType);
 
   return (
     <div
@@ -27,6 +33,10 @@ export function SideBar({ children }: { children: React.ReactNode }) {
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => {
+                if (link.for && !link.for.includes(userType as string)) {
+                  return null;
+                }
+
                 return <SidebarLink key={idx} link={link} />;
               })}
             </div>

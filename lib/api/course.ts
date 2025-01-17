@@ -1,4 +1,4 @@
-import type { StoreDispatch } from "@/redux/store";
+import type { StoreDispatch, RootState } from "@/redux/store";
 import type { CourseFormData } from "@/dependencies/yup";
 
 import { UUID } from "crypto";
@@ -6,7 +6,6 @@ import { UUID } from "crypto";
 import axios from "axios";
 
 import { apiConfig } from "@/config/api";
-import { RootState } from "@/redux/store";
 
 const getCourses =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {

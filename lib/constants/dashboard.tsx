@@ -10,6 +10,7 @@ export const links = [
     icon: (
       <MdSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
+    for: ["admin", "mentor", "trainee"],
   },
   {
     label: "Mentors",
@@ -17,6 +18,7 @@ export const links = [
     icon: (
       <FaPeopleRoof className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
+    for: ["admin"],
   },
   {
     label: "Courses",
@@ -24,6 +26,7 @@ export const links = [
     icon: (
       <IoBookSharp className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
+    for: ["admin", "trainee"],
   },
   {
     label: "Trainees",
@@ -31,5 +34,6 @@ export const links = [
     icon: (
       <PiStudentFill className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
     ),
+    for: ["admin", "mentor"],
   },
 ];

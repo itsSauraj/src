@@ -2,13 +2,12 @@
 
 import type { ColDef } from "ag-grid-community";
 import type { IMemberForm } from "@/dependencies/yup";
+import type { UUID } from "crypto";
 
 import { useState } from "react";
 
 // hooks
 import { useMediaQuery } from "@/hooks/use-media-query";
-// loader
-import Loader from "@/components/ui/loader";
 // componets
 import {
   DateFormatter,
@@ -16,7 +15,17 @@ import {
 } from "@/components/ui/table/formater";
 import { Table } from "@/components/ui/table/AgCustomTable";
 
-const RenderTable = ({ rowData }: { rowData: IMemberForm[] }) => {
+const RenderTable = ({
+  rowData,
+  setDeletable,
+  setOpen,
+  setSelectedRowId,
+}: {
+  rowData: IMemberForm[];
+  setDeletable: (id: UUID | null) => void;
+  setOpen: (open: boolean) => void;
+  setSelectedRowId: (id: UUID[] | null) => void;
+}) => {
   const isSmallScreen = useMediaQuery("(max-width: 1300px)");
 
   const [colDefs] = useState<ColDef[]>([
@@ -59,7 +68,8 @@ const RenderTable = ({ rowData }: { rowData: IMemberForm[] }) => {
     {
       headerName: "Actions",
       field: "id",
-      cellRenderer: ActionsFormatter,
+      cellRenderer: (_params: any) =>
+        ActionsFormatter(setDeletable, setOpen, _params),
       width: 120,
       editable: false,
       sortable: false,
@@ -67,9 +77,13 @@ const RenderTable = ({ rowData }: { rowData: IMemberForm[] }) => {
     },
   ]);
 
-  if (rowData.length === 0) return <Loader />;
-
-  return <Table colDefs={colDefs} rowData={rowData} />;
+  return (
+    <Table
+      colDefs={colDefs}
+      rowData={rowData}
+      setSelectedRowId={setSelectedRowId}
+    />
+  );
 };
 
 export default RenderTable;

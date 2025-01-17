@@ -16,4 +16,5 @@ export interface App {
 export type User = {
   token?: string | any;
   user?: any;
+  userType?: "admin" | "mentor" | "trainee" | null;
 };
