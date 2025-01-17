@@ -18,6 +18,7 @@ import { AddDialog } from "@/components/collection/modal";
 import { Button } from "@/components/ui/button";
 import MyDrawer from "@/components/ui/next-drawer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const CourseDashboard = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -47,34 +48,40 @@ export const CourseDashboard = () => {
           state={open}
           title="Add Course"
         >
-          <div className="flex justify-center max-h-[70svh] overflow-y-scroll">
-            <AddCouse setCourses={setCourses} setState={setOpen} />
-          </div>
+          <ScrollArea className="h-[70svh]">
+            <div className="flex justify-center">
+              <AddCouse setCourses={setCourses} setState={setOpen} />
+            </div>
+          </ScrollArea>
         </AddDialog>
       </div>
       {courses.length === 0 ? (
-        <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 h-full overflow-y-scroll justify-center">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <SkeletonCard key={index} />
-          ))}
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 h-full overflow-y-scroll justify-center">
-            {courses.map((course) => (
-              <div
-                key={course.id}
-                className="flex justify-center p-3 max-h-[260px]"
-              >
-                <CourseCard
-                  className="min-w-full"
-                  course={course}
-                  openCourse={handleBackdropChange}
-                  setOpenCourseID={setOpenCourseID}
-                />
-              </div>
+        <ScrollArea className="h-full">
+          <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 justify-center">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <SkeletonCard key={index} />
             ))}
           </div>
+        </ScrollArea>
+      ) : (
+        <>
+          <ScrollArea className="h-full">
+            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 justify-center">
+              {courses.map((course) => (
+                <div
+                  key={course.id}
+                  className="flex justify-center p-3 max-h-[260px]"
+                >
+                  <CourseCard
+                    className="min-w-full"
+                    course={course}
+                    openCourse={handleBackdropChange}
+                    setOpenCourseID={setOpenCourseID}
+                  />
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
           <MyDrawer
             footer={
               <Button

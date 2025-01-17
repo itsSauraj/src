@@ -56,4 +56,20 @@ const createNewCourse =
     }
   };
 
-export { getCourses, getCourseDetails, createNewCourse };
+const getCourseCollection =
+  () => async (dispatch: StoreDispatch, getState: () => RootState) => {
+    const response = await axios.get(`${apiConfig.url}/course/collection`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getState().user.token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return [];
+  }
+
+export { getCourses, getCourseDetails, createNewCourse, getCourseCollection };

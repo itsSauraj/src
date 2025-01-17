@@ -43,8 +43,6 @@ const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
       return;
     }
 
-    console.log("Token refreshed", token);
-
     dispatch(toggleToken(new_token));
   } catch (error: any) {
     return error;
@@ -62,7 +60,7 @@ const logInUser =
       }
       dispatch(toggleToken(userObj.token));
       dispatch(toggleUser(userObj.user));
-      dispatch(setUserType(userObj.userType));
+      dispatch(setUserType(userObj.groups[0]));
     } catch (error: any) {
       // TODO: Error Notification
     } finally {

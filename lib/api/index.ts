@@ -1,5 +1,17 @@
-import { getMentors, getTrainees, addMember, deleteMember } from "./members";
-import { getCourses, getCourseDetails, createNewCourse } from "./course";
+import {
+  getMentors,
+  getTrainees,
+  addMember,
+  deleteMember,
+  getMemberInfo,
+} from "./members";
+// Collection of courses and course details
+import {
+  getCourses,
+  getCourseDetails,
+  createNewCourse,
+  getCourseCollection,
+} from "./course";
 
 export {
   // Members
@@ -7,8 +19,10 @@ export {
   getTrainees,
   addMember,
   deleteMember,
+  getMemberInfo,
   // Course
   getCourses,
   getCourseDetails,
   createNewCourse,
+  getCourseCollection,
 };

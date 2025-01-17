@@ -31,11 +31,6 @@ export const memberSchema = yup.object().shape({
     .oneOf([yup.ref("password"), undefined], "Passwords must match"),
 });
 
-export interface IMemberForm
-  extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {
-  joining_date: string | Date;
-}
-
 // Course
 export const moduleSchema = yup.object({
   title: yup.string().required("Module title is required"),
@@ -58,4 +53,19 @@ export const courseSchema = yup.object({
   modules: yup.array().of(moduleSchema),
 });
 
+export const collectionSchema = yup.object().shape({
+  title: yup.string().required("Collection title is required"),
+  description: yup.string().required("Collection description is required"),
+  image: yup
+    .string()
+    .url("Image must be a valid URL")
+    .required("Image is required"),
+  courses: yup.array().of(yup.string().uuid()),
+});
+
 export type CourseFormData = yup.InferType<typeof courseSchema>;
+export interface IMemberForm
+  extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {
+  joining_date: string | Date;
+}
+export type CollectionFormData = yup.InferType<typeof collectionSchema>;

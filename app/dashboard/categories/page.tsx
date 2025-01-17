@@ -1,6 +1,6 @@
 "use client";
 
-import type { IMemberForm } from "@/dependencies/yup";
+import type { CollectionFormData } from "@/dependencies/yup";
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { UUID } from "crypto";
 
@@ -8,17 +8,16 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // componets
-import RenderTable from "@/components/dashboard/renderTable";
+import RenderTable from "@/components/dashboard/renderTableCollection";
 import { AddDialog } from "@/components/collection/modal";
-import { AddMember } from "@/components/dashboard/forms";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/loader";
 // API
-import { getMentors, deleteMember } from "@/lib/api";
+import { getCourseCollection, deleteMember } from "@/lib/api";
 
 export const Dashboard = () => {
-  const [rowData, setRowData] = useState<IMemberForm[]>([]);
+  const [rowData, setRowData] = useState<CollectionFormData[]>([]);
   const [open, setOpen] = useState(false);
   const [openAlertDeleteMultiple, setOpenAlertDeleteMultiple] =
     useState<boolean>(false);
@@ -30,7 +29,7 @@ export const Dashboard = () => {
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
   useEffect(() => {
-    dispatch(getMentors()).then((data) => {
+    dispatch(getCourseCollection()).then((data) => {
       setRowData(data);
     });
   }, []);
@@ -38,7 +37,7 @@ export const Dashboard = () => {
   const deleteMentor = () => {
     if (deletableID) {
       dispatch(deleteMember(deletableID)).then(() => {
-        dispatch(getMentors()).then((data) => {
+        dispatch(getCourseCollection()).then((data) => {
           setRowData(data);
         });
       });
@@ -48,7 +47,7 @@ export const Dashboard = () => {
   const deleteMultipleMentors = () => {
     if (selectedRowId && selectedRowId.length > 0) {
       dispatch(deleteMember(selectedRowId, true)).then(() => {
-        dispatch(getMentors()).then((data) => {
+        dispatch(getCourseCollection()).then((data) => {
           setRowData(data);
         });
       });
@@ -64,16 +63,16 @@ export const Dashboard = () => {
               variant="destructive"
               onClick={() => setOpenAlertDeleteMultiple(true)}
             >
-              Delete Mentors
+              Delete Collection
             </Button>
           )}
           <AddDialog
-            description="Add a new mentor to your training group"
+            description="Add a new Course Collection"
             setState={setOpen}
             state={open}
-            title="Add Mentor"
+            title="Add Collection"
           >
-            <AddMember setData={setRowData} setState={setOpen} type="mentor" />
+            <>Course Collection Form</>
           </AddDialog>
         </div>
         <div className="flex flex-col w-full h-full">
@@ -93,16 +92,16 @@ export const Dashboard = () => {
           )}
         </div>
         <MyAlertDialog
-          description="Are you sure you want to delete this mentor?"
+          description="Are you sure you want to delete this Collection?"
           setOpen={setOpenAlert}
-          title="Delete Mentor"
+          title="Delete Collection"
           onContinue={deleteMentor}
           onOpen={openAlert}
         />
         <MyAlertDialog
-          description="Are you sure you want to delete selected mentors?"
+          description="Are you sure you want to delete selected collections?"
           setOpen={setOpenAlertDeleteMultiple}
-          title="Delete Mentors"
+          title="Delete Collections"
           onContinue={deleteMultipleMentors}
           onOpen={openAlertDeleteMultiple}
         />

@@ -3,8 +3,8 @@
 import type { IMemberForm } from "@/dependencies/yup";
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { FormType } from "@/types/dashboard/forms";
+import type { ResponseMember } from "@/types/dashboard/view";
 import type { UUID } from "crypto";
-
 
 import axios from "axios";
 
@@ -13,7 +13,6 @@ import { apiConfig } from "@/config/api";
 
 const getMentors =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
-
     dispatch(setAuthLoading(true));
 
     const response = await axios.get(`${apiConfig.url}/user/mentor/`, {
@@ -33,7 +32,7 @@ const getMentors =
 
 const getTrainees =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    // dispatch(setAuthLoading(true));
+    dispatch(setAuthLoading(true));
     const response = await axios.get(`${apiConfig.url}/user/trainee/`, {
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +40,7 @@ const getTrainees =
       },
     });
 
-    // dispatch(setAuthLoading(false));
+    dispatch(setAuthLoading(false));
     if (response.status === 200) {
       return response.data;
     }
@@ -109,4 +108,26 @@ const deleteMember =
     }
   };
 
-export { getMentors, getTrainees, addMember, deleteMember };
+const getMemberInfo =
+  (id: UUID) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<ResponseMember | any> => {
+    dispatch(setAuthLoading(true));
+    const response = await axios.get(`${apiConfig.url}/member/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getState().user.token}`,
+      },
+    });
+
+    dispatch(setAuthLoading(false));
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error("Failed to get member info");
+    }
+  };
+
+export { getMentors, getTrainees, addMember, deleteMember, getMemberInfo };

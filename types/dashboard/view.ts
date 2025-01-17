@@ -32,3 +32,15 @@ export interface CourseData {
   metadata: Metadata;
   modules: Module[];
 }
+
+export interface ResponseMember {
+  employeeId: string;
+  id: UUID;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  joiningDate: string;
+  groups: string[];
+}
