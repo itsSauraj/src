@@ -53,13 +53,31 @@ export const courseSchema = yup.object({
   modules: yup.array().of(moduleSchema),
 });
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 export const collectionSchema = yup.object().shape({
   title: yup.string().required("Collection title is required"),
-  description: yup.string().required("Collection description is required"),
+  description: yup.string(),
   image: yup
-    .string()
-    .url("Image must be a valid URL")
-    .required("Image is required"),
+    .mixed<File | string>()
+    .nullable()
+    .nullable()
+    .test("fileSize", "Image size must be less than 5MB", (value) => {
+      if (!value) return true;
+
+      return value instanceof File && value.size <= MAX_FILE_SIZE;
+    })
+    .test("fileType", "Unsupported file type", (value) => {
+      if (!value) return true;
+
+      return value instanceof File && ACCEPTED_IMAGE_TYPES.includes(value.type);
+    }),
   courses: yup.array().of(yup.string().uuid()),
 });
 

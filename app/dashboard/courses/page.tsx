@@ -12,7 +12,9 @@ import { useDispatch } from "react-redux";
 import CourseCard from "../../../components/dashboard/course/courseCard";
 import ViewCourse from "../../../components/dashboard/course/view";
 
+/* APIs */
 import { getCourses } from "@/lib/api";
+// compoenets
 import { AddCouse } from "@/components/dashboard/forms";
 import { AddDialog } from "@/components/collection/modal";
 import { Button } from "@/components/ui/button";

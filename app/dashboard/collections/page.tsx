@@ -8,13 +8,16 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // componets
-import RenderTable from "@/components/dashboard/renderTableCollection";
+import { RenderTableCollections } from "@/components/dashboard/tables";
 import { AddDialog } from "@/components/collection/modal";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/loader";
+import { ScrollArea } from "@/components/ui/scroll-area";
+// form
+import { AddCollection } from "@/components/dashboard/forms";
 // API
-import { getCourseCollection, deleteMember } from "@/lib/api";
+import { getCourseCollection, deleteCollection } from "@/lib/api";
 
 export const Dashboard = () => {
   const [rowData, setRowData] = useState<CollectionFormData[]>([]);
@@ -36,7 +39,7 @@ export const Dashboard = () => {
 
   const deleteMentor = () => {
     if (deletableID) {
-      dispatch(deleteMember(deletableID)).then(() => {
+      dispatch(deleteCollection(deletableID)).then(() => {
         dispatch(getCourseCollection()).then((data) => {
           setRowData(data);
         });
@@ -46,7 +49,7 @@ export const Dashboard = () => {
 
   const deleteMultipleMentors = () => {
     if (selectedRowId && selectedRowId.length > 0) {
-      dispatch(deleteMember(selectedRowId, true)).then(() => {
+      dispatch(deleteCollection(selectedRowId, true)).then(() => {
         dispatch(getCourseCollection()).then((data) => {
           setRowData(data);
         });
@@ -72,14 +75,18 @@ export const Dashboard = () => {
             state={open}
             title="Add Collection"
           >
-            <>Course Collection Form</>
+            <ScrollArea className="h-[70svh]">
+              <div className="flex justify-center">
+                <AddCollection setCollections={setRowData} setState={setOpen} />
+              </div>
+            </ScrollArea>
           </AddDialog>
         </div>
         <div className="flex flex-col w-full h-full">
           {isLoading ? (
             <Loader />
           ) : rowData && rowData.length > 0 ? (
-            <RenderTable
+            <RenderTableCollections
               rowData={rowData}
               setDeletable={setDeletableID}
               setOpen={setOpenAlert}

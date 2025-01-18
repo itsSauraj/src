@@ -18,7 +18,10 @@ import { PagePanel } from "@/components/dashboard/panel";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const userType = useSelector((state: RootState) => state.user.userType);
+  const userTypes: string[] = useSelector((state: RootState) => {
+    if (state.user.user) return state.user.user.groups;
+    else return [];
+  });
 
   return (
     <div
@@ -33,7 +36,10 @@ export function SideBar({ children }: { children: React.ReactNode }) {
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => {
-                if (link.for && !link.for.includes(userType as string)) {
+                if (
+                  link.for &&
+                  !link.for.some((forUser) => userTypes.includes(forUser))
+                ) {
                   return null;
                 }
 

@@ -7,12 +7,18 @@ import type { ResponseMember } from "@/types/dashboard/view";
 import type { UUID } from "crypto";
 
 import axios from "axios";
+// sonner
+import { toast } from "sonner";
 
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
 const getMentors =
-  () => async (dispatch: StoreDispatch, getState: () => RootState) => {
+  () =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<IMemberForm[] | any> => {
     dispatch(setAuthLoading(true));
 
     const response = await axios.get(`${apiConfig.url}/user/mentor/`, {
@@ -31,7 +37,11 @@ const getMentors =
   };
 
 const getTrainees =
-  () => async (dispatch: StoreDispatch, getState: () => RootState) => {
+  () =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<IMemberForm[] | any> => {
     dispatch(setAuthLoading(true));
     const response = await axios.get(`${apiConfig.url}/user/trainee/`, {
       headers: {
@@ -53,7 +63,7 @@ const addMember =
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<IMemberForm> => {
+  ): Promise<IMemberForm | any> => {
     const response = await axios.post(
       `${apiConfig.url}/auth/user/member/`,
       {
@@ -69,9 +79,11 @@ const addMember =
     );
 
     if (response.status === 201) {
+      toast.success("Member added successfully");
+
       return response.data;
     } else {
-      throw new Error("Failed to add member");
+      toast.error("Failed to add member");
     }
   };
 
@@ -88,9 +100,11 @@ const deleteMember =
       });
 
       if (response.status === 204) {
+        toast.success("Deleted successfully");
+
         return true;
       } else {
-        throw new Error("Failed to delete members");
+        toast.error("Failed to delete members");
       }
     } else {
       const response = await axios.delete(`${apiConfig.url}/member/${id}`, {
@@ -101,9 +115,11 @@ const deleteMember =
       });
 
       if (response.status === 204) {
+        toast.success("Deleted successfully");
+
         return true;
       } else {
-        throw new Error("Failed to delete member");
+        toast.error("Failed to delete member");
       }
     }
   };

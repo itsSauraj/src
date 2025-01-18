@@ -50,6 +50,9 @@ export const Table = ({
       <AgGridReact
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
+        getRowHeight={(params) => {
+          return params.data.image ? 100 : 50;
+        }}
         pagination={true}
         rowData={rowData}
         rowSelection={rowSelection}

@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -41,6 +42,7 @@ export default function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           {children}
+          <Toaster richColors />
         </Providers>
       </body>
     </html>

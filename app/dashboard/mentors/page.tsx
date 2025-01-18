@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // componets
-import RenderTable from "@/components/dashboard/renderTable";
+import { RenderTableMembers } from "@/components/dashboard/tables";
 import { AddDialog } from "@/components/collection/modal";
 import { AddMember } from "@/components/dashboard/forms";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
@@ -80,7 +80,7 @@ export const Dashboard = () => {
           {isLoading ? (
             <Loader />
           ) : rowData && rowData.length > 0 ? (
-            <RenderTable
+            <RenderTableMembers
               rowData={rowData}
               setDeletable={setDeletableID}
               setOpen={setOpenAlert}
