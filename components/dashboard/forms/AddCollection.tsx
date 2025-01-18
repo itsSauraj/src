@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 export default function AddCollection({
   setCollections,
@@ -105,26 +106,27 @@ export default function AddCollection({
       if (data.description) formData.append("description", data.description);
       if (data.image) formData.append("image", data.image);
       if (data.courses?.length) {
-        data.courses.forEach((course) => {
-          if (course) {
-            formData.append("courses", course);
-          }
-        });
+        formData.append("courses", JSON.stringify(data.courses));
       }
+
       toast.promise(dispatch(createNewCollection(formData)), {
         loading: "Creating collection...",
         success: (data) => {
           setCollections((collections) => [...collections, data]);
+          form.reset();
+          setPreview(null);
           setState(false);
+          dispatch(setAuthLoading(false));
 
           return "Collection created successfully";
         },
-        error: "Failed to create collection",
-      });
+        error: (_error) => {
+          dispatch(setAuthLoading(false));
 
-      form.reset();
-      setPreview(null);
-    } catch (error: any) {
+          return "Failed to create collection";
+        },
+      });
+    } catch {
       dispatch(setAuthLoading(false));
       toast("Error", {
         description: "Failed to create collection",
@@ -231,15 +233,16 @@ export default function AddCollection({
                     <SelectValue placeholder="Select courses" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className="max-h-60">
                   {courses.length > 0 ? (
                     <>
-                      <SelectItem value="select">Select</SelectItem>
-                      {courses.map((course) => (
-                        <SelectItem key={course.id} value={course.id}>
-                          {course.title}
-                        </SelectItem>
-                      ))}
+                      {courses
+                        .filter((course) => !field.value?.includes(course.id))
+                        .map((course) => (
+                          <SelectItem key={course.id} value={course.id}>
+                            {course.title}
+                          </SelectItem>
+                        ))}
                     </>
                   ) : (
                     <SelectItem disabled value="none">
@@ -249,15 +252,15 @@ export default function AddCollection({
                 </SelectContent>
               </Select>
               {(field.value?.length ?? 0) > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 mt-2 p-1 border-[1px] rounded-md">
                   {(field.value ?? []).map((course) => (
-                    <div
+                    <Badge
                       key={course}
-                      className="flex items-center gap-1 bg-secondary px-2 py-1 rounded-md"
+                      className="flex items-cnter gap-1 justify-between p-0 py-[5px] px-[4px]"
                     >
                       {courses.find((c) => c.id === course)?.title}
                       <Button
-                        className="h-4 w-4"
+                        className="h-4 w-4 hover:bg-red-500 rounded-full"
                         size="icon"
                         type="button"
                         variant="ghost"
@@ -269,7 +272,7 @@ export default function AddCollection({
                       >
                         <X className="h-3 w-3" />
                       </Button>
-                    </div>
+                    </Badge>
                   ))}
                 </div>
               )}

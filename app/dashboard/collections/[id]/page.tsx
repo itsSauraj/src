@@ -1,7 +1,20 @@
-import React from "react";
+import type { UUID } from "crypto";
 
-const Page = () => {
-  return <div>Collections View</div>;
+import ContentLoader from "./loader";
+
+const Page = async ({ params }: { params: Promise<{ id: UUID }> }) => {
+  const collection_id = (await params).id;
+
+  if (
+    typeof collection_id !== "string" ||
+    !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(
+      collection_id,
+    )
+  ) {
+    return null;
+  }
+
+  return <ContentLoader id={collection_id} />;
 };
 
 export default Page;

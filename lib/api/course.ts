@@ -112,13 +112,36 @@ const getCourseCollection =
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<CollectionFormData | any> => {
+  ): Promise<CollectionFormData[] | any> => {
     const response = await axios.get(`${apiConfig.url}/course/collection`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getState().user.token}`,
       },
     });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return [];
+  };
+
+const getCourseCollectionDetails =
+  (id: UUID) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<CollectionFormData | any> => {
+    const response = await axios.get(
+      `${apiConfig.url}/course/collection/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      },
+    );
 
     if (response.status === 200) {
       return response.data;
@@ -182,5 +205,6 @@ export {
   createNewCourse,
   createNewCollection,
   getCourseCollection,
+  getCourseCollectionDetails,
   deleteCollection,
 };

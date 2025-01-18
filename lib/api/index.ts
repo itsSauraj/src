@@ -12,6 +12,7 @@ import {
   createNewCourse,
   createNewCollection,
   getCourseCollection,
+  getCourseCollectionDetails,
   deleteCollection,
 } from "./course";
 
@@ -28,5 +29,6 @@ export {
   createNewCourse,
   createNewCollection,
   getCourseCollection,
+  getCourseCollectionDetails,
   deleteCollection,
 };

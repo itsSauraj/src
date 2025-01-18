@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Loader from "@/components/ui/loader";
 // skeleton
-import { UserProfileSkeleton } from "@/components/dashboard/skeleton/userProfileSkeleton";
+import { UserProfileSkeleton } from "@/components/dashboard/skeleton/userProfile";
 // API
 import { getMemberInfo } from "@/lib/api";
 import { cn } from "@/lib/utils";

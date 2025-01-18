@@ -1,3 +1,5 @@
+import { Plus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,7 +29,10 @@ export function AddDialog({
   return (
     <Dialog open={state} onOpenChange={setState}>
       <DialogTrigger asChild>
-        <Button variant="outline">{title}</Button>
+        <Button variant="outline">
+          <Plus className="h-4 w-4 mr-2" />
+          {title}
+        </Button>
       </DialogTrigger>
       <DialogContent className={cn("sm:max-w-[425px]", className)}>
         <DialogHeader className="">
