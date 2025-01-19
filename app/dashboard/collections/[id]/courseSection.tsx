@@ -27,7 +27,7 @@ const CourseSection = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4 h-full">
+    <>
       <div className="flex justify-end gap-2">
         <AddDialog
           description="Add a new mentor to your training group"
@@ -43,7 +43,7 @@ const CourseSection = ({
           </div>
         </AddDialog>
       </div>
-      <ScrollArea className="h-[45svh] rounded-md p-3 border-2">
+      <ScrollArea className="flex-grow rounded-md p-3 border-2">
         <div className="grid gap-2">
           {(collection.courses ?? []).length === 0 ? (
             <p className="text-sm text-muted-foreground">
@@ -67,7 +67,7 @@ const CourseSection = ({
           )}
         </div>
       </ScrollArea>
-    </div>
+    </>
   );
 };
 

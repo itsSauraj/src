@@ -2,13 +2,14 @@
 "use client";
 
 import type { CollectionFormData } from "@/dependencies/yup";
-import type { Course } from "@/types";
+import type { Course } from "@/types/dashboard/view";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { Pencil, Loader2 } from "lucide-react";
+import { Pencil, Loader2, Upload, X } from "lucide-react";
 import { MdDelete } from "react-icons/md";
+import { useDropzone } from "react-dropzone";
 
 import CourseSection from "./courseSection";
 
@@ -44,16 +45,47 @@ function CollectionView({
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  const [preview, setPreview] = useState<string | null>((process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + collection.image);
 
   const form = useForm({
     defaultValues: {
       title: collection.title,
       description: collection.description,
+      image: collection.image,
     },
   });
 
-  const handleUpdate = async (data: any) => {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+
+      if (file) {
+        form.setValue("image", file);
+        const imageUrl = URL.createObjectURL(file);
+
+        setPreview(imageUrl);
+      }
+    },
+    [form],
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
+    },
+    maxFiles: 1,
+  });
+
+  const removeImage = () => {
+    form.setValue("image", undefined);
+    setPreview(null);
+  };
+
+  const handleUpdate = async (data: CollectionFormData) => {
     setIsLoading(true);
+
+    console.log(data);
 
     toast.info("Comming soon");
 
@@ -83,8 +115,8 @@ function CollectionView({
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      <Card className="w-full h-[80svh] flex flex-col">
+    <div className="py-6 space-y-6 h-full">
+      <Card className="w-full h-full flex flex-col">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 relative">
           {collection.image && (
             <div className="w-full h-full overflow-hidden rounded-lg absolute top-0 left-0 opacity-20 pointer-events-none">
@@ -104,32 +136,83 @@ function CollectionView({
                 className="space-y-4 w-full"
                 onSubmit={form.handleSubmit(handleUpdate)}
               >
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="flex gap-4 justify-between items-center">
+                  <div className="flex flex-col gap-4 w-full">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                      />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea {...field}  className="resize-none"/>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                    <FormField
+                    control={form.control}
+                    name="image"
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>Image</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <div
+                              {...getRootProps()}
+                              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer
+                                    ${isDragActive ? "border-primary bg-primary/10" : "border-border"}`}
+                            >
+                              <input {...getInputProps()} />
+                              {preview ? (
+                                <div className="relative w-full aspect-video">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    alt="Preview"
+                                    className="rounded object-cover w-full h-full"
+                                    src={preview}
+                                  />
+                                  <Button
+                                    className="absolute top-2 right-2"
+                                    size="icon"
+                                    type="button"
+                                    variant="destructive"
+                                    onClick={removeImage}
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className="flex flex-col items-center justify-center gap-2">
+                                  <Upload className="h-8 w-8 text-muted-foreground" />
+                                  <p className="text-sm text-muted-foreground">
+                                    Drag & drop an image here, or click to select
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <div className="flex gap-2">
                   <Button disabled={isLoading} type="submit">
                     {isLoading ? (
@@ -188,7 +271,7 @@ function CollectionView({
             </div>
           )}
         </CardHeader>
-        <CardContent className="p-4 h-full">
+        <CardContent className="p-4 h-full flex flex-col gap-4">
           <CourseSection collection={collection} courses={availableCourses} />
         </CardContent>
       </Card>

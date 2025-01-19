@@ -22,16 +22,16 @@ export const PagePanel = ({ className }: { className: string }) => {
       className={cn("w-full flex justify-between p-2 items-center", className)}
     >
       <div className="gap-2 items-center hidden md:flex">
-        <div className="rounded-lg hover:bg-gray-700/10 hover:dark:bg-gray-300/10 transition-[background-color] duration-300 ease p-2">
+        <div className="rounded-lg hover:bg-gray-700/10 hover:dark:bg-gray-300/10 transition-[background-color] duration-300 ease p-2"
+        onClick={() => dispatch(toogleSideBarPin())}
+        >
           {sidebar ? (
             <BiDockLeft
               className="text-2xl cursor-pointer"
-              onClick={() => dispatch(toogleSideBarPin())}
             />
           ) : (
             <BiSolidDockLeft
               className="text-2xl cursor-pointer"
-              onClick={() => dispatch(toogleSideBarPin())}
             />
           )}
         </div>
