@@ -150,3 +150,5 @@ export const CourseSectioSelection = ({
     </Form>
   );
 };
+
+export default CourseSectioSelection;

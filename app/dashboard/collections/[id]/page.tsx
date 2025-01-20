@@ -1,6 +1,6 @@
 import type { UUID } from "crypto";
 
-import ContentLoader from "./loader";
+import ContentLoader from "@/components/dashboard/collections/loader";
 
 const Page = async ({ params }: { params: Promise<{ id: UUID }> }) => {
   const collection_id = (await params).id;

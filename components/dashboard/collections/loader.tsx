@@ -7,7 +7,6 @@ import { UUID } from "crypto";
 
 import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
-import { toast } from "sonner";
 
 import { CollectionView } from "./component";
 

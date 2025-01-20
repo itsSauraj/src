@@ -5,8 +5,8 @@ import React from "react";
 import { useState } from "react";
 import { X } from "lucide-react";
 
-import { CourseSectioSelection } from "./AddCouseToCollection";
-
+import { CourseSectioSelection } from "@/components/dashboard/forms";
+// UI
 import { AddDialog } from "@/components/collection/modal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

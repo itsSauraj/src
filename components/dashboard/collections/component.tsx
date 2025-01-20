@@ -7,7 +7,6 @@ import type { StoreDispatch } from "@/redux/store";
 
 import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { Pencil, Loader2, Upload, X } from "lucide-react";
 import { MdDelete } from "react-icons/md";
