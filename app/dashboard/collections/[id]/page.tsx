@@ -17,8 +17,8 @@ const Page = async ({ params }: { params: Promise<{ id: UUID }> }) => {
   return (
     <div className="flex flex-col gap-4 h-full p-2">
       <ContentLoader id={collection_id} />
-    </div> 
-  )
+    </div>
+  );
 };
 
 export default Page;

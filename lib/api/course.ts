@@ -107,6 +107,36 @@ const createNewCollection =
     }
   };
 
+const updateCollection =
+  (id: UUID, formData: FormData) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<CollectionFormData | any> => {
+    dispatch(setAuthLoading(true));
+
+    const response = await axios.patch(
+      `${apiConfig.url}/course/collection/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      },
+    );
+
+    dispatch(setAuthLoading(false));
+
+    if (response.status === 200) {
+      toast.success("Upadted successfully");
+
+      return response.data;
+    } else {
+      dispatch(setAuthLoading(false));
+      toast.error("Failed to update");
+    }
+  };
+
 const getCourseCollection =
   () =>
   async (
@@ -199,6 +229,63 @@ const deleteCollection =
     }
   };
 
+const removeCourseFromCollection =
+  (collectoin_id: UUID, course_id: UUID) =>
+  async (dispatch: StoreDispatch, getState: () => RootState) => {
+    if (!collectoin_id || !course_id) {
+      toast.error("Invalid collection or course id");
+
+      return;
+    }
+
+    dispatch(setAuthLoading(true));
+    const response = await axios.delete(
+      `${apiConfig.url}/course/collection/${collectoin_id}/${course_id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      },
+    );
+
+    dispatch(setAuthLoading(false));
+
+    if (response.status === 204) {
+      toast.success("Deleted successfully");
+
+      return true;
+    } else {
+      toast.error("Failed to delete collection");
+    }
+  };
+
+const addCourseToCollection =
+  (collectoin_id: UUID, formData: FormData) =>
+  async (dispatch: StoreDispatch, getState: () => RootState) => {
+    dispatch(setAuthLoading(true));
+    const response = await axios.patch(
+      `${apiConfig.url}/course/collection/${collectoin_id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      },
+    );
+
+    dispatch(setAuthLoading(false));
+
+    if (response.status === 200) {
+      toast.success("Added successfully");
+
+      return true;
+    } else {
+      toast.error("Failed to add course to collection");
+    }
+  };
+
 export {
   getCourses,
   getCourseDetails,
@@ -207,4 +294,7 @@ export {
   getCourseCollection,
   getCourseCollectionDetails,
   deleteCollection,
+  updateCollection,
+  removeCourseFromCollection,
+  addCourseToCollection,
 };

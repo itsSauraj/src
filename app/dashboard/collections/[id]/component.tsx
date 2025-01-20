@@ -2,14 +2,17 @@
 "use client";
 
 import type { CollectionFormData } from "@/dependencies/yup";
-import type { Course } from "@/types/dashboard/view";
+import type { Course, CourseCollection } from "@/types/dashboard/view";
+import type { StoreDispatch } from "@/redux/store";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { Pencil, Loader2, Upload, X } from "lucide-react";
 import { MdDelete } from "react-icons/md";
 import { useDropzone } from "react-dropzone";
+import { useDispatch } from "react-redux";
 
 import CourseSection from "./courseSection";
 
@@ -32,20 +35,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
+//APIS
+import {
+  updateCollection,
+  removeCourseFromCollection,
+  deleteCollection,
+} from "@/lib/api";
 
 function CollectionView({
   collection,
   availableCourses,
+  setCollection,
 }: {
-  collection: CollectionFormData;
   availableCourses: Course[];
-  onUpdate: (data: any) => Promise<void>;
-  onDelete: () => Promise<void>;
+  collection: CourseCollection;
+  setCollection: (data: CourseCollection) => void;
 }) {
+  const dispatch = useDispatch<StoreDispatch>();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [preview, setPreview] = useState<string | null>((process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + collection.image);
+  const [preview, setPreview] = useState<string | null>(
+    (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + collection.image,
+  );
 
   const form = useForm({
     defaultValues: {
@@ -54,6 +66,14 @@ function CollectionView({
       image: collection.image,
     },
   });
+
+  useEffect(() => {
+    form.reset({
+      title: collection.title,
+      description: collection.description,
+      image: collection.image,
+    });
+  }, [collection]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -83,35 +103,51 @@ function CollectionView({
   };
 
   const handleUpdate = async (data: CollectionFormData) => {
-    setIsLoading(true);
+    const formData = new FormData();
 
-    console.log(data);
+    formData.append("title", data.title);
+    formData.append("description", data.description?.toString() || "");
+    if (data.image) {
+      if (data.image instanceof File) {
+        formData.append("image", data.image);
+      }
+    }
 
-    toast.info("Comming soon");
+    const response = await dispatch(updateCollection(collection.id, formData));
 
-    setIsLoading(false);
+    if (response) {
+      setIsEditing(false);
+      setIsLoading(false);
+      setCollection(response);
+    }
   };
 
+  const router = useRouter();
   const handleDelete = async () => {
-    toast.info("Comming soon");
-  };
-
-  const handleAddCourse = async (courseId: string) => {
-    const courseToAdd = availableCourses.find((c) => c.id === courseId)!;
-
-    toast.info("Comming soon");
+    dispatch(deleteCollection(collection.id)).then(() => {
+      router.push("/dashboard/collections");
+    });
   };
 
   const handleRemoveCourse = async (courseId: string) => {
-    const courseToRemove = collection.courses?.find((c) => c.id === courseId);
+    const courseToRemove = collection.courses?.find(
+      (c: Course) => c.id === courseId,
+    );
 
-    if (!courseToRemove) {
-      toast.error("Course not found");
-
-      return;
+    if (courseToRemove) {
+      await dispatch(
+        removeCourseFromCollection(collection.id, courseToRemove.id),
+      ).then((data) => {
+        if (data) {
+          setCollection({
+            ...collection,
+            courses: collection.courses.filter(
+              (c: Course) => c.id !== courseToRemove.id,
+            ),
+          });
+        }
+      });
     }
-
-    toast.info("Comming soon");
   };
 
   return (
@@ -150,7 +186,7 @@ function CollectionView({
                           <FormMessage />
                         </FormItem>
                       )}
-                      />
+                    />
                     <FormField
                       control={form.control}
                       name="description"
@@ -158,14 +194,14 @@ function CollectionView({
                         <FormItem>
                           <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Textarea {...field}  className="resize-none"/>
+                            <Textarea {...field} className="resize-none" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                    <FormField
+                  <FormField
                     control={form.control}
                     name="image"
                     render={() => (
@@ -180,11 +216,11 @@ function CollectionView({
                             >
                               <input {...getInputProps()} />
                               {preview ? (
-                                <div className="relative w-full aspect-video">
+                                <div className="relative max-h-[120px]">
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
                                   <img
                                     alt="Preview"
-                                    className="rounded object-cover w-full h-full"
+                                    className="rounded h-[120px] w-[300px] object-cover"
                                     src={preview}
                                   />
                                   <Button
@@ -201,7 +237,8 @@ function CollectionView({
                                 <div className="flex flex-col items-center justify-center gap-2">
                                   <Upload className="h-8 w-8 text-muted-foreground" />
                                   <p className="text-sm text-muted-foreground">
-                                    Drag & drop an image here, or click to select
+                                    Drag & drop an image here, or click to
+                                    select
                                   </p>
                                 </div>
                               )}
@@ -228,7 +265,10 @@ function CollectionView({
                     disabled={isLoading}
                     type="button"
                     variant="outline"
-                    onClick={() => setIsEditing(false)}
+                    onClick={() => {
+                      form.reset();
+                      setIsEditing(false);
+                    }}
                   >
                     Cancel
                   </Button>
@@ -271,8 +311,13 @@ function CollectionView({
             </div>
           )}
         </CardHeader>
-        <CardContent className="p-4 h-full flex flex-col gap-4">
-          <CourseSection collection={collection} courses={availableCourses} />
+        <CardContent className="p-4 h-full flex flex-col gap-4 overflow-y-scroll no-scrollbar">
+          <CourseSection
+            collection={collection}
+            courses={availableCourses}
+            handleRemoveCourse={handleRemoveCourse}
+            setCollection={setCollection}
+          />
         </CardContent>
       </Card>
     </div>

@@ -14,6 +14,9 @@ import {
   getCourseCollection,
   getCourseCollectionDetails,
   deleteCollection,
+  updateCollection,
+  removeCourseFromCollection,
+  addCourseToCollection,
 } from "./course";
 
 export {
@@ -31,4 +34,7 @@ export {
   getCourseCollection,
   getCourseCollectionDetails,
   deleteCollection,
+  updateCollection,
+  removeCourseFromCollection,
+  addCourseToCollection,
 };

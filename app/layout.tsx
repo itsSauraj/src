@@ -42,7 +42,7 @@ export default function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           {children}
-          <Toaster richColors />
+          <Toaster richColors closeButton={true} />
         </Providers>
       </body>
     </html>

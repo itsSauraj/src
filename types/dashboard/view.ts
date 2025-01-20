@@ -1,3 +1,4 @@
+import { Co } from './view';
 import { UUID } from "crypto";
 
 export interface Course {
@@ -43,4 +44,12 @@ export interface ResponseMember {
   phoneNumber: string;
   joiningDate: string;
   groups: string[];
+}
+
+export interface CourseCollection {
+  id: UUID;
+  title: string;
+  description: string;
+  courses: Course[];
+  image: string | File | undefined;
 }

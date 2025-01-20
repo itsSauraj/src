@@ -1,13 +1,13 @@
 "use client";
 
-import type { Course } from "@/types/dashboard/view";
-import type { CollectionFormData } from "@/dependencies/yup";
+import type { Course, CourseCollection } from "@/types/dashboard/view";
 import type { StoreDispatch } from "@/redux/store";
 
 import { UUID } from "crypto";
 
 import { useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 import { CollectionView } from "./component";
 
@@ -19,9 +19,7 @@ import { CollectionViewSkeleton } from "@/components/dashboard/skeleton";
 export const ContentLoader = ({ id }: { id: UUID }) => {
   const dispatch = useDispatch<StoreDispatch>();
 
-  const [collection, setCollection] = useState<CollectionFormData[] | null>(
-    null,
-  );
+  const [collection, setCollection] = useState<CourseCollection | null>(null);
   const [availableCourses, setAvailableCourses] = useState<Course[]>([]);
 
   useEffect(() => {
@@ -32,14 +30,6 @@ export const ContentLoader = ({ id }: { id: UUID }) => {
       setAvailableCourses(data);
     });
   }, []);
-
-  const handleUpdate = async (data: any) => {
-    // Update collection logic here
-  };
-
-  const handleDelete = async () => {
-    // Delete collection logic here
-  };
 
   if (!collection) {
     return (
@@ -52,9 +42,8 @@ export const ContentLoader = ({ id }: { id: UUID }) => {
   return (
     <CollectionView
       availableCourses={availableCourses}
-      collection={collection as any}
-      onDelete={handleDelete}
-      onUpdate={handleUpdate}
+      collection={collection}
+      setCollection={setCollection}
     />
   );
 };
