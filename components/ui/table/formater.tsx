@@ -9,14 +9,8 @@ import { TbViewportWide } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { useRouter, usePathname } from "next/navigation";
 import { CiImageOff } from "react-icons/ci";
+import { Image } from "antd";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Tooltip,
   TooltipContent,
@@ -24,7 +18,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export const DateFormatter = (params: ValueFormatterParams): string => {
   return new Date(params.value).toLocaleDateString("en-us", {
@@ -86,50 +79,7 @@ export const ImageFormatter = (
   }
   const imagePath = process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH + props.value;
 
-  return (
-    <div className={cn("flex items-center gap-2")}>
-      <Dialog>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DialogTrigger asChild>
-                <Button
-                  className="h-full w-full cursor-zoom-in"
-                  variant="ghost"
-                >
-                  <img
-                    alt={title}
-                    className="h-full w-full object-cover rounded-md"
-                    src={imagePath}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "/placeholder-image.png";
-                    }}
-                  />
-                </Button>
-              </DialogTrigger>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Expand</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <DialogContent className="max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-          <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-            <img
-              alt={title}
-              className="h-full w-full object-contain"
-              src={imagePath}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
+  return <Image alt={title} src={imagePath} width={200} />;
 };
 
 export const TextFormatter = (props: CustomCellRendererProps) => {

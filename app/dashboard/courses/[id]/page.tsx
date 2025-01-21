@@ -2,6 +2,8 @@ import type { UUID } from "crypto";
 
 import React from "react";
 
+import { RenderTableCourse } from "@/components/dashboard/tables";
+
 const ClientCourseView = async ({
   params,
 }: {
@@ -9,7 +11,7 @@ const ClientCourseView = async ({
 }) => {
   const course_id = (await params).id;
 
-  return <div>{course_id}</div>;
-};
+  return <RenderTableCourse course_id={course_id} />;
+}
 
 export default ClientCourseView;

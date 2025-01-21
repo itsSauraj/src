@@ -6,6 +6,7 @@ import type { UUID } from "crypto";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Empty } from "antd";
 
 // componets
 import { RenderTableMembers } from "@/components/dashboard/tables";
@@ -88,7 +89,12 @@ export const Dashboard = () => {
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center">
-              No Data Found
+              <Empty
+                description={
+                  <span className="text-neutral-500">No mentors found</span>
+                }
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+              />
             </div>
           )}
         </div>

@@ -32,17 +32,22 @@ const getCourses =
   };
 
 const getCourseDetails =
-  (id: UUID) =>
+  (id: UUID, user_group = "admin") =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
   ): Promise<Course | any> => {
-    const response = await axios.get(`${apiConfig.url}/course/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().user.token}`,
+    const response = await axios.get(
+      user_group === "admin"
+        ? `${apiConfig.url}/course/${id}`
+        : `${apiConfig.url}/member/collection/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
       },
-    });
+    );
 
     if (response.status === 200) {
       return response.data;
