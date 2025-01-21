@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
 import type { LoginRequest, LoginResponse } from "@/types/auth/actions";
 
 import axios from "axios";
+// sonner
+import { toast } from "sonner";
 
 import { apiConfig } from "@/config/api";
 
@@ -39,7 +42,6 @@ export const logout = async (token: string): Promise<void> => {
       token: token,
     });
   } catch (error) {
-    // TODO: Error Notification
-    console.error(error);
+    toast.error("Error logging out");
   }
 };

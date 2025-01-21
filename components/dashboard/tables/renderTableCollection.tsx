@@ -41,6 +41,13 @@ const RenderTable = ({
       cellRenderer: TextFormatter,
     },
     {
+      headerName: "Alloted Time (in hours)",
+      field: "alloted_time",
+      cellClass: "text-justify",
+      flex: 2,
+      cellRenderer: TextFormatter,
+    },
+    {
       headerName: "Image",
       field: "image",
       cellRenderer: (_params: any) =>

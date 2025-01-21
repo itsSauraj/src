@@ -98,12 +98,9 @@ const createNewCollection =
     dispatch(setAuthLoading(false));
 
     if (response.status === 201) {
-      toast.success("Collection created successfully");
-
       return response.data;
     } else {
       dispatch(setAuthLoading(false));
-      toast.error("Failed to create new collection");
     }
   };
 
@@ -252,11 +249,11 @@ const removeCourseFromCollection =
     dispatch(setAuthLoading(false));
 
     if (response.status === 204) {
-      toast.success("Deleted successfully");
+      toast.success("Course Removed From Collection");
 
       return true;
     } else {
-      toast.error("Failed to delete collection");
+      toast.error("Failed to remove course from collection");
     }
   };
 
@@ -278,7 +275,7 @@ const addCourseToCollection =
     dispatch(setAuthLoading(false));
 
     if (response.status === 200) {
-      toast.success("Added successfully");
+      toast.success("Course Added successfully");
 
       return true;
     } else {

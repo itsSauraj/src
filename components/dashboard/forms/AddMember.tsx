@@ -64,19 +64,13 @@ const AddMember = ({
   });
 
   const onSubmit = async (data: IMemberForm) => {
-    try {
-      dispatch(setAuthLoading(true));
-      data.joining_date = format(data.joining_date, "yyyy-MM-dd");
-      const response: IMemberForm = await dispatch(addMember(data, type));
+    dispatch(setAuthLoading(true));
+    data.joining_date = format(data.joining_date, "yyyy-MM-dd");
+    const response: IMemberForm = await dispatch(addMember(data, type));
 
-      setData((prev) => [...prev, response]);
-      setState(false);
-    } catch (error) {
-      // TODO: Handle error properly with notification
-      console.error(error);
-    } finally {
-      dispatch(setAuthLoading(false));
-    }
+    setData((prev) => [...prev, response]);
+    setState(false);
+    dispatch(setAuthLoading(false));
   };
 
   return (

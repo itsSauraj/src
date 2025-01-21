@@ -18,6 +18,8 @@ import {
   removeCourseFromCollection,
   addCourseToCollection,
 } from "./course";
+// Trainees and mentors
+import { getTarineeAggignedCollection } from "./trainee";
 
 export {
   // Members
@@ -37,4 +39,6 @@ export {
   updateCollection,
   removeCourseFromCollection,
   addCourseToCollection,
+  // Trinee and mentors
+  getTarineeAggignedCollection,
 };

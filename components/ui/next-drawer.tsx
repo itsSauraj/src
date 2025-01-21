@@ -22,7 +22,7 @@ export default function MyDrawer({
   onOpenChange?: (open: boolean) => void;
   title?: React.ReactNode;
   children: React.ReactNode;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
 }) {
   return (
     <>

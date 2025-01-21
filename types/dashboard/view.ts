@@ -1,10 +1,10 @@
-import { Co } from './view';
 import { UUID } from "crypto";
 
 export interface Course {
   id: UUID;
   title: string;
   description: string;
+  duration: string;
 }
 
 export interface Metadata {
@@ -50,6 +50,16 @@ export interface CourseCollection {
   id: UUID;
   title: string;
   description: string;
+  duration: string;
+  alloted_time: number;
   courses: Course[];
   image: string | File | undefined;
+}
+
+export interface MemberCollection {
+  collection: CourseCollection;
+  started_on: string | null;
+  completed_on: string | null;
+  completed: boolean;
+  assigned_by: string;
 }

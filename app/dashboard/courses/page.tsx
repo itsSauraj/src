@@ -8,10 +8,12 @@ import ClientPage from "./_pages_layouts/client";
 import AdminPage from "./_pages_layouts/admin";
 
 export const Page = () => {
-  const user_group = useSelector((state: RootState) => state.user.user.groups);
+  const user = useSelector((state: RootState) => state.user.user);
 
-  const isTrainee = user_group.includes("trainee");
-  const isAdmin = user_group.includes("admin");
+  if (!user) return null;
+
+  const isTrainee = user.groups.includes("trainee");
+  const isAdmin = user.groups.includes("admin");
 
   if (isTrainee) return <ClientPage />;
   if (isAdmin) return <AdminPage />;

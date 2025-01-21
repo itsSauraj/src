@@ -2,6 +2,7 @@ import type { CourseData } from "@/types/dashboard/view";
 
 import React from "react";
 
+import { formatDuration } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Accordion,
@@ -114,11 +115,3 @@ const LessonCard = ({
     </CardContent>
   </Card>
 );
-
-const formatDuration = (duration: string) => {
-  const seconds = parseFloat(duration);
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-
-  return `${minutes}m ${remainingSeconds}s`;
-};

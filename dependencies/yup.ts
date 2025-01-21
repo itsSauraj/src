@@ -64,6 +64,7 @@ const ACCEPTED_IMAGE_TYPES = [
 export const collectionSchema = yup.object().shape({
   title: yup.string().required("Collection title is required"),
   description: yup.string(),
+  alloted_time: yup.number().required("Alloted time is required"),
   image: yup
     .mixed<File | string>()
     .nullable()

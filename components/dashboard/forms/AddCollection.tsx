@@ -67,6 +67,8 @@ export default function AddCollection({
     defaultValues: {
       title: "",
       description: "",
+      alloted_time: 0,
+      image: undefined,
       courses: [],
     },
   });
@@ -104,6 +106,9 @@ export default function AddCollection({
 
       formData.append("title", data.title);
       if (data.description) formData.append("description", data.description);
+      if (data.alloted_time) {
+        formData.append("alloted_time", data.alloted_time.toString());
+      }
       if (data.image) formData.append("image", data.image);
       if (data.courses?.length) {
         formData.append("courses", JSON.stringify(data.courses));
@@ -162,6 +167,20 @@ export default function AddCollection({
                   placeholder="Enter collection description"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="alloted_time"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title *</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter collection title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

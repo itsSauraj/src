@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import type { User } from "@/types/redux";
@@ -5,6 +6,7 @@ import type { LoginRequest } from "@/types/auth/actions";
 import type { RootState, StoreDispatch } from "@/redux/store";
 
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
 import { login } from "@/lib/auth/actions";
@@ -28,7 +30,7 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
     setUserType: (state, action) => {
-      state.userType = action.payload
+      state.userType = action.payload;
     },
   },
 });
@@ -54,7 +56,6 @@ const logInUser =
     try {
       const userObj = await login(formData);
 
-      // TODO: Error Notification
       if (!userObj) {
         return;
       }
@@ -62,7 +63,7 @@ const logInUser =
       dispatch(toggleUser(userObj.user));
       dispatch(setUserType(userObj.groups[0]));
     } catch (error: any) {
-      // TODO: Error Notification
+      toast.error("Invalid credentials");
     } finally {
       dispatch(setAuthLoading(false));
     }
