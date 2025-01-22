@@ -25,7 +25,7 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
   const dispatch = useDispatch<StoreDispatch>();
 
   const user_group = useSelector(
-    (state: RootState) => state.user.user.groups[0],
+    (state: RootState) => state.user?.user?.groups[0] || "",
   );
 
   useEffect(() => {

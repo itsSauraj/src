@@ -12,6 +12,6 @@ const ClientCourseView = async ({
   const course_id = (await params).id;
 
   return <RenderTableCourse course_id={course_id} />;
-}
+};
 
 export default ClientCourseView;

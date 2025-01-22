@@ -2,8 +2,7 @@
 import type { MemberCollection } from "@/types/dashboard/view";
 
 import * as React from "react";
-import { Loader2 } from "lucide-react";
-import Link from "next/link";
+import Link from "next/link"; 
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -129,7 +128,6 @@ export const CollectionCourseView = ({
               className={cn(buttonVariants(), "w-full")}
               href={`/dashboard/courses/${course.id}`}
             >
-              <Loader2 className="animate-spin" />
               Get Started
             </Link>
           </CardFooter>
