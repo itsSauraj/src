@@ -144,7 +144,7 @@ export const CollectionCourseView = ({
             </div>
             <Link
               className={cn(buttonVariants(), "w-full")}
-              href={`/dashboard/courses/${course.id}`}
+              href={`/dashboard/courses/${metadata?.collection.id}?course=${course.id}`}
             >
               Get Started
             </Link>

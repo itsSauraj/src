@@ -9,9 +9,9 @@ const ClientCourseView = async ({
 }: {
   params: Promise<{ id: UUID }>;
 }) => {
-  const course_id = (await params).id;
+  const collection_id = (await params).id;
 
-  return <RenderTableCourse course_id={course_id} />;
+  return <RenderTableCourse collection_id={collection_id} />;
 };
 
 export default ClientCourseView;

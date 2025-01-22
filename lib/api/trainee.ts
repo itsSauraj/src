@@ -37,14 +37,14 @@ export const getTarineeAggignedCollection =
   };
 
 export const setStartCourse =
-  (id: UUID) =>
+  (collection_id: UUID, course_id: UUID) =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
   ): Promise<Boolean | any> => {
     dispatch(setAuthLoading(true));
     const response = await axios.post(
-      `${apiConfig.url}/member/collection/${id}`,
+      `${apiConfig.url}/member/${collection_id}/${course_id}`,
       {},
       {
         headers: {

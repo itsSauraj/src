@@ -32,7 +32,7 @@ const getCourses =
   };
 
 const getCourseDetails =
-  (id: UUID, user_group = "admin") =>
+  (id: UUID, collection_id: UUID | null = null, user_group = "admin") =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
@@ -40,7 +40,7 @@ const getCourseDetails =
     const response = await axios.get(
       user_group === "admin"
         ? `${apiConfig.url}/course/${id}`
-        : `${apiConfig.url}/member/collection/${id}`,
+        : `${apiConfig.url}/member/${collection_id}/${id}`,
       {
         headers: {
           "Content-Type": "application/json",

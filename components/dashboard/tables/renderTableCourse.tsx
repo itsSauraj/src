@@ -10,6 +10,7 @@ import type { StoreDispatch, RootState } from "@/redux/store";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
 
 import { formatDuration } from "@/lib/utils";
 import {
@@ -29,7 +30,10 @@ import {
 } from "@/lib/api";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const CourseView = ({ course_id }: { course_id: UUID }) => {
+const CourseView = ({ collection_id }: { collection_id: UUID }) => {
+  const searchParams = useSearchParams();
+  const course_id = searchParams.get("course") as UUID;
+
   const [courseData, setCourseData] = useState<CourseData | null>(null);
   const [checkedLessons, setCheckedLessons] = useState<Set<string>>(new Set());
   const [isStared, setIsStared] = useState(false);
@@ -40,7 +44,7 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
   );
 
   useEffect(() => {
-    dispatch(getCourseDetails(course_id, user_group)).then(
+    dispatch(getCourseDetails(course_id, collection_id, user_group)).then(
       (data: TraineeCourseView) => {
         setCourseData(data.course);
         setIsStared(data.isStarted);
@@ -54,7 +58,7 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
   }
 
   const handleStartCourse = () => {
-    dispatch(setStartCourse(course_id)).then((data) => {
+    dispatch(setStartCourse(collection_id, course_id)).then((data) => {
       setIsStared(data);
     });
   };
