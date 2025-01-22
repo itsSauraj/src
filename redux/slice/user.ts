@@ -6,7 +6,6 @@ import type { LoginRequest } from "@/types/auth/actions";
 import type { RootState, StoreDispatch } from "@/redux/store";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "sonner";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
 import { login } from "@/lib/auth/actions";
@@ -53,17 +52,19 @@ const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
 
 const logInUser =
   (formData: LoginRequest) => async (dispatch: StoreDispatch) => {
+    dispatch(setAuthLoading(true));
     try {
       const userObj = await login(formData);
 
       if (!userObj) {
         return;
       }
+
       dispatch(toggleToken(userObj.token));
       dispatch(toggleUser(userObj.user));
       dispatch(setUserType(userObj.groups[0]));
     } catch (error: any) {
-      toast.error("Invalid credentials");
+      return;
     } finally {
       dispatch(setAuthLoading(false));
     }

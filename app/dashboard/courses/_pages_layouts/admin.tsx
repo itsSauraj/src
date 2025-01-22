@@ -1,13 +1,14 @@
 "use client";
 
-import type { StoreDispatch } from "@/redux/store";
+import type { StoreDispatch, RootState } from "@/redux/store";
 import type { Course } from "@/types/dashboard/view";
 
 import { UUID } from "crypto";
 
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@nextui-org/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Empty } from "antd";
 
 import CourseCard from "@/components/dashboard/course/courseCard";
 import ViewCourse from "@/components/dashboard/course/view";
@@ -28,6 +29,7 @@ export const CourseDashboard = () => {
   const [openCourseID, setOpenCourseID] = useState<UUID | null>(null);
 
   const dispatch = useDispatch<StoreDispatch>();
+  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
   const handleBackdropChange = () => {
     onOpen();
@@ -56,7 +58,16 @@ export const CourseDashboard = () => {
           </ScrollArea>
         </AddDialog>
       </div>
-      {courses.length === 0 ? (
+      {!isLoading && courses.length === 0 ? (
+        <div className="w-full h-full flex justify-center items-center">
+          <Empty
+            description={
+              <span className="text-neutral-500">No Courses found</span>
+            }
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+          />
+        </div>
+      ) : isLoading && courses.length === 0 ? (
         <ScrollArea className="h-full">
           <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 justify-center">
             {Array.from({ length: 6 }).map((_, index) => (

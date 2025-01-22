@@ -1,6 +1,6 @@
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { CourseFormData, CollectionFormData } from "@/dependencies/yup";
-import type { Course } from "@/types/dashboard/view";
+import type { Course, TraineeCourseView } from "@/types/dashboard/view";
 
 import { UUID } from "crypto";
 
@@ -36,7 +36,7 @@ const getCourseDetails =
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<Course | any> => {
+  ): Promise<TraineeCourseView | any> => {
     const response = await axios.get(
       user_group === "admin"
         ? `${apiConfig.url}/course/${id}`

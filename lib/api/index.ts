@@ -19,7 +19,11 @@ import {
   addCourseToCollection,
 } from "./course";
 // Trainees and mentors
-import { getTarineeAggignedCollection } from "./trainee";
+import {
+  getTarineeAggignedCollection,
+  setStartCourse,
+  markLessonAsComplete,
+} from "./trainee";
 
 export {
   // Members
@@ -41,4 +45,6 @@ export {
   addCourseToCollection,
   // Trinee and mentors
   getTarineeAggignedCollection,
+  setStartCourse,
+  markLessonAsComplete,
 };

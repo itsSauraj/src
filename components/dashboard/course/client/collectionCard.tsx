@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import type { MemberCollection } from "@/types/dashboard/view";
+import type { UUID } from "crypto";
 
 import * as React from "react";
-import Link from "next/link"; 
+import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -78,8 +79,10 @@ export const CollectionCard = ({
 
 export const CollectionCourseView = ({
   metadata,
+  started_courses,
 }: {
   metadata?: MemberCollection;
+  started_courses: Record<string, (UUID | string)[]>;
 }) => {
   if (!metadata) {
     <>No Data</>;
@@ -104,7 +107,15 @@ export const CollectionCourseView = ({
           <CardHeader>
             <CardTitle className="flex justify-between items-center">
               <h3 className="flex-1">{course.title}</h3>
-              <StatusBadge status="started" /> {/* TODO: UPDATE */}
+              <StatusBadge
+                status={
+                  started_courses[String(metadata.collection.id)].includes(
+                    course.id,
+                  )
+                    ? "started"
+                    : "not-started"
+                }
+              />
             </CardTitle>
           </CardHeader>
           <CardContent>

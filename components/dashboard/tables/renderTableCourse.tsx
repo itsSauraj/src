@@ -1,7 +1,11 @@
 "use client";
 
 import type { UUID } from "crypto";
-import type { CourseData, Module } from "@/types/dashboard/view";
+import type {
+  CourseData,
+  Module,
+  TraineeCourseView,
+} from "@/types/dashboard/view";
 import type { StoreDispatch, RootState } from "@/redux/store";
 
 import React, { useEffect, useState } from "react";
@@ -16,12 +20,19 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 //API
-import { getCourseDetails } from "@/lib/api";
+import {
+  getCourseDetails,
+  setStartCourse,
+  markLessonAsComplete,
+} from "@/lib/api";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const CourseView = ({ course_id }: { course_id: UUID }) => {
   const [courseData, setCourseData] = useState<CourseData | null>(null);
+  const [checkedLessons, setCheckedLessons] = useState<Set<string>>(new Set());
+  const [isStared, setIsStared] = useState(false);
   const dispatch = useDispatch<StoreDispatch>();
 
   const user_group = useSelector(
@@ -29,27 +40,34 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
   );
 
   useEffect(() => {
-    dispatch(getCourseDetails(course_id, user_group)).then((data) => {
-      setCourseData(data);
-    });
+    dispatch(getCourseDetails(course_id, user_group)).then(
+      (data: TraineeCourseView) => {
+        setCourseData(data.course);
+        setIsStared(data.isStarted);
+        setCheckedLessons(new Set(data.completed_lessons));
+      },
+    );
   }, []);
 
-  const [checkedLessons, setCheckedLessons] = useState<Set<string>>(new Set());
+  console.log(checkedLessons);
 
   if (!courseData || courseData === null) {
     return null;
   }
 
+  const handleStartCourse = () => {
+    dispatch(setStartCourse(course_id)).then((data) => {
+      setIsStared(data);
+    });
+  };
+
   const calculateModuleProgress = (module: Module): number => {
     let totalLessons = 0;
     let completedLessons = 0;
 
-    // Count lessons in current module
     module.lessons.forEach((lesson) => {
       totalLessons++;
-      const lessonId = `${module.metadata.id}-${module.metadata.sequence}-${lesson.sequence}`;
-
-      if (checkedLessons.has(lessonId)) {
+      if (checkedLessons.has(lesson.id)) {
         completedLessons++;
       }
     });
@@ -73,8 +91,10 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
     const newChecked = new Set(checkedLessons);
 
     if (newChecked.has(lessonId)) {
+      // TODO: Unmark lesson as complete
       newChecked.delete(lessonId);
     } else {
+      dispatch(markLessonAsComplete(course_id, lessonId as UUID));
       newChecked.add(lessonId);
     }
     setCheckedLessons(newChecked);
@@ -114,18 +134,19 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
             renderModule(subModule, depth + 1),
           )}
           {module.lessons.map((lesson) => {
-            const lessonId = `${moduleId}-${lesson.sequence}`;
+            const lessonId = lesson.id;
 
             return (
               <div
                 key={lessonId}
-                className="flex justify-between p-4 hover:bg-neutral-100 dark:hover:bg-neutral-100/10 items-center ml-6 transition-colors duration-200"
+                className="flex justify-between p-4 hover:bg-neutral-100 dark:hover:bg-neutral-100/10 
+                items-center ml-6 transition-colors duration-200"
               >
                 <div className="flex items-center gap-2">
                   <Checkbox
                     checked={checkedLessons.has(lessonId)}
                     className="ml-6"
-                    disabled={checkedLessons.has(lessonId)}
+                    disabled={checkedLessons.has(lessonId) || !isStared}
                     onCheckedChange={() => toggleLesson(lessonId)}
                   />
                   <span
@@ -168,6 +189,15 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <div className="flex w-full justify-end items-center">
+            <Button
+              className="m-4"
+              disabled={isStared}
+              onClick={handleStartCourse}
+            >
+              {isStared ? "Started" : "Start Course"}
+            </Button>
+          </div>
           <div className="w-full">
             <div className="bg-neutral-300 dark:bg-neutral-700 font-semibold rounded-t-lg flex justify-between p-4  ">
               <span>Title</span>

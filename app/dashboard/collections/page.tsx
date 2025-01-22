@@ -38,7 +38,7 @@ export const Dashboard = () => {
     });
   }, []);
 
-  const deleteMentor = () => {
+  const deleteCollections = () => {
     if (deletableID) {
       dispatch(deleteCollection(deletableID)).then(() => {
         dispatch(getCourseCollection()).then((data) => {
@@ -94,19 +94,21 @@ export const Dashboard = () => {
               setSelectedRowId={setSelectedRowId}
             />
           ) : (
-            <Empty
-              description={
-                <span className="text-neutral-500">No Collections found</span>
-              }
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-            />
+            <div className="w-full h-full flex justify-center items-center">
+              <Empty
+                description={
+                  <span className="text-neutral-500">No Collections found</span>
+                }
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+              />
+            </div>
           )}
         </div>
         <MyAlertDialog
           description="Are you sure you want to delete this Collection?"
           setOpen={setOpenAlert}
           title="Delete Collection"
-          onContinue={deleteMentor}
+          onContinue={deleteCollections}
           onOpen={openAlert}
         />
         <MyAlertDialog

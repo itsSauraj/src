@@ -17,6 +17,7 @@ export interface Metadata {
 }
 
 export interface Lesson {
+  id: string | UUID;
   title: string;
   description: string;
   sequence: number;
@@ -63,3 +64,14 @@ export interface MemberCollection {
   completed: boolean;
   assigned_by: string;
 }
+
+export type MembersCollectionGroup = {
+  collections: MemberCollection[];
+  started_courses: Record<string, (UUID | string)[]>;
+};
+
+export type TraineeCourseView = {
+  course: CourseData;
+  isStarted: boolean;
+  completed_lessons: (UUID | string)[];
+};

@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from "react-redux";
 // Importing Yup schemas
 import { loginSchema } from "@/dependencies/yup";
 // import the redux actions
-import { setAuthLoading } from "@/redux/slice/app";
 import { logInUser } from "@/redux/slice/user";
 // Import the ui components
 import { Input } from "@/components/ui/custom-input";
@@ -34,7 +33,6 @@ const LoginPage = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setAuthLoading(true));
     try {
       await loginSchema.validate(formData, { abortEarly: false });
       dispatch(logInUser(formData));

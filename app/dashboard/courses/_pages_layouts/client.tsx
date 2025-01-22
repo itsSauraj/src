@@ -1,7 +1,7 @@
 "use client";
 
 import type { StoreDispatch, RootState } from "@/redux/store";
-import type { MemberCollection } from "@/types/dashboard/view";
+import type { MembersCollectionGroup } from "@/types/dashboard/view";
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,8 +20,8 @@ import { getTarineeAggignedCollection } from "@/lib/api";
 
 const ClientPage = () => {
   const [assignedCollections, setAssignedCollections] = useState<
-    MemberCollection[] | undefined
-  >([]);
+    MembersCollectionGroup | undefined
+  >();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const dispatch = useDispatch<StoreDispatch>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -67,26 +67,31 @@ const ClientPage = () => {
       <ScrollArea className="absolute h-[90svh]">
         <div className="max-h-full flex justify-start items-center gap-4 p-4 flex-wrap">
           <CollectionCard
-            collections={assignedCollections || []}
+            collections={assignedCollections?.collections || []}
             onExplore={handelExplore}
           />
         </div>
       </ScrollArea>
-      {(assignedCollections?.length ?? 0) > 0 && (
+      {(assignedCollections?.collections?.length ?? 0) > 0 && (
         <MyDrawer
           isOpen={isOpen}
           title={
-            assignedCollections ? (
+            assignedCollections?.collections ? (
               <div className="flex justify-between items-center">
                 <div className="text-lg truncate">
-                  {assignedCollections[openedCollection].collection.title}
+                  {
+                    assignedCollections?.collections[openedCollection]
+                      .collection.title
+                  }
                 </div>
                 <div className="flex items-center p-3">
                   <StatusBadge
                     status={
-                      assignedCollections[openedCollection].completed
+                      assignedCollections?.collections[openedCollection]
+                        .completed
                         ? "completed"
-                        : assignedCollections[openedCollection].started_on
+                        : assignedCollections?.collections[openedCollection]
+                              .started_on
                           ? "started"
                           : "not-started"
                     }
@@ -102,9 +107,10 @@ const ClientPage = () => {
           <CollectionCourseView
             metadata={
               assignedCollections
-                ? assignedCollections[openedCollection]
+                ? assignedCollections?.collections[openedCollection]
                 : undefined
             }
+            started_courses={assignedCollections?.started_courses ?? {}}
           />
         </MyDrawer>
       )}
