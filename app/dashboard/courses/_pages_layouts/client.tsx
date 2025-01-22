@@ -1,7 +1,11 @@
 "use client";
 
+import type { UUID } from "crypto";
 import type { StoreDispatch, RootState } from "@/redux/store";
-import type { MembersCollectionGroup } from "@/types/dashboard/view";
+import type {
+  MembersCollectionGroup,
+  MemberCollection,
+} from "@/types/dashboard/view";
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,17 +28,34 @@ const ClientPage = () => {
   >();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const dispatch = useDispatch<StoreDispatch>();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [openedCollection, setOpenedCollection] = useState<number>(0);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure(); // eslint-disable-line
+  const [openeCollection, setOpenedCollection] = useState<
+    MemberCollection | undefined
+  >();
+  const [started_courses, setStartedCourses] = useState<Record<
+    string,
+    number
+  > | null>(null);
 
   useEffect(() => {
     dispatch(getTarineeAggignedCollection()).then((data) => {
-      setAssignedCollections(data);
+      setAssignedCollections(data as any);
     });
   }, []);
 
-  const handelExplore = (index: number) => {
-    setOpenedCollection(index);
+  useEffect(() => {}, []);
+
+  const getCollection = (id: UUID): MemberCollection => {
+    return assignedCollections?.collections.find(
+      (collection) => collection.collection.id === id,
+    ) as MemberCollection;
+  };
+
+  const handelExplore = (value: UUID) => {
+    setOpenedCollection(() => getCollection(value));
+    setStartedCourses(
+      () => assignedCollections?.started_courses[value] || null,
+    );
     onOpenChange();
   };
 
@@ -55,7 +76,7 @@ const ClientPage = () => {
     return (
       <div className="h-full flex justify-between items-center gap-4 p-4">
         <p className="text-gray-700 dark:text-gray-300 text-center w-full">
-          You are not assigned to any courses collection yet as you mentor to
+          You are not assigned to any courses collection yet ask you mentor to
           assign one.
         </p>
       </div>
@@ -79,19 +100,14 @@ const ClientPage = () => {
             assignedCollections?.collections ? (
               <div className="flex justify-between items-center">
                 <div className="text-lg truncate">
-                  {
-                    assignedCollections?.collections[openedCollection]
-                      .collection.title
-                  }
+                  {openeCollection?.collection.title}
                 </div>
                 <div className="flex items-center p-3">
                   <StatusBadge
                     status={
-                      assignedCollections?.collections[openedCollection]
-                        .completed
+                      openeCollection?.completed
                         ? "completed"
-                        : assignedCollections?.collections[openedCollection]
-                              .started_on
+                        : openeCollection?.started_on
                           ? "started"
                           : "not-started"
                     }
@@ -105,12 +121,8 @@ const ClientPage = () => {
           onOpenChange={onOpenChange}
         >
           <CollectionCourseView
-            metadata={
-              assignedCollections
-                ? assignedCollections?.collections[openedCollection]
-                : undefined
-            }
-            started_courses={assignedCollections?.started_courses ?? {}}
+            metadata={openeCollection}
+            started_courses={started_courses ?? {}}
           />
         </MyDrawer>
       )}

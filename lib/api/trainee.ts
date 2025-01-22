@@ -14,22 +14,26 @@ export const getTarineeAggignedCollection =
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<MemberCollection[] | any> => {
+  ): Promise<MemberCollection[] | undefined> => {
     dispatch(setAuthLoading(true));
-    const response = await axios.get(`${apiConfig.url}/member/collection/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().user.token}`,
-      },
-    });
+    try {
+      const response = await axios.get(`${apiConfig.url}/member/collection/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      });
 
-    dispatch(setAuthLoading(false));
+      if (response.status === 200) {
+        return response.data;
+      }
 
-    if (response.status === 200) {
-      return response.data;
+      return undefined;
+    } catch (error) {
+      return undefined;
+    } finally {
+      dispatch(setAuthLoading(false));
     }
-
-    return [];
   };
 
 export const setStartCourse =

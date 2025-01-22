@@ -49,8 +49,6 @@ const CourseView = ({ course_id }: { course_id: UUID }) => {
     );
   }, []);
 
-  console.log(checkedLessons);
-
   if (!courseData || courseData === null) {
     return null;
   }

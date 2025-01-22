@@ -65,9 +65,11 @@ export interface MemberCollection {
   assigned_by: string;
 }
 
+export type MStartedCourse = Record<string, Record<string, number> | null>;
+
 export type MembersCollectionGroup = {
   collections: MemberCollection[];
-  started_courses: Record<string, (UUID | string)[]>;
+  started_courses: MStartedCourse;
 };
 
 export type TraineeCourseView = {

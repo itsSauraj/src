@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import type { MemberCollection } from "@/types/dashboard/view";
 import type { UUID } from "crypto";
+import type { MemberCollection } from "@/types/dashboard/view";
 
 import * as React from "react";
 import Link from "next/link";
@@ -26,13 +26,13 @@ export const CollectionCard = ({
   onExplore,
 }: {
   collections: MemberCollection[];
-  onExplore: (index: number) => void;
+  onExplore: (value: UUID) => void;
 }) => {
   const cardData = collections.map((collection) => collection["collection"]);
 
   return (
     <>
-      {cardData.map((collection, index) => (
+      {cardData.map((collection) => (
         <Card
           key={collection.id}
           className="w-[350px] p-0 rounded-xl h-full flex flex-col"
@@ -69,7 +69,7 @@ export const CollectionCard = ({
                 {formatDuration(collection.duration as string)}
               </p>
             </div>
-            <Button onClick={() => onExplore(index)}>Explore</Button>
+            <Button onClick={() => onExplore(collection.id)}>Explore</Button>
           </CardFooter>
         </Card>
       ))}
@@ -82,11 +82,13 @@ export const CollectionCourseView = ({
   started_courses,
 }: {
   metadata?: MemberCollection;
-  started_courses: Record<string, (UUID | string)[]>;
+  started_courses: Record<string, number> | null;
 }) => {
   if (!metadata) {
     <>No Data</>;
   }
+
+  const started_course_list = Object.keys(started_courses || {});
 
   return (
     <>
@@ -109,11 +111,11 @@ export const CollectionCourseView = ({
               <h3 className="flex-1">{course.title}</h3>
               <StatusBadge
                 status={
-                  started_courses[String(metadata.collection.id)].includes(
-                    course.id,
-                  )
-                    ? "started"
-                    : "not-started"
+                  started_courses?.[course.id] == 100
+                    ? "completed"
+                    : started_course_list.includes(course.id)
+                      ? "started"
+                      : "not-started"
                 }
               />
             </CardTitle>
@@ -130,11 +132,16 @@ export const CollectionCourseView = ({
                 {formatDuration(course.duration)}
               </p>
             </div>
-            <Progress
-              className="w-full"
-              indicatorClassName="bg-green-600"
-              value={50}
-            />
+            <div className="w-full flex gap-2 items-center justify-between">
+              <Progress
+                className="flex-grow"
+                indicatorClassName="bg-green-600"
+                value={started_courses?.[course.id] || 0}
+              />
+              <span className="w-max text-[10px]">
+                {started_courses?.[course.id] || 0}/100%
+              </span>
+            </div>
             <Link
               className={cn(buttonVariants(), "w-full")}
               href={`/dashboard/courses/${course.id}`}
