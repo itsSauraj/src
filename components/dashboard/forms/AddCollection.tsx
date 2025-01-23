@@ -67,7 +67,7 @@ export default function AddCollection({
     defaultValues: {
       title: "",
       description: "",
-      alloted_time: 0,
+      alloted_time: "",
       image: undefined,
       courses: [],
     },
@@ -147,7 +147,7 @@ export default function AddCollection({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title *</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input placeholder="Enter collection title" {...field} />
               </FormControl>
@@ -178,9 +178,12 @@ export default function AddCollection({
           name="alloted_time"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title *</FormLabel>
+              <FormLabel>Duration (in days) </FormLabel>
               <FormControl>
-                <Input placeholder="Enter collection title" {...field} />
+                <Input
+                  placeholder="Enter collection duration in number of days"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -60,9 +60,13 @@ export interface CourseCollection {
 export interface MemberCollection {
   collection: CourseCollection;
   started_on: string | null;
+  estimated_completion_date: string | null;
   completed_on: string | null;
   is_completed: boolean;
   assigned_by: string;
+  progress: number;
+  days_taken: number;
+  due_time: number;
 }
 
 export type MStartedCourse = Record<string, Record<string, number> | null>;

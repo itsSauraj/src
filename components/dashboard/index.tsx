@@ -26,7 +26,8 @@ export function SideBar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
+        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 mx-auto \
+        border border-neutral-200 dark:border-neutral-700 overflow-hidden",
         "h-screen w-screen",
       )}
     >
@@ -43,7 +44,9 @@ export function SideBar({ children }: { children: React.ReactNode }) {
                   return null;
                 }
 
-                return <SidebarLink key={idx} link={link} />;
+                return (
+                  <SidebarLink key={idx} className="text-white" link={link} />
+                );
               })}
             </div>
           </div>
@@ -68,8 +71,11 @@ export function SideBar({ children }: { children: React.ReactNode }) {
       </SidebarUI>
       <div className="flex flex-1 py-3">
         <div className="flex flex-col flex-1 ">
-          <PagePanel className="rounded-tl-2xl hidden md:flex" />
-          <div className="w-full h-full p-4 border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 rounded-tl-2xl flex-grow">
+          <PagePanel className="rounded-tl-2xl hidden md:flex " />
+          <div
+            className="w-full h-full p-4 border-neutral-200 dark:border-neutral-700 bg-white \
+           dark:bg-neutral-900 rounded-tl-2xl flex-grow"
+          >
             {children}
           </div>
         </div>
