@@ -57,7 +57,7 @@ export const CollectionCard = ({
           }
 
           return `You have used ${metadata.days_taken} out of ${metadata["collection"].alloted_time}`;
-        }
+        };
 
         const foramtProgress = (percent?: number, successPercent?: number) => {
           return (
