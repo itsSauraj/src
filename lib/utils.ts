@@ -43,3 +43,11 @@ export const formatDuration = (duration: string) => {
     return `${remainingSeconds}s`;
   }
 };
+
+export const formatDateTimeToLocal = (utcTime: string) => {
+  if (utcTime == null) return;
+
+  const dateObj = new Date(utcTime);
+
+  return dateObj.toLocaleString();
+};

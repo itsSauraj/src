@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { formatDuration } from "@/lib/utils";
+import { formatDuration, formatDateTimeToLocal } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -35,7 +35,7 @@ export const CollectionCard = ({
       {cardData.map((collection) => (
         <Card
           key={collection.id}
-          className="w-[350px] p-0 rounded-xl h-full flex flex-col"
+          className="w-[350px] flex-grow p-0 rounded-xl h-full flex flex-col"
         >
           <CardHeader className="relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30">
             {collection.image && (
@@ -96,11 +96,15 @@ export const CollectionCourseView = ({
         <div className="w-full text-sm">
           <p>
             <strong>Started on:</strong>
-            &nbsp;{metadata?.started_on || "Not started yet"}
+            &nbsp;
+            {formatDateTimeToLocal(metadata?.started_on as string) ||
+              "Not started yet"}
           </p>
           <p>
             <strong>Completed on:</strong>
-            &nbsp;{metadata?.completed_on || "Not started yet"}
+            &nbsp;
+            {formatDateTimeToLocal(metadata?.completed_on as string) ||
+              "Not started yet"}
           </p>
         </div>
       </div>
@@ -146,7 +150,7 @@ export const CollectionCourseView = ({
               className={cn(buttonVariants(), "w-full")}
               href={`/dashboard/courses/${metadata?.collection.id}?course=${course.id}`}
             >
-              Get Started
+              View Course
             </Link>
           </CardFooter>
         </Card>

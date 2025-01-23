@@ -64,15 +64,15 @@ export const setStartCourse =
   };
 
 export const markLessonAsComplete =
-  (course_id: UUID, lesson_id: UUID) =>
+  (data: { collection_id: UUID; course_id: UUID; lesson_id: UUID }) =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
   ): Promise<Boolean | any> => {
     dispatch(setAuthLoading(true));
     const response = await axios.post(
-      `${apiConfig.url}/member/collection/${course_id}/${lesson_id}`,
-      {},
+      `${apiConfig.url}/member/action/lesson`,
+      { ...data },
       {
         headers: {
           "Content-Type": "application/json",

@@ -105,7 +105,7 @@ const ClientPage = () => {
                 <div className="flex items-center p-3">
                   <StatusBadge
                     status={
-                      openeCollection?.completed
+                      openeCollection?.is_completed
                         ? "completed"
                         : openeCollection?.started_on
                           ? "started"

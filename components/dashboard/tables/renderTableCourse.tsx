@@ -96,7 +96,13 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
       // TODO: Unmark lesson as complete
       newChecked.delete(lessonId);
     } else {
-      dispatch(markLessonAsComplete(course_id, lessonId as UUID));
+      const data = {
+        collection_id: collection_id as UUID,
+        course_id: course_id as UUID,
+        lesson_id: lessonId as UUID,
+      };
+
+      dispatch(markLessonAsComplete(data));
       newChecked.add(lessonId);
     }
     setCheckedLessons(newChecked);
@@ -237,11 +243,9 @@ const InfoCards = ({
 
   return (
     <Card
-      className={`flex-1 flex flex-col items-center justify-center min-w-[250px]`}
+      className={`flex-1 flex flex-col items-center justify-center min-w-[250px] border-t-4 ${getColor(title)}`}
     >
-      <CardHeader
-        className={`border-t-4 rounded-lg w-full flex text-center p-3 ${getColor(title)}`}
-      >
+      <CardHeader className={`rounded-lg w-full flex text-center p-3 `}>
         <CardTitle className="capitalize p-0 font-bold">{title}</CardTitle>
       </CardHeader>
       <CardContent className="min-h-[80px] flex justify-center items-center font-light">

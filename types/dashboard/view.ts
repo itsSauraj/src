@@ -61,7 +61,7 @@ export interface MemberCollection {
   collection: CourseCollection;
   started_on: string | null;
   completed_on: string | null;
-  completed: boolean;
+  is_completed: boolean;
   assigned_by: string;
 }
 
