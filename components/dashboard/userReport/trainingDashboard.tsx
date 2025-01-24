@@ -18,7 +18,7 @@ import { IoBookSharp } from "react-icons/io5";
 import { StatusBadge } from "@/components/collection/status-badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
   data,
@@ -49,7 +49,7 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
         <Col span={24}>
           <AntCard
             hoverable
-            className="dark:bg-neutral-700 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
+            className="dark:bg-neutral-900 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
           >
             <div className="flex flex-col lg:flex-row items-center space-x-4">
               <Progress
@@ -78,13 +78,13 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
         <Col span={24}>
           <AntCard
             hoverable
-            className="dark:bg-neutral-700 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
+            className="dark:bg-neutral-900 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
           >
             <Row align="middle" justify="space-around">
               <Col span={6}>
                 <Statistic
                   className="text-center items-center"
-                  prefix={<SiBookstack className="text-xl" />}
+                  prefix={<SiBookstack className="text-xl dark:text-white" />}
                   title="Total Collections"
                   value={data.collections.length}
                 />
@@ -92,7 +92,9 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
               <Col span={6}>
                 <Statistic
                   className="text-center items-center"
-                  prefix={<FaCircleCheck className="text-xl" />}
+                  prefix={
+                    <FaCircleCheck className="text-xl  dark:text-white" />
+                  }
                   title="Completed Collections"
                   value={
                     data.collections.filter((c: any) => c.is_completed).length
@@ -102,7 +104,9 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
               <Col span={6}>
                 <Statistic
                   className="text-center items-center"
-                  prefix={<IoBookSharp className="text-xl -m-[2px]" />}
+                  prefix={
+                    <IoBookSharp className="text-xl -m-[2px]  dark:text-white" />
+                  }
                   title="Total Courses"
                   value={data.collections.reduce(
                     (sum: number, collection: any) =>
@@ -114,7 +118,9 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
               <Col span={6}>
                 <Statistic
                   className="text-center items-center"
-                  prefix={<FaCircleCheck className="text-xl" />}
+                  prefix={
+                    <FaCircleCheck className="text-xl  dark:text-white" />
+                  }
                   title="Completed Courses"
                   value={data.collections.reduce(
                     (sum: number, collection: any) =>
@@ -134,7 +140,7 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
           <Col key={index} lg={8} sm={12} xs={24}>
             <AntCard
               hoverable
-              className="dark:bg-neutral-700 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
+              className="dark:bg-neutral-900 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
             >
               <div className="flex items-center">
                 <Col className="w-[120px]">

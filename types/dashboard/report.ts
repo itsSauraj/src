@@ -48,6 +48,7 @@ interface Lesson {
   sequence: number;
   duration: string;
   completed: boolean;
+  completed_on: string | null;
 }
 
 export interface TrainingReportData {

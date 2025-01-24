@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Provider as ReduxProvder } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { ConfigProvider, theme as antTheme } from "antd";
+import { useTheme } from "next-themes";
 
 import { store, persistor } from "@/redux/store";
 
@@ -37,7 +39,9 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     return (
       <ReduxProvder store={store}>
         <NextUIProvider navigate={router.push}>
-          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+          <NextThemesProvider {...themeProps}>
+            <RenderAntProvider>{children}</RenderAntProvider>
+          </NextThemesProvider>
         </NextUIProvider>
       </ReduxProvder>
     );
@@ -47,9 +51,27 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <ReduxProvder store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NextUIProvider navigate={router.push}>
-          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+          <NextThemesProvider {...themeProps}>
+            <RenderAntProvider>{children}</RenderAntProvider>
+          </NextThemesProvider>
         </NextUIProvider>
       </PersistGate>
     </ReduxProvder>
   );
 }
+
+const RenderAntProvider = ({ children }: ProvidersProps) => {
+  const { theme } = useTheme();
+
+  return (
+    <ConfigProvider
+      prefixCls="ant"
+      theme={{
+        algorithm:
+          theme == "dark" ? antTheme.darkAlgorithm : antTheme.defaultAlgorithm,
+      }}
+    >
+      {children}
+    </ConfigProvider>
+  );
+};

@@ -3,6 +3,8 @@ import type { TrainingReportData } from "@/types/dashboard/report";
 import React from "react";
 import { Progress, Table, Collapse, Badge } from "antd";
 
+import { formatDateTimeToLocal } from "@/lib/utils";
+
 export const ComprehensiveTrainingReport: React.FC<{
   data: TrainingReportData;
 }> = ({ data }) => {
@@ -20,7 +22,12 @@ export const ComprehensiveTrainingReport: React.FC<{
 
   const collectionItems = data.collections.map((collection) => {
     const courseItems = collection.courses.map((course) => {
-      const courseProgress = calculateProgress(course.modules, "is_completed");
+      const getProgressColor = (progress: number) => {
+        if (progress < 30) return "#ff4d4f";
+        if (progress < 70) return "#faad14";
+
+        return "#52c41a";
+      };
 
       return {
         key: course.id,
@@ -62,10 +69,10 @@ export const ComprehensiveTrainingReport: React.FC<{
                   : "Not Completed"}
               </div>
             </div>
-
             <Progress
-              percent={courseProgress}
+              percent={course.progress}
               status={course.is_completed ? "success" : "active"}
+              strokeColor={getProgressColor(course.progress)}
             />
 
             {course.modules.map((module) => {
@@ -80,14 +87,19 @@ export const ComprehensiveTrainingReport: React.FC<{
                   <Progress
                     percent={moduleProgress}
                     status={moduleProgress === 100 ? "success" : "active"}
+                    strokeColor={getProgressColor(moduleProgress)}
                   />
                   <Table
                     columns={[
                       { title: "Lesson", dataIndex: "title", key: "title" },
                       {
                         title: "Completed On",
-                        dataIndex: "completed_date",
+                        dataIndex: "completed_on",
                         key: "completed_date",
+                        render: (completed_on) =>
+                          completed_on
+                            ? formatDateTimeToLocal(completed_on)
+                            : "-",
                       },
                       {
                         title: "Status",
@@ -160,7 +172,7 @@ export const ComprehensiveTrainingReport: React.FC<{
   });
 
   return (
-    <div className="p-6 bg-gray-50 space-y-6">
+    <div className="p-6 space-y-6">
       <Collapse accordion items={collectionItems} />
     </div>
   );
