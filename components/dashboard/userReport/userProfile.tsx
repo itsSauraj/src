@@ -1,11 +1,10 @@
 "use client";
 
 import type { StoreDispatch } from "@/redux/store";
-import type { UUID } from "crypto";
 import type { ResponseMember } from "@/types/dashboard/view";
 import type { ChangeEvent } from "react";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { MdEdit } from "react-icons/md";
 import { MdSaveAs } from "react-icons/md";
@@ -16,30 +15,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Loader from "@/components/ui/loader";
 // skeleton
 import { UserProfileSkeleton } from "@/components/dashboard/skeleton/userProfile";
-// API
-import { getMemberInfo } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 export default function UserPage({
   className,
-  memberId,
+  information,
 }: {
   className?: string;
-  memberId: UUID;
+  information: ResponseMember;
 }) {
   const dispatch = useDispatch<StoreDispatch>();
 
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState<ResponseMember>();
-
-  useEffect(() => {
-    dispatch(getMemberInfo(memberId)).then((data: ResponseMember) => {
-      setUserData(data);
-    });
-  }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,11 +41,6 @@ export default function UserPage({
     });
   };
 
-  useEffect(() => {
-    if (isEditing) return;
-    console.log(userData);
-  }, [isEditing]);
-
   const formatLabel = (key: string): string => {
     return key
       .replace(/([A-Z])|_/g, " $1")
@@ -64,7 +49,7 @@ export default function UserPage({
       .join(" ");
   };
 
-  if (!userData) {
+  if (!information) {
     return <UserProfileSkeleton className={cn(className)} />;
   }
 
@@ -90,7 +75,7 @@ export default function UserPage({
       <CardContent>
         <ScrollArea className="h-[70vh] pr-4">
           <div className="space-y-4">
-            {Object.entries(userData).map(([key, value]) => {
+            {Object.entries(information).map(([key, value]) => {
               if (key === "id" || key === "groups") return null;
 
               return (

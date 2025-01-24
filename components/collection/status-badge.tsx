@@ -1,3 +1,7 @@
+import { FaPlay } from "react-icons/fa";
+import { SiBookstack } from "react-icons/si";
+import { FaCircleCheck } from "react-icons/fa6";
+
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -7,7 +11,7 @@ export const StatusBadge = ({
   status: "started" | "completed" | "not-started";
 }) => {
   const statusColor = {
-    started: "bg-blue-400 hover:bg-blue-400",
+    started: "bg-blue-400 hover:bg-blue-400 text-white",
     completed: "bg-green-400 hover:bg-green-400",
     "not-started": "bg-yellow-400 hover:bg-yellow-400",
   }[status];
@@ -18,8 +22,20 @@ export const StatusBadge = ({
     "not-started": "Not Started",
   }[status];
 
+  const statusIcon = {
+    started: <FaPlay />,
+    completed: <FaCircleCheck />,
+    "not-started": <SiBookstack />,
+  }[status];
+
   return (
-    <Badge className={cn("hover:opacity-100 text-black/70 w-max", statusColor)}>
+    <Badge
+      className={cn(
+        "flex gap-2 items-center hover:opacity-100 text-black/70 w-max",
+        statusColor,
+      )}
+    >
+      {statusIcon}
       {statusText}
     </Badge>
   );

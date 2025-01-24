@@ -1,5 +1,6 @@
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { MemberCollection } from "@/types/dashboard/view";
+import type { TrainingReportData } from "@/types/dashboard/report";
 
 import { UUID } from "crypto";
 
@@ -9,7 +10,7 @@ import axios from "axios";
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
-export const getTarineeAggignedCollection =
+const getTarineeAggignedCollection =
   () =>
   async (
     dispatch: StoreDispatch,
@@ -29,14 +30,14 @@ export const getTarineeAggignedCollection =
       }
 
       return undefined;
-    } catch (error) {
+    } catch (error) { // eslint-disable-line
       return undefined;
     } finally {
       dispatch(setAuthLoading(false));
     }
   };
 
-export const setStartCourse =
+const setStartCourse =
   (collection_id: UUID, course_id: UUID) =>
   async (
     dispatch: StoreDispatch,
@@ -63,7 +64,7 @@ export const setStartCourse =
     return false;
   };
 
-export const markLessonAsComplete =
+const markLessonAsComplete =
   (data: { collection_id: UUID; course_id: UUID; lesson_id: UUID }) =>
   async (
     dispatch: StoreDispatch,
@@ -89,3 +90,40 @@ export const markLessonAsComplete =
 
     return false;
   };
+
+const getTraineeReport =
+  (id: UUID) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<TrainingReportData | any> => {
+    dispatch(setAuthLoading(true));
+    try {
+      const response = await axios.get(
+        `${apiConfig.url}/user/trainee/${id}/report`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        return response.data;
+      }
+
+      return undefined;
+    } catch (error) { // eslint-disable-line
+      return undefined;
+    } finally {
+      dispatch(setAuthLoading(false));
+    }
+  };
+
+export {
+  getTarineeAggignedCollection,
+  setStartCourse,
+  markLessonAsComplete,
+  getTraineeReport,
+};

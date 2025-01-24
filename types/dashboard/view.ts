@@ -36,14 +36,14 @@ export interface CourseData {
 }
 
 export interface ResponseMember {
-  employeeId: string;
+  employee_id: string;
   id: UUID;
   username: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  phoneNumber: string;
-  joiningDate: string;
+  phone_number: string;
+  joining_date: string;
   groups: string[];
 }
 

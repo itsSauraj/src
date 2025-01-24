@@ -7,17 +7,16 @@ import type { StoreDispatch, RootState } from "@/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import UserProfile from "@/components/dashboard/userReport/userProfile";
 import TraineeActivity from "@/components/dashboard/userReport/traineeActivity";
 //components
 import Loader from "@/components/ui/loader";
 //skeletons
+import { UserProfileSkeleton } from "@/components/dashboard/skeleton/userProfile";
 // API
 import { getTraineeReport } from "@/lib/api";
 
-const Dashboard = () => {
-  // TODO: get trainee id from user and redirect to repoctive page for admin and trainee
-  const trainee_id = useSelector((state: RootState) => state.user?.user?.id);
-
+const UserReport = ({ trainee_id }: { trainee_id: UUID }) => {
   const [traineeReport, setTraineeReport] = useState<TrainingReportData | null>(
     null,
   );
@@ -43,7 +42,21 @@ const Dashboard = () => {
 
   if (!traineeReport) return <Loader />;
 
-  return <TraineeActivity className="flex-grow" report={traineeReport} />;
+  return (
+    <>
+      {traineeReport?.trainee ? (
+        <UserProfile
+          className="min-w-[350px] lg:w-1/4"
+          information={traineeReport.trainee}
+        />
+      ) : (
+        <UserProfileSkeleton className="min-w-[300px]" />
+      )}
+      {traineeReport && (
+        <TraineeActivity className="flex-grow" report={traineeReport} />
+      )}
+    </>
+  );
 };
 
-export default Dashboard;
+export default UserReport;

@@ -211,7 +211,7 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
               <span>Title</span>
               <span>Duration</span>
             </div>
-            <Accordion collapsible type="single">
+            <Accordion type="multiple">
               {courseData.modules.map((module) => renderModule(module))}
             </Accordion>
           </div>

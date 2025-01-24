@@ -23,6 +23,7 @@ import {
   getTarineeAggignedCollection,
   setStartCourse,
   markLessonAsComplete,
+  getTraineeReport,
 } from "./trainee";
 
 export {
@@ -47,4 +48,5 @@ export {
   getTarineeAggignedCollection,
   setStartCourse,
   markLessonAsComplete,
+  getTraineeReport,
 };
