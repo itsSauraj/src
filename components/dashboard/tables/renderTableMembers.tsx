@@ -79,6 +79,7 @@ const RenderTable = ({
 
   return (
     <Table
+      actionType="member"
       colDefs={colDefs}
       rowData={rowData}
       setSelectedRowId={setSelectedRowId}

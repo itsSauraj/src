@@ -83,17 +83,20 @@ export const Dashboard = () => {
             </ScrollArea>
           </AddDialog>
         </div>
-        <div className="flex flex-col w-full h-full">
-          {isLoading ? (
-            <Loader />
-          ) : rowData && rowData.length > 0 ? (
+
+        {isLoading ? (
+          <Loader />
+        ) : rowData && rowData.length > 0 ? (
+          <div className="flex flex-col w-full h-full">
             <RenderTableCollections
               rowData={rowData}
               setDeletable={setDeletableID}
               setOpen={setOpenAlert}
               setSelectedRowId={setSelectedRowId}
             />
-          ) : (
+          </div>
+        ) : (
+          <div className="flex flex-col w-full h-full">
             <div className="w-full h-full flex justify-center items-center">
               <Empty
                 description={
@@ -102,8 +105,9 @@ export const Dashboard = () => {
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
         <MyAlertDialog
           description="Are you sure you want to delete this Collection?"
           setOpen={setOpenAlert}

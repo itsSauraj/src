@@ -70,6 +70,7 @@ const RenderTable = ({
 
   return (
     <Table
+      actionType="collection"
       colDefs={colDefs}
       rowData={rowData}
       setSelectedRowId={setSelectedRowId}

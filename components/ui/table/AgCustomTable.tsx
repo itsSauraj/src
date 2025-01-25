@@ -3,6 +3,7 @@
 import type { ColDef, RowSelectionOptions } from "ag-grid-community";
 import type { IRows } from "@/types/compoents/table";
 import type { UUID } from "crypto";
+import type { StoreDispatch } from "@/redux/store";
 
 import React, { useMemo } from "react";
 import { useTheme } from "next-themes";
@@ -11,6 +12,11 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { themeQuartz, iconSetQuartzBold } from "ag-grid-community";
 // Core CSS
 import { AgGridReact } from "ag-grid-react";
+// Redux
+import { useDispatch } from "react-redux";
+
+//APIS
+import { updateCollection, updateUserDetails } from "@/lib/api";
 
 const customDark = themeQuartz.withPart(iconSetQuartzBold).withParams({
   accentColor: "#FFFFFF",
@@ -31,12 +37,15 @@ export const Table = ({
   rowData,
   colDefs,
   setSelectedRowId,
+  actionType,
 }: {
   rowData: IRows[];
   colDefs: ColDef[];
   setSelectedRowId: (id: UUID[]) => void;
+  actionType?: "collection" | "member";
 }) => {
   const themeIsDark = useTheme().theme === "dark";
+  const dispatch = useDispatch<StoreDispatch>();
 
   const defaultColDef = useMemo<ColDef>(() => {
     return {
@@ -44,6 +53,21 @@ export const Table = ({
       editable: true,
     };
   }, []);
+
+
+  function updateValue(id: UUID, data: any) {
+    if (actionType === "collection") {
+
+      const formData = new FormData();
+
+      for (const key in data) {
+        formData.append(key, data[key]);
+      }
+      dispatch(updateCollection(id, formData));
+    } else {
+      dispatch(updateUserDetails(id, data));
+    }
+  }
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
@@ -58,7 +82,9 @@ export const Table = ({
         rowSelection={rowSelection}
         theme={themeIsDark ? customDark : undefined}
         onCellValueChanged={(event) => {
-          console.log(event.data);
+          updateValue(event.data.id, {
+            [event.colDef.field as string]: event.newValue,
+          })
         }}
         onSelectionChanged={(event) => {
           const selected_rows = event.api.getSelectedRows();
