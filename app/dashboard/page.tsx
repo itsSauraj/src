@@ -53,7 +53,7 @@ const Dashboard = () => {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[70vh] pr-4">
-          <TraineeActivity report={traineeReport} />
+          {traineeReport && <TraineeActivity report={traineeReport} />}
         </ScrollArea>
       </CardContent>
     </Card>

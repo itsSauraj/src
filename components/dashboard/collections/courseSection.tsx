@@ -6,6 +6,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 import { CourseSectioSelection } from "@/components/dashboard/forms";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 // UI
 import { AddDialog } from "@/components/collection/modal";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,8 +37,8 @@ const CourseSection = ({
             <CourseSectioSelection
               availableCourses={courses}
               collection={collection}
-              setState={setOpen}
               setCollection={setCollection}
+              setState={setOpen}
             />
           </div>
         </AddDialog>
@@ -52,15 +53,21 @@ const CourseSection = ({
             (collection.courses ?? []).map((course: Course | any) => (
               <div
                 key={course.id}
-                className="flex items-center justify-between bg-neutral-100 dark:bg-neutral-800 text-md p-2 rounded-md"
+                className="flex items-center justify-between hover:bg-neutral-200 dark:hover:bg-neutral-700
+                bg-neutral-100 dark:bg-neutral-800 text-md p-2 rounded-md cursor-pointer"
               >
                 <p>{course.title}</p>
-                <button
-                  className="text-sm text-red-500"
-                  onClick={() => handleRemoveCourse(course.id)}
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                <CreateToolTipT
+                  content="Remove course"
+                  trigger={
+                    <button
+                      className="text-sm text-red-500"
+                      onClick={() => handleRemoveCourse(course.id)}
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  }
+                />
               </div>
             ))
           )}

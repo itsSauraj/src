@@ -62,6 +62,7 @@ function CollectionView({
     defaultValues: {
       title: collection.title,
       description: collection.description,
+      alloted_time: collection.alloted_time,
       image: collection.image,
     },
   });
@@ -70,6 +71,7 @@ function CollectionView({
     form.reset({
       title: collection.title,
       description: collection.description,
+      alloted_time: collection.alloted_time,
       image: collection.image,
     });
   }, [collection]);
@@ -101,24 +103,25 @@ function CollectionView({
     setPreview(null);
   };
 
-  const handleUpdate = async (data: CollectionFormData) => {
+  const handleUpdate = (data: CollectionFormData) => {
     const formData = new FormData();
 
     formData.append("title", data.title);
     formData.append("description", data.description?.toString() || "");
+    formData.append("alloted_time", data.alloted_time?.toString() || "");
     if (data.image) {
       if (data.image instanceof File) {
         formData.append("image", data.image);
       }
     }
 
-    const response = await dispatch(updateCollection(collection.id, formData));
-
-    if (response) {
+    dispatch(updateCollection(collection.id, formData)).then((data) => {
       setIsEditing(false);
       setIsLoading(false);
-      setCollection(response);
-    }
+      if (data) {
+        setCollection(data);
+      }
+    });
   };
 
   const router = useRouter();
@@ -169,23 +172,38 @@ function CollectionView({
             <Form {...form}>
               <form
                 className="space-y-4 w-full"
-                onSubmit={form.handleSubmit(handleUpdate)}
+                onSubmit={form.handleSubmit(handleUpdate as any)}
               >
                 <div className="flex gap-4 justify-between items-center">
                   <div className="flex flex-col gap-4 w-full">
-                    <FormField
-                      control={form.control}
-                      name="title"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Title</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                    <div className="flex gap-4 flex-grow">
+                      <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                          <FormItem className="flex-grow">
+                            <FormLabel>Title</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="alloted_time"
+                        render={({ field }) => (
+                          <FormItem className="max-w-[150px]">
+                            <FormLabel>Alloted time (in days)</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                     <FormField
                       control={form.control}
                       name="description"
