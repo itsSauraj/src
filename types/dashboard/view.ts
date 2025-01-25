@@ -44,6 +44,7 @@ export interface ResponseMember {
   email: string;
   phone_number: string;
   joining_date: string;
+  birth_date: string;
   groups: string[];
 }
 

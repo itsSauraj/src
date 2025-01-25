@@ -18,3 +18,4 @@ export type User = {
   user?: any;
   userType?: "admin" | "mentor" | "trainee" | null;
 };
+

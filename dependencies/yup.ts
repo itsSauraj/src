@@ -86,6 +86,29 @@ export const collectionSchemaCourses = yup.object().shape({
   courses: yup.array().of(yup.string().uuid()),
 });
 
+export const userUpdateSchema = yup.object().shape({
+  employee_id: yup.string().required("Employee ID is required"),
+  first_name: yup.string().required("First Name is required"),
+  last_name: yup.string(),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  username: yup.string().required("Username is required"),
+  address: yup.string().nullable(),
+  phone_number: yup
+    .string()
+    .matches(/^[0-9]+$/, "Phone number must be only digits")
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number must not exceed 15 digits")
+    .required("Phone number is required"),
+  birth_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Date of birth cannot be in the future"),
+  joining_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Joining date cannot be in the future"),
+});
+
 export type CourseFormData = yup.InferType<typeof courseSchema>;
 export interface IMemberForm
   extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {

@@ -25,6 +25,8 @@ import {
   markLessonAsComplete,
   getTraineeReport,
 } from "./trainee";
+// User
+import { updateUserDetails } from "./user";
 
 export {
   // Members
@@ -49,4 +51,6 @@ export {
   setStartCourse,
   markLessonAsComplete,
   getTraineeReport,
+  // User
+  updateUserDetails,
 };

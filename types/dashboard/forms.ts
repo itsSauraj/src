@@ -42,6 +42,18 @@ interface ILessonSectionProps {
   removeLesson: () => void;
 }
 
+interface UserUpdateData {
+  employee_id?: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  phone_number?: string;
+  address?: string;
+  bith_date?: string;
+  joining_date?: string;
+}
+
 export type {
   ILesson,
   IModule,
@@ -49,4 +61,5 @@ export type {
   IExistingModule,
   IModuleSectionProps,
   ILessonSectionProps,
+  UserUpdateData,
 };

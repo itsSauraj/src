@@ -132,8 +132,20 @@ export const ComprehensiveTrainingReport: React.FC<{
             <p className="text-sm text-gray-500">{collection.description}</p>
           </div>
           <Badge
-            color={collection.is_completed ? "green" : "red"}
-            text={collection.is_completed ? "Completed" : "In Progress"}
+            color={
+              !collection.is_started
+                ? "volcano"
+                : collection.is_completed
+                  ? "green"
+                  : "red"
+            }
+            text={
+              !collection.is_started
+                ? "Not Started"
+                : collection.is_completed
+                  ? "Completed"
+                  : "In Progress"
+            }
           />
         </div>
       ),
