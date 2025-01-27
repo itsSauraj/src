@@ -1,11 +1,13 @@
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { MemberCollection } from "@/types/dashboard/view";
 import type { TrainingReportData } from "@/types/dashboard/report";
+import type { ResponseMiniFiedTraineeCollectionData } from "@/types/dashboard/report";
 
 import { UUID } from "crypto";
 
 import axios from "axios";
 // sonner
+import { toast } from "sonner";
 
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
@@ -121,9 +123,117 @@ const getTraineeReport =
     }
   };
 
+const getMiniFiedTraineeCollectionData =
+  (trainee_id: UUID) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<ResponseMiniFiedTraineeCollectionData | any> => {
+    dispatch(setAuthLoading(true));
+
+    try {
+      const response = await axios.get(
+        `${apiConfig.url}/trainee/collection/mini/${trainee_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+        },
+      );
+
+      dispatch(setAuthLoading(false));
+
+      if (response.status === 200) {
+        return response.data;
+      }
+
+      return undefined;
+    } catch (error) { // eslint-disable-line
+      return undefined;
+    } finally {
+      dispatch(setAuthLoading(false));
+    }
+  };
+
+const assignCourseCollection =
+  (trainee_id: UUID, courses: UUID[]) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<Boolean> => {
+    dispatch(setAuthLoading(true));
+
+    try {
+      const response = await axios.post(
+        `${apiConfig.url}/trainee/course/`,
+        { user: trainee_id, collection: courses },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+        },
+      );
+
+      dispatch(setAuthLoading(false));
+
+      if (response.status === 201) {
+        toast.success("Courses assigned successfully");
+
+        return true;
+      }
+
+      toast.error("Failed to assign courses");
+
+      return false;
+    } catch (error) { // eslint-disable-line  
+      toast.error("Failed to assign courses");
+
+      return false;
+    } finally {
+      dispatch(setAuthLoading(false));
+    }
+  };
+
+const deassignCourseCollection =
+  (trainee_id: UUID, courses: UUID[]) =>
+  async (dispatch: StoreDispatch, getState: () => RootState) => {
+    dispatch(setAuthLoading(true));
+
+    try {
+      const response = await axios.delete(`${apiConfig.url}/trainee/course/`, {
+        data: { user: trainee_id, collection: courses },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      });
+
+      if (response.status === 204) {
+        toast.success("Courses deassigned successfully");
+
+        return true;
+      } else {
+        toast.error("Failed to deassign courses");
+
+        return false;
+      }
+    } catch (error) { // eslint-disable-line
+      toast.error("Failed to deassign courses");
+
+      return false;
+    } finally {
+      dispatch(setAuthLoading(false));
+    }
+  };
+
 export {
   getTarineeAggignedCollection,
   setStartCourse,
   markLessonAsComplete,
   getTraineeReport,
+  getMiniFiedTraineeCollectionData,
+  assignCourseCollection,
+  deassignCourseCollection,
 };

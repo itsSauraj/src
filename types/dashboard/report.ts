@@ -1,7 +1,9 @@
+import type { UUID } from "crypto";
+
 import { ResponseMember as Trainee } from "./view";
 
 interface Collection {
-  id: string;
+  id: string | UUID;
   title: string;
   description: string;
   duration: string;
@@ -20,7 +22,7 @@ interface Collection {
 }
 
 interface Course {
-  id: string;
+  id: string | UUID;
   title: string;
   description: string;
   duration: string;
@@ -33,7 +35,7 @@ interface Course {
 }
 
 interface Module {
-  id: string;
+  id: string | UUID;
   title: string;
   description: string;
   sequence: number;
@@ -42,7 +44,7 @@ interface Module {
 }
 
 interface Lesson {
-  id: string;
+  id: string | UUID;
   title: string;
   description: string;
   sequence: number;
@@ -54,4 +56,14 @@ interface Lesson {
 export interface TrainingReportData {
   trainee: Trainee;
   collections: Collection[];
+}
+
+export interface MiniCollection {
+  id: string | UUID;
+  title: string;
+}
+
+export interface ResponseMiniFiedTraineeCollectionData {
+  available_collections: MiniCollection[];
+  assigned_collections: MiniCollection[];
 }

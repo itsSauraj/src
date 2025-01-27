@@ -24,6 +24,9 @@ import {
   setStartCourse,
   markLessonAsComplete,
   getTraineeReport,
+  getMiniFiedTraineeCollectionData,
+  assignCourseCollection,
+  deassignCourseCollection,
 } from "./trainee";
 // User
 import { updateUserDetails } from "./user";
@@ -51,6 +54,9 @@ export {
   setStartCourse,
   markLessonAsComplete,
   getTraineeReport,
+  getMiniFiedTraineeCollectionData,
+  assignCourseCollection,
+  deassignCourseCollection,
   // User
   updateUserDetails,
 };

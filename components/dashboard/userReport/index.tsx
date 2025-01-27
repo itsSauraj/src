@@ -9,9 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 import UserProfile from "@/components/dashboard/userReport/userProfile";
-import TraineeActivity from "@/components/dashboard/userReport/traineeActivity";
+import UserActionPage from "@/components/dashboard/userReport/userActionPage";
 //components
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Loader from "@/components/ui/loader";
 //skeletons
 import { UserProfileSkeleton } from "@/components/dashboard/skeleton/userProfile";
@@ -35,7 +35,7 @@ const UserReport = ({ trainee_id }: { trainee_id: UUID }) => {
         const data = (await dispatch(getTraineeReport(trainee_id))) as any;
 
         if (data) setTraineeReport(data as TrainingReportData);
-      } catch (error) {
+      } catch (error) { // eslint-disable-line
         toast.error("Failed to fetch trainee report");
       }
     };
@@ -58,14 +58,12 @@ const UserReport = ({ trainee_id }: { trainee_id: UUID }) => {
       )}
       {traineeReport && (
         <Card className="flex-grow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-            <CardTitle className="text-xl font-semibold">
-              User activity
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+          <CardContent className="p-4">
             <ScrollArea className="h-[70vh] pr-4">
-              <TraineeActivity report={traineeReport} />
+              <UserActionPage
+                information={traineeReport}
+                setTraineeReport={setTraineeReport}
+              />
             </ScrollArea>
           </CardContent>
         </Card>

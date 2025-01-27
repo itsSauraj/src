@@ -39,7 +39,7 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
     return "#52c41a";
   };
 
-  const themeProgressText = (progress?: number, successPercent?: number) => {
+  const themeProgressText = (progress?: number, successPercent?: number) => { // eslint-disable-line
     return <span className="dark:text-white">{progress}%</span>;
   };
 
@@ -156,10 +156,7 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
                     className="text-ellipsis whitespace-nowrap overflow-hidden relative w-full"
                     title={collection.title}
                   >
-                    <h2 className="font-bold text-lg">
-                      {collection.title}
-                      adipisicing{" "}
-                    </h2>
+                    <h2 className="font-bold text-lg">{collection.title}</h2>
                   </Tooltip>
                   <StatusBadge
                     status={
