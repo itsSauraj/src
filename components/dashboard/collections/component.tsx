@@ -311,9 +311,12 @@ function CollectionView({
                   <Pencil className="h-4 w-4" />
                 </Button>
                 <Button
+                  disabled={collection.is_default}
                   size="icon"
                   variant="destructive"
-                  onClick={() => setOpenAlert(true)}
+                  onClick={() => {
+                    collection.is_default ? null : setOpenAlert(true);
+                  }}
                 >
                   <MdDelete className="h-4 w-4" />
                 </Button>

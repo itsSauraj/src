@@ -16,7 +16,12 @@ import { AgGridReact } from "ag-grid-react";
 import { useDispatch } from "react-redux";
 
 //APIS
-import { updateCollection, updateUserDetails } from "@/lib/api";
+import {
+  updateCollection,
+  updateUserDetails,
+  setDefaultCollection,
+  getCourseCollection,
+} from "@/lib/api";
 
 const customDark = themeQuartz.withPart(iconSetQuartzBold).withParams({
   accentColor: "#FFFFFF",
@@ -38,26 +43,36 @@ export const Table = ({
   colDefs,
   setSelectedRowId,
   actionType,
+  setRowData,
 }: {
   rowData: IRows[];
   colDefs: ColDef[];
   setSelectedRowId: (id: UUID[]) => void;
   actionType?: "collection" | "member";
+  setRowData?: (data: IRows[]) => void;
 }) => {
   const themeIsDark = useTheme().theme === "dark";
   const dispatch = useDispatch<StoreDispatch>();
+  const gridRef = React.useRef<any>(null);
 
-  const defaultColDef = useMemo<ColDef>(() => {
-    return {
+  const defaultColDef = useMemo<ColDef>(
+    () => ({
       filter: true,
       editable: true,
-    };
-  }, []);
+    }),
+    [],
+  );
 
+  const handleDefaultValueChange = async (event: any) => {
+    await dispatch(setDefaultCollection(event.data.id));
 
-  function updateValue(id: UUID, data: any) {
+    dispatch(getCourseCollection()).then((data: any) => {
+      setRowData(data);
+    });
+  };
+
+  const updateValue = (id: UUID, data: any) => {
     if (actionType === "collection") {
-
       const formData = new FormData();
 
       for (const key in data) {
@@ -67,24 +82,32 @@ export const Table = ({
     } else {
       dispatch(updateUserDetails(id, data));
     }
-  }
+  };
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <AgGridReact
+        ref={gridRef}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        getRowHeight={(params) => {
-          return params.data.image ? 100 : 50;
-        }}
+        getRowHeight={(params) => (params.data.image ? 100 : 50)}
         pagination={true}
         rowData={rowData}
         rowSelection={rowSelection}
         theme={themeIsDark ? customDark : undefined}
         onCellValueChanged={(event) => {
+          if (event.colDef.field === "is_default") {
+            handleDefaultValueChange(event);
+
+            return;
+          }
+
           updateValue(event.data.id, {
             [event.colDef.field as string]: event.newValue,
-          })
+          });
+        }}
+        onGridReady={(params) => {
+          gridRef.current = params.api;
         }}
         onSelectionChanged={(event) => {
           const selected_rows = event.api.getSelectedRows();

@@ -288,6 +288,35 @@ const addCourseToCollection =
     }
   };
 
+const setDefaultCollection =
+  (id: UUID) => async (dispatch: StoreDispatch, getState: () => RootState) => {
+    dispatch(setAuthLoading(true));
+    try {
+      const response = await axios.put(
+        `${apiConfig.url}/course/collection/${id}/default`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+        },
+      );
+
+      if (response.status == 200) {
+        toast.success("Default collection set successfully");
+
+        return true;
+      }
+
+      toast.error("Failed to set default collection");
+    } catch (error) { // eslint-disable-line
+      toast.error("Failed to set default collection");
+    } finally {
+      dispatch(setAuthLoading(false));
+    }
+  };
+
 export {
   getCourses,
   getCourseDetails,
@@ -299,4 +328,5 @@ export {
   updateCollection,
   removeCourseFromCollection,
   addCourseToCollection,
+  setDefaultCollection,
 };

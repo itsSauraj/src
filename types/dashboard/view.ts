@@ -56,6 +56,7 @@ export interface CourseCollection {
   alloted_time: number;
   courses: Course[];
   image: string | File | undefined;
+  is_default: boolean;
 }
 
 export interface MemberCollection {

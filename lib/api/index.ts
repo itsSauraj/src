@@ -17,6 +17,7 @@ import {
   updateCollection,
   removeCourseFromCollection,
   addCourseToCollection,
+  setDefaultCollection,
 } from "./course";
 // Trainees and mentors
 import {
@@ -49,6 +50,7 @@ export {
   updateCollection,
   removeCourseFromCollection,
   addCourseToCollection,
+  setDefaultCollection,
   // Trinee and mentors
   getTarineeAggignedCollection,
   setStartCourse,

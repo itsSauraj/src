@@ -10,6 +10,8 @@ import { MdDelete } from "react-icons/md";
 import { useRouter, usePathname } from "next/navigation";
 import { CiImageOff } from "react-icons/ci";
 import { Image } from "antd";
+import { FaCheck } from "react-icons/fa";
+import { X } from "lucide-react";
 
 import {
   Tooltip,
@@ -18,6 +20,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const DateFormatter = (params: ValueFormatterParams): string => {
   return new Date(params.value).toLocaleDateString("en-us", {
@@ -56,8 +59,12 @@ export const ActionsFormatter = (
         </Button>
       )}
       <Button
-        className="text-lg bg-red-500 dark:bg-red-600/80 dark:text-white h-auto p-2 hover:bg-red-600/80 hover:opacity-70"
-        onClick={handleDelete}
+        className={cn(
+          "text-lg bg-red-500 dark:bg-red-600/80 dark:text-white h-auto p-2 \
+          hover:bg-red-600/80 hover:opacity-70",
+        )}
+        disabled={props.data.is_default}
+        onClick={props.data.is_default ? undefined : handleDelete}
       >
         <MdDelete />
       </Button>
@@ -96,5 +103,17 @@ export const TextFormatter = (props: CustomCellRendererProps) => {
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  );
+};
+
+export const BooleanFormatter = (params: ValueFormatterParams): JSX.Element => {
+  return (
+    <div className="h-full flex justify-center items-center">
+      {params.value ? (
+        <FaCheck className="text-green-500 font-bold text-xl" />
+      ) : (
+        <X className="text-red-600 font-semibold text-lg" />
+      )}
+    </div>
   );
 };

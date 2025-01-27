@@ -11,6 +11,7 @@ import {
   ActionsFormatter,
   ImageFormatter,
   TextFormatter,
+  BooleanFormatter,
 } from "@/components/ui/table/formater";
 import { Table } from "@/components/ui/table/AgCustomTable";
 
@@ -19,11 +20,13 @@ const RenderTable = ({
   setDeletable,
   setOpen,
   setSelectedRowId,
+  setRowData,
 }: {
   rowData: CollectionFormData[];
   setDeletable: (id: UUID | null) => void;
   setOpen: (open: boolean) => void;
   setSelectedRowId: (id: UUID[] | null) => void;
+  setRowData: (data: CollectionFormData[]) => void;
 }) => {
   const [colDefs] = useState<ColDef[]>([
     {
@@ -46,6 +49,18 @@ const RenderTable = ({
       cellClass: "text-justify",
       flex: 2,
       cellRenderer: TextFormatter,
+    },
+    {
+      headerName: "Default",
+      field: "is_default",
+      width: 100,
+      cellRenderer: BooleanFormatter,
+      sortable: false,
+      editable: (params: any) => {
+        if (params.data.is_default) return false;
+
+        return true;
+      },
     },
     {
       headerName: "Image",
@@ -73,6 +88,7 @@ const RenderTable = ({
       actionType="collection"
       colDefs={colDefs}
       rowData={rowData}
+      setRowData={setRowData}
       setSelectedRowId={setSelectedRowId}
     />
   );

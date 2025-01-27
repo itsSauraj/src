@@ -92,6 +92,7 @@ export const Dashboard = () => {
               rowData={rowData}
               setDeletable={setDeletableID}
               setOpen={setOpenAlert}
+              setRowData={setRowData}
               setSelectedRowId={setSelectedRowId}
             />
           </div>
