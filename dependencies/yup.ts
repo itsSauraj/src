@@ -11,6 +11,28 @@ export const loginSchema = yup.object().shape({
     .required("Password is required"),
 });
 
+export const registerSchema = yup.object().shape({
+  username: yup.string().required("Username is required"),
+  first_name: yup.string().required("First name is required"),
+  last_name: yup.string().required("Last name is required"),
+  email: yup
+    .string()
+    .email("Please enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+    ),
+  confirm_password: yup
+    .string()
+    .required("Please confirm your password")
+    .oneOf([yup.ref("password")], "Passwords must match"),
+});
+
 export const memberSchema = yup.object().shape({
   employee_id: yup
     .string()

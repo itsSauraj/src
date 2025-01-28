@@ -1,13 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 
-import type { LoginRequest, LoginResponse } from "@/types/auth/actions";
+import type {
+  LoginRequest,
+  LoginResponse,
+  RegistrationRequest,
+} from "@/types/auth/actions";
 
 import axios from "axios";
 // sonner
 import { toast } from "sonner";
 
 import { apiConfig } from "@/config/api";
+
+export const register = async (
+  formData: RegistrationRequest,
+): Promise<LoginResponse | any> => {
+  try {
+    const response = await axios.post<LoginResponse>(
+      `${apiConfig.url}/auth/user/`,
+      formData,
+    );
+
+    return response.data;
+  } catch (error) {
+    toast.error("Error registering");
+
+    return error;
+  }
+};
 
 export const login = async (
   credentials: LoginRequest,

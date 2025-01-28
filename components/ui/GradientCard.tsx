@@ -11,7 +11,10 @@ export function GradientCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full h-full md:w-[50%] md:h-[50%] xl:w-[40%] xl:h-[40%] 2xl:w-[30%] 2xl:h-[30%]">
+    <div
+      className="w-full transition-all ease-in duration-250 
+    md:w-[50%] md:h-[50%] lg:h-max xl:w-[40%] 2xl:w-[30%]"
+    >
       <div
         key={title}
         className="relative bg-gradient-to-b dark:from-neutral-900 from-neutral-100 dark:to-neutral-950 to-white p-6 md:rounded-3xl overflow-hidden flex flex-col justify-center items-center w-full h-full md:w-auto md:h-auto 

@@ -6,9 +6,10 @@ import type { LoginRequest } from "@/types/auth/actions";
 import type { RootState, StoreDispatch } from "@/redux/store";
 
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
-import { login } from "@/lib/auth/actions";
+import { login, register } from "@/lib/auth/actions";
 import { setAuthLoading } from "@/redux/slice/app";
 import { logout } from "@/lib/auth/actions";
 
@@ -80,5 +81,25 @@ const logoutUser =
     dispatch(setUserType(null));
   };
 
-export { logInUser, logoutUser, validateToken };
+const registerUser =
+  (formData: any) =>
+  async (dispatch: StoreDispatch): Promise<LoginRequest | any> => {
+    try {
+      const userObj = await register(formData);
+
+      if (!userObj) {
+        return;
+      }
+
+      dispatch(toggleToken(userObj.token));
+      dispatch(toggleUser(userObj.user));
+      dispatch(setUserType(userObj.groups[0]));
+    } catch (error: any) {
+      toast.error("Error registering");
+
+      return error;
+    }
+  };
+
+export { logInUser, logoutUser, validateToken, registerUser };
 export default userSlice.reducer;

@@ -32,7 +32,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const title = pathname === "/auth/login" ? "Login" : "Register";
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div className="w-full h-[100svh] flex justify-center relative items-center">
       <GradientCard title={title}>{children}</GradientCard>
     </div>
   );
