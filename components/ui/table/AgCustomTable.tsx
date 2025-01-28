@@ -67,7 +67,7 @@ export const Table = ({
     await dispatch(setDefaultCollection(event.data.id));
 
     dispatch(getCourseCollection()).then((data: any) => {
-      setRowData(data);
+      data && setRowData && setRowData(data);
     });
   };
 
