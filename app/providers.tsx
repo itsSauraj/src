@@ -2,16 +2,17 @@
 
 import type { ThemeProviderProps } from "next-themes";
 
-import * as React from "react";
 import { NextUIProvider } from "@nextui-org/system";
+import { ConfigProvider, theme as antTheme } from "antd";
+import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import * as React from "react";
 import { Provider as ReduxProvder } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { ConfigProvider, theme as antTheme } from "antd";
-import { useTheme } from "next-themes";
 
-import { store, persistor } from "@/redux/store";
+import { persistor, store } from "@/redux/store";
+// custom hooks
+// import { useNotifications } from "@/hooks/useNotifications";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -62,6 +63,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
 const RenderAntProvider = ({ children }: ProvidersProps) => {
   const { theme } = useTheme();
+  // const sockt = useNotifications();
 
   return (
     <ConfigProvider

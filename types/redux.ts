@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 export interface App {
   auth: {
     isLoading: boolean;
@@ -16,11 +18,14 @@ export type User = {
 };
 
 export interface Notification {
-  id: string;
+  created_at: string;
+  id: string | UUID;
   message: string;
-  type: "success" | "error" | "info" | "warning";
-  timestamp: string;
   read: boolean;
+  recipient: string | UUID;
+  sender: string | UUID;
+  title: string;
+  type: "success" | "error" | "info" | "warning";
 }
 
 export interface NotificationState {

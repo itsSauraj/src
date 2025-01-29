@@ -76,19 +76,28 @@ const appSlice = createSlice({
     toggleNotification: (state) => {
       state.settings.notification = !state.settings.notification;
     },
+    initialNotifications: (state, action: PayloadAction<Notification[]>) => {
+      state.notifications.items = action.payload;
+      state.notifications.unreadCount = action.payload.length;
+    },
     addNotification: (state, action: PayloadAction<Notification>) => {
       state.notifications.items.unshift(action.payload);
       if (!action.payload.read) {
         state.notifications.unreadCount += 1;
       }
     },
+    removeNotification: (state, action: PayloadAction<string>) => {
+      state.notifications.items = state.notifications.items.filter(
+        (n) => n.id !== action.payload,
+      );
+    },
     markAsRead: (state, action: PayloadAction<string>) => {
-      const notification = state.notifications.items.find(
+      const index = state.notifications.items.findIndex(
         (n) => n.id === action.payload,
       );
 
-      if (notification && !notification.read) {
-        notification.read = true;
+      if (index !== -1 && !state.notifications.items[index].read) {
+        state.notifications.items[index].read = true;
         state.notifications.unreadCount = Math.max(
           0,
           state.notifications.unreadCount - 1,
@@ -135,7 +144,9 @@ export const {
   toggleAuthLoading,
   toggleSideBar,
   toggleNotification,
+  initialNotifications,
   addNotification,
+  removeNotification,
   markAsRead,
   markAllAsRead,
   clearNotifications,

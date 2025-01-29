@@ -1,3 +1,6 @@
+//App
+import { markNotificationAsRead, markAllNotificationAsRead } from "./app";
+// Members
 import {
   getMentors,
   getTrainees,
@@ -33,6 +36,9 @@ import {
 import { updateUserDetails } from "./user";
 
 export {
+  //App
+  markNotificationAsRead,
+  markAllNotificationAsRead,
   // Members
   getMentors,
   getTrainees,

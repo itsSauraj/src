@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 
 import { SideBar } from "@/components/dashboard";
 import { validateToken } from "@/redux/slice/user";
+// custom hooks
+import { useNotifications } from "@/hooks/useNotifications";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -15,11 +17,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<StoreDispatch>();
   const user = useSelector((state: RootState) => state.user);
 
+  useNotifications();
+
   useEffect(() => {
     if (!user.token) {
       router.replace("/auth/login");
     }
-
     dispatch(validateToken(user.token));
   }, []);
 

@@ -1,20 +1,40 @@
 "use client";
 
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, createTransform } from "redux-persist";
 import { REGISTER } from "redux-persist/es/constants";
 
 import rootReducer from "./rootReducer";
 
 import { customStorage } from "@/redux/customStorage";
 
+const filterTransform = createTransform(
+  (inboundState: { user?: { isloading?: boolean }; notifications?: any }) => {
+    const newState =
+      inboundState && typeof inboundState === "object"
+        ? { ...inboundState }
+        : {};
+
+    if (newState.user) {
+      delete newState.user.isloading;
+      if (newState.notifications) {
+        return undefined;
+      }
+    }
+
+    return newState;
+  },
+  null,
+  { whitelist: ["app"] },
+);
+
 const persistConfig = {
   key: "root",
   storage: customStorage,
-  blacklist: ["app.user.isloading"],
+  transforms: [filterTransform],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer as any);
 
 export const store = configureStore({
   reducer: persistedReducer,
