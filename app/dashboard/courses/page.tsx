@@ -4,7 +4,7 @@ import type { RootState } from "@/redux/store";
 
 import { useSelector } from "react-redux";
 
-import ClientPage from "./_pages_layouts/client";
+import ClientPage from "./_pages_layouts/trainee";
 import AdminPage from "./_pages_layouts/admin";
 
 export const Page = () => {

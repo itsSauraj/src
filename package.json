@@ -42,6 +42,7 @@
 		"@react-aria/visually-hidden": "3.8.18",
 		"@reduxjs/toolkit": "^2.5.0",
 		"@tabler/icons-react": "^3.28.1",
+		"ag-charts-react": "^11.0.4",
 		"ag-grid-react": "^33.0.3",
 		"antd": "^5.23.2",
 		"axios": "^1.7.9",

@@ -67,3 +67,13 @@ export interface ResponseMiniFiedTraineeCollectionData {
   available_collections: MiniCollection[];
   assigned_collections: MiniCollection[];
 }
+
+// Admin Dashboard View
+export type InfoCardData = {
+  title: string;
+  count: number;
+};
+
+export type AdminDashboardView = {
+  info_cards: InfoCardData[];
+};

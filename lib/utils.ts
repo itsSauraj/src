@@ -51,3 +51,31 @@ export const formatDateTimeToLocal = (utcTime: string) => {
 
   return dateObj.toLocaleString();
 };
+
+export const getColor = (
+  index: number,
+  type: "border" | "background" | "text",
+) => {
+  const colorTypes = {
+    border: [
+      "border-red-500 dark:border-red-700",
+      "border-green-500 dark:border-green-700",
+      "border-blue-500 dark:border-blue-700",
+      "border-orange-500 dark:border-orange-700",
+    ],
+    background: [
+      "bg-red-500 dark:bg-red-700",
+      "bg-green-500 dark:bg-green-700",
+      "bg-blue-500 dark:bg-blue-700",
+      "bg-orange-500 dark:bg-orange-700",
+    ],
+    text: [
+      "text-red-500 dark:text-red-700",
+      "text-green-500 dark:text-green-700",
+      "text-blue-500 dark:text-blue-700",
+      "text-orange-500 dark:text-orange-700",
+    ],
+  };
+
+  return colorTypes[type][index % colorTypes[type].length];
+};

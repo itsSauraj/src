@@ -22,6 +22,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { InfoCards } from "@/components/collection/infoCards";
 //API
 import {
   getCourseDetails,
@@ -179,7 +180,7 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
       <ScrollArea className="h-[90vh]">
         <CardHeader>
           <CardTitle className="flex gap-3 flex-wrap">
-            {Object.entries(courseData.metadata).map(([key, value]) => {
+            {Object.entries(courseData.metadata).map(([key, value], index) => {
               if (key === "id") {
                 return null;
               }
@@ -189,7 +190,7 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
               }
 
               return (
-                <InfoCards key={key} title={key}>
+                <InfoCards key={key} index={index} title={key as string}>
                   {value}
                 </InfoCards>
               );
@@ -222,35 +223,3 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
 };
 
 export default CourseView;
-
-const InfoCards = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => {
-  const getColor = (title: string) => {
-    switch (title.toLowerCase()) {
-      case "title":
-        return "border-blue-500";
-      case "duration":
-        return "border-green-500";
-      default:
-        return "border-gray-500";
-    }
-  };
-
-  return (
-    <Card
-      className={`flex-1 flex flex-col items-center justify-center min-w-[250px] border-t-4 ${getColor(title)}`}
-    >
-      <CardHeader className={`rounded-lg w-full flex text-center p-3 `}>
-        <CardTitle className="capitalize p-0 font-bold">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="min-h-[80px] flex justify-center items-center font-light">
-        {children}
-      </CardContent>
-    </Card>
-  );
-};

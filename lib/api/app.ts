@@ -43,7 +43,7 @@ const markNotificationAsRead =
       toast.error("Failed to mark notification as read");
 
       return false;
-    } catch (error) {
+    } catch (error) { // eslint-disable-line
       toast.error("Failed to mark notification as read");
 
       return false;
@@ -72,12 +72,14 @@ const markAllNotificationAsRead =
         dispatch(markAllAsRead());
         dispatch(clearNotifications());
         toast.success("All notifications read successfully");
+
         return true;
       }
 
       toast.error("Failed to mark notification as read");
+
       return false;
-    } catch (error) {
+    } catch (error) { // eslint-disable-line
       toast.error("Failed to mark notification as read");
 
       return false;
