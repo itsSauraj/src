@@ -28,6 +28,7 @@ import {
   getCourseDetails,
   setStartCourse,
   markLessonAsComplete,
+  unmarkLessonAsComplete,
 } from "@/lib/api";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -93,16 +94,16 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
   const toggleLesson = (lessonId: string) => {
     const newChecked = new Set(checkedLessons);
 
+    const data = {
+      collection_id: collection_id as UUID,
+      course_id: course_id as UUID,
+      lesson_id: lessonId as UUID,
+    };
+
     if (newChecked.has(lessonId)) {
-      // TODO: Unmark lesson as complete
+      dispatch(unmarkLessonAsComplete(data));
       newChecked.delete(lessonId);
     } else {
-      const data = {
-        collection_id: collection_id as UUID,
-        course_id: course_id as UUID,
-        lesson_id: lessonId as UUID,
-      };
-
       dispatch(markLessonAsComplete(data));
       newChecked.add(lessonId);
     }
@@ -155,7 +156,6 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
                   <Checkbox
                     checked={checkedLessons.has(lessonId)}
                     className="ml-6"
-                    disabled={checkedLessons.has(lessonId) || !isStared}
                     onCheckedChange={() => toggleLesson(lessonId)}
                   />
                   <span

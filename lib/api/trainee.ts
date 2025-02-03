@@ -93,6 +93,37 @@ const markLessonAsComplete =
     return false;
   };
 
+const unmarkLessonAsComplete =
+  (data: { collection_id: UUID; course_id: UUID; lesson_id: UUID }) =>
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<boolean> => {
+    dispatch(setAuthLoading(true));
+
+    try {
+      const response = await axios.delete(
+        `${apiConfig.url}/member/action/lesson`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+          data: data, // ✅ Correct way to send data in DELETE request
+        },
+      );
+
+      dispatch(setAuthLoading(false));
+
+      return response.status === 200;
+    } catch (error) {
+      console.error("Error unmarking lesson as complete:", error);
+      dispatch(setAuthLoading(false));
+
+      return false;
+    }
+  };
+
 const getTraineeReport =
   (id: UUID) =>
   async (
@@ -232,6 +263,7 @@ export {
   getTarineeAggignedCollection,
   setStartCourse,
   markLessonAsComplete,
+  unmarkLessonAsComplete,
   getTraineeReport,
   getMiniFiedTraineeCollectionData,
   assignCourseCollection,
