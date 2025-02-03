@@ -9,15 +9,6 @@ import { AgCharts as AgChartsReact } from "ag-charts-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// const customDark = themeQuartz.withPart(iconSetQuartzBold).withParams({
-//   accentColor: "#FFFFFF",
-//   backgroundColor: "#404040",
-//   browserColorScheme: "inherit",
-//   chromeBackgroundColor: "#2D2C2C",
-//   foregroundColor: "#FFF",
-//   headerFontSize: 14,
-// });
-
 const AdminDashboard = ({
   data,
 }: {
@@ -40,7 +31,7 @@ const AdminDashboard = ({
     overrides: {
       common: {
         background: {
-          fill: "#000000", // Background color from your theme
+          fill: "#000000",
         },
       },
       bar: {
@@ -48,7 +39,7 @@ const AdminDashboard = ({
           strokeWidth: 0,
           highlightStyle: {
             item: {
-              fill: "#818cf8", // Lighter indigo for hover
+              fill: "#818cf8",
               strokeWidth: 0,
             },
           },
@@ -56,18 +47,18 @@ const AdminDashboard = ({
       },
       overrides: {
         background: {
-          fill: "#2D2C2C", // Chrome background color from your theme
+          fill: "#2D2C2C",
         },
         title: {
-          fontSize: 14, // Header font size from your theme
+          fontSize: 14,
           fontFamily: "Inter, sans-serif",
           fontWeight: "bold",
-          color: "#FFFFFF", // Foreground color from your theme
+          color: "#FFFFFF",
         },
         subtitle: {
           fontSize: 12,
           fontFamily: "Inter, sans-serif",
-          color: "#FFFFFF", // Foreground color from your theme
+          color: "#FFFFFF",
         },
         axes: {
           number: {
@@ -82,7 +73,7 @@ const AdminDashboard = ({
               color: "#FFFFFF",
             },
             line: {
-              color: "#4B4B4B", // Slightly lighter than background
+              color: "#4B4B4B",
             },
             tick: {
               color: "#4B4B4B",
