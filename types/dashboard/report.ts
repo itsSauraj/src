@@ -74,6 +74,10 @@ export type InfoCardData = {
   count: number;
 };
 
-export type AdminDashboardView = {
-  info_cards: InfoCardData[];
+export type CourseCompletionStatus = {
+  course: string;
+  enrolled: number;
+  completed: number;
+  in_progress: number;
+  not_started: number;
 };

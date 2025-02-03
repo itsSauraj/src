@@ -145,10 +145,19 @@ const CourseForm: React.FC<CourseFormProps> = ({ setCourses, setState }) => {
           <div className="space-y-6">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-medium">Modules</h3>
+            </div>
+            {moduleFields.map((moduleField, moduleIndex) => (
+              <ModuleSection
+                key={moduleField.id}
+                form={form as any}
+                moduleIndex={moduleIndex}
+                removeModule={() => removeModule(moduleIndex)}
+              />
+            ))}
+            <div className="flex justify-end items-center">
               <Button
                 size="sm"
                 type="button"
-                variant="outline"
                 onClick={() =>
                   appendModule({
                     title: "",
@@ -170,15 +179,6 @@ const CourseForm: React.FC<CourseFormProps> = ({ setCourses, setState }) => {
                 Add Module
               </Button>
             </div>
-
-            {moduleFields.map((moduleField, moduleIndex) => (
-              <ModuleSection
-                key={moduleField.id}
-                form={form as any}
-                moduleIndex={moduleIndex}
-                removeModule={() => removeModule(moduleIndex)}
-              />
-            ))}
           </div>
 
           <Button className="w-full" type="submit">

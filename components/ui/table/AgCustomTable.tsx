@@ -8,8 +8,12 @@ import type { StoreDispatch } from "@/redux/store";
 import React, { useMemo } from "react";
 import { useTheme } from "next-themes";
 //Theme
-import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
-import { themeQuartz, iconSetQuartzBold } from "ag-grid-community";
+import {
+  AllCommunityModule,
+  ModuleRegistry,
+  themeQuartz,
+  iconSetQuartzBold,
+} from "ag-grid-community";
 // Core CSS
 import { AgGridReact } from "ag-grid-react";
 // Redux
@@ -90,7 +94,7 @@ export const Table = ({
         ref={gridRef}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        getRowHeight={(params) => (params.data.image ? 100 : 50)}
+        getRowHeight={(params) => params.data.image && 100}
         pagination={true}
         rowData={rowData}
         rowSelection={rowSelection}

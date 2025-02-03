@@ -1,35 +1,64 @@
 "use client";
 
-import type { AdminDashboardView } from "@/types/dashboard/report";
+import type { InfoCardData } from "@/types/dashboard/report";
 import type { StoreDispatch, RootState } from "@/redux/store";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { AdminSkeleton } from "./adminSkeleton";
 
-// Charts
+//compoonents
+import { Skeleton } from "@/components/ui/skeleton";
+// dashboard_components
 import { CourseCollectionChart } from "@/components/dashboard/charts";
-// Components
 import { InfoCards } from "@/components/collection/infoCards";
-// APIS
-import { getDashboardReport } from "@/lib/api";
-// utils
+import {
+  getDashboardReport,
+  getDashboardCourseCollectionStatus,
+} from "@/lib/api";
 import { cn } from "@/lib/utils";
 
-const AdminPageDashboard = () => {
-  const [reportData, setReportData] = useState<AdminDashboardView | null>(null);
-  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
+const MemoizedInfoCard = memo(
+  ({
+    index,
+    title,
+    count,
+  }: {
+    index: number;
+    title: string;
+    count: number;
+  }) => (
+    <InfoCards key={`${index}-${title}`} index={index} title={title}>
+      <h1 className={cn("text-3xl font-bold")}>{count}</h1>
+    </InfoCards>
+  ),
+);
 
+MemoizedInfoCard.displayName = "MemoizedInfoCard";
+
+const AdminPageDashboard = () => {
+  const [reportData, setReportData] = useState<InfoCardData[] | null>(null);
+  const [graphData, setGraphData] = useState<any>(null);
+  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const dispatch = useDispatch<StoreDispatch>();
 
+  const fetchDashboardData = useCallback(async () => {
+    const data = await dispatch(getDashboardReport());
+    const data2 = await dispatch(getDashboardCourseCollectionStatus());
+
+    if (data && data !== false) {
+      setReportData(data);
+    }
+
+    if (data2 && data2 !== false) {
+      setGraphData(data2);
+    }
+  }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getDashboardReport()).then((data) => {
-      if (data && data !== false) {
-        setReportData(data);
-      }
-    });
-  }, []);
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   if (isLoading) return <AdminSkeleton />;
   if (!reportData && !isLoading) return <div>Failed to load data</div>;
@@ -37,22 +66,24 @@ const AdminPageDashboard = () => {
   return (
     <div>
       <section className="flex gap-3">
-        {reportData?.info_cards &&
-          reportData.info_cards.map((card, index) => (
-            <InfoCards
-              key={`${index}-${card.title}`}
-              index={index}
-              title={card.title}
-            >
-              <h1 className={cn("text-3xl font-bold")}>{card.count}</h1>
-            </InfoCards>
-          ))}
+        {reportData?.map((card, index) => (
+          <MemoizedInfoCard
+            key={`${index}-${card.title}`}
+            count={card.count}
+            index={index}
+            title={card.title}
+          />
+        ))}
       </section>
-      <section>
-        <CourseCollectionChart />
+      <section className="flex gap-3 mt-6">
+        {graphData ? (
+          <CourseCollectionChart data={graphData} />
+        ) : (
+          <Skeleton className="flex-grow h-[250px]" />
+        )}
       </section>
     </div>
   );
 };
 
-export default AdminPageDashboard;
+export default memo(AdminPageDashboard);

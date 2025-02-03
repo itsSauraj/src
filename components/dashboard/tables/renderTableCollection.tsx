@@ -88,7 +88,7 @@ const RenderTable = ({
       actionType="collection"
       colDefs={colDefs}
       rowData={rowData}
-      setRowData={setRowData}
+      setRowData={setRowData as any}
       setSelectedRowId={setSelectedRowId}
     />
   );

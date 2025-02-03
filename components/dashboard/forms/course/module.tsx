@@ -83,10 +83,20 @@ const ModuleSection: React.FC<IModuleSectionProps> = ({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h5 className="font-medium">Lessons</h5>
+          </div>
+          {lessonFields.map((lessonField, lessonIndex) => (
+            <LessonSection
+              key={lessonField.id}
+              form={form}
+              lessonIndex={lessonIndex}
+              moduleIndex={moduleIndex}
+              removeLesson={() => removeLesson(lessonIndex)}
+            />
+          ))}
+          <div className="flex justify-end items-center">
             <Button
               size="sm"
               type="button"
-              variant="outline"
               onClick={() =>
                 appendLesson({
                   title: "",
@@ -101,16 +111,6 @@ const ModuleSection: React.FC<IModuleSectionProps> = ({
               Add Lesson
             </Button>
           </div>
-
-          {lessonFields.map((lessonField, lessonIndex) => (
-            <LessonSection
-              key={lessonField.id}
-              form={form}
-              lessonIndex={lessonIndex}
-              moduleIndex={moduleIndex}
-              removeLesson={() => removeLesson(lessonIndex)}
-            />
-          ))}
         </div>
       </div>
     </Card>

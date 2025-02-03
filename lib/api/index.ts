@@ -1,7 +1,10 @@
 //App
 import { markNotificationAsRead, markAllNotificationAsRead } from "./app";
 // Dashboard
-import { getDashboardReport } from "./dashboard";
+import {
+  getDashboardReport,
+  getDashboardCourseCollectionStatus,
+} from "./dashboard";
 // Members
 import {
   getMentors,
@@ -43,6 +46,7 @@ export {
   markAllNotificationAsRead,
   // Dashboard
   getDashboardReport,
+  getDashboardCourseCollectionStatus,
   // Members
   getMentors,
   getTrainees,
