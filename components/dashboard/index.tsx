@@ -1,8 +1,7 @@
-"use clinet";
+"use client";
 
 import type { RootState } from "@/redux/store";
 
-import Image from "next/image";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -49,23 +48,6 @@ export function SideBar({ children }: { children: React.ReactNode }) {
                 );
               })}
             </div>
-          </div>
-          <div>
-            <SidebarLink
-              link={{
-                label: "Manu Arora",
-                href: "#",
-                icon: (
-                  <Image
-                    alt="Avatar"
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    height={50}
-                    src="https://assets.aceternity.com/manu.png"
-                    width={50}
-                  />
-                ),
-              }}
-            />
           </div>
         </SidebarBody>
       </SidebarUI>

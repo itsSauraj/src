@@ -67,7 +67,7 @@ export default function AddCollection({
     defaultValues: {
       title: "",
       description: "",
-      alloted_time: "",
+      alloted_time: 0,
       image: undefined,
       courses: [],
     },

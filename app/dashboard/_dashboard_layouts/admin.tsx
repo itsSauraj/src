@@ -12,7 +12,7 @@ import { AdminSkeleton } from "./adminSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 // dashboard_components
 import { CourseCollectionChart } from "@/components/dashboard/charts";
-import { InfoCards } from "@/components/collection/infoCards";
+import { InfoCardsLink } from "@/components/collection/infoCards";
 import {
   getDashboardReport,
   getDashboardCourseCollectionStatus,
@@ -29,9 +29,9 @@ const MemoizedInfoCard = memo(
     title: string;
     count: number;
   }) => (
-    <InfoCards key={`${index}-${title}`} index={index} title={title}>
+    <InfoCardsLink key={`${index}-${title}`} index={index} title={title}>
       <h1 className={cn("text-3xl font-bold")}>{count}</h1>
-    </InfoCards>
+    </InfoCardsLink>
   ),
 );
 

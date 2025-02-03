@@ -109,7 +109,7 @@ const unmarkLessonAsComplete =
             "Content-Type": "application/json",
             Authorization: `Bearer ${getState().user.token}`,
           },
-          data: data, // ✅ Correct way to send data in DELETE request
+          data: data,
         },
       );
 

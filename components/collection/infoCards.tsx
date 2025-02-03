@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 import { cn, getColor } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -61,4 +62,45 @@ const InfoCards = ({
   );
 };
 
-export { InfoCards };
+const InfoCardsLink = ({
+  title,
+  children,
+  index,
+}: {
+  title: string;
+  children: React.ReactNode;
+  index: number;
+}) => {
+  const [colorBorder, setColorBorder] = React.useState("");
+  const [colorText, setColorText] = React.useState("");
+
+  React.useEffect(() => {
+    setColorBorder(getColor(index, "border"));
+    setColorText(getColor(index, "text"));
+  }, [index]);
+
+  return (
+    <Link
+      className="cursor-pointer flex-grow"
+      href={`/dashboard/${title.toLowerCase()}`}
+    >
+      <Card
+        className={cn(
+          "flex-1 flex flex-col items-center justify-center min-w-[250px] border-t-4",
+          "hover:shadow-lg dark:hover:shadow-white/10",
+          colorText,
+          colorBorder,
+        )}
+      >
+        <CardHeader className={`rounded-lg w-full flex text-center p-3 `}>
+          <CardTitle className="capitalize p-0 font-bold">{title}</CardTitle>
+        </CardHeader>
+        <CardContent className="min-h-[80px] flex justify-center items-center font-light">
+          {children}
+        </CardContent>
+      </Card>
+    </Link>
+  );
+};
+
+export { InfoCards, InfoCardsLink };

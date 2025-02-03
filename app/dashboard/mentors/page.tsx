@@ -9,7 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "antd";
 
 // componets
+import {
+  defaultColumns,
+  allColumns,
+} from "@/components/dashboard/tables/columns/members";
 import { RenderTableMembers } from "@/components/dashboard/tables";
+// collections
+import { ColumnSelectorDropdown } from "@/components/collection/tableColumnsSelector";
 import { AddDialog } from "@/components/collection/modal";
 import { AddMember } from "@/components/dashboard/forms";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
@@ -26,6 +32,8 @@ export const Dashboard = () => {
   const [deletableID, setDeletableID] = useState<UUID | null>(null);
   const [selectedRowId, setSelectedRowId] = useState<UUID[] | null>(null);
   const [openAlert, setOpenAlert] = useState(false);
+  const [selectedColumns, setSelectedColumns] =
+    useState<string[]>(defaultColumns);
 
   const dispatch = useDispatch<StoreDispatch>();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
@@ -76,6 +84,11 @@ export const Dashboard = () => {
           >
             <AddMember setData={setRowData} setState={setOpen} type="mentor" />
           </AddDialog>
+          <ColumnSelectorDropdown
+            columns={allColumns}
+            parentSelectedColumns={selectedColumns}
+            setParentSelectedColumns={setSelectedColumns}
+          />
         </div>
         <div className="flex flex-col w-full h-full">
           {isLoading ? (
@@ -83,6 +96,7 @@ export const Dashboard = () => {
           ) : rowData && rowData.length > 0 ? (
             <RenderTableMembers
               rowData={rowData}
+              selectedColumns={selectedColumns}
               setDeletable={setDeletableID}
               setOpen={setOpenAlert}
               setSelectedRowId={setSelectedRowId}

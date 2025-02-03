@@ -4,84 +4,40 @@ import type { ColDef } from "ag-grid-community";
 import type { CollectionFormData } from "@/dependencies/yup";
 import type { UUID } from "crypto";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { getAllColumns } from "./columns/collections";
 
 // componets
-import {
-  ActionsFormatter,
-  ImageFormatter,
-  TextFormatter,
-  BooleanFormatter,
-} from "@/components/ui/table/formater";
+
 import { Table } from "@/components/ui/table/AgCustomTable";
 
 const RenderTable = ({
   rowData,
   setDeletable,
+  selectedColumns,
   setOpen,
   setSelectedRowId,
   setRowData,
 }: {
   rowData: CollectionFormData[];
   setDeletable: (id: UUID | null) => void;
+  selectedColumns: string[];
   setOpen: (open: boolean) => void;
   setSelectedRowId: (id: UUID[] | null) => void;
   setRowData: (data: CollectionFormData[]) => void;
 }) => {
-  const [colDefs] = useState<ColDef[]>([
-    {
-      headerName: "Title",
-      field: "title",
-      cellClass: "font-bold",
-      headerClass: "font-bold",
-      flex: 1,
-    },
-    {
-      headerName: "Description",
-      field: "description",
-      cellClass: "text-justify",
-      flex: 2,
-      cellRenderer: TextFormatter,
-    },
-    {
-      headerName: "Alloted Time (in hours)",
-      field: "alloted_time",
-      cellClass: "text-justify",
-      flex: 2,
-      cellRenderer: TextFormatter,
-    },
-    {
-      headerName: "Default",
-      field: "is_default",
-      width: 100,
-      cellRenderer: BooleanFormatter,
-      sortable: false,
-      editable: (params: any) => {
-        if (params.data.is_default) return false;
+  const actions = {
+    setDeletable: setDeletable,
+    setOpen: setOpen,
+  };
+  const [colDefs, setColDefs] = useState<ColDef[]>(
+    getAllColumns(actions, selectedColumns),
+  );
 
-        return true;
-      },
-    },
-    {
-      headerName: "Image",
-      field: "image",
-      cellRenderer: (_params: any) =>
-        ImageFormatter(_params, _params.data.title.toLowerCase()),
-      filter: false,
-      sortable: false,
-      editable: false,
-    },
-    {
-      headerName: "Actions",
-      field: "id",
-      cellRenderer: (_params: any) =>
-        ActionsFormatter(setDeletable, setOpen, _params),
-      width: 120,
-      editable: false,
-      sortable: false,
-      filter: false,
-    },
-  ]);
+  useEffect(() => {
+    setColDefs(getAllColumns(actions, selectedColumns));
+  }, [selectedColumns]);
 
   return (
     <Table

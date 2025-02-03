@@ -29,7 +29,7 @@ export function AddDialog({
   return (
     <Dialog open={state} onOpenChange={setState}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button>
           <Plus className="h-4 w-4 mr-2" />
           {title}
         </Button>

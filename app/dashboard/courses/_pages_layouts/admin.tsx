@@ -21,6 +21,8 @@ import { Button } from "@/components/ui/button";
 import MyDrawer from "@/components/ui/next-drawer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+// my collections
+import FolderScanner from "@/components/collection/folderScanner";
 
 export const CourseDashboard = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -44,6 +46,8 @@ export const CourseDashboard = () => {
   return (
     <div className="flex flex-col w-full h-[80svh]">
       <div className="flex justify-end">
+        {/* // This is a custom component FIXME: Adds import of course form files storage works only on chromeium broswers.*/}
+        {/* <FolderScanner /> */}
         <AddDialog
           className="sm:min-w-[100svw] lg:min-w-[80svw]"
           description="Add a new mentor to your training group"

@@ -20,7 +20,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, formatDuration } from "@/lib/utils";
 
 export const DateFormatter = (params: ValueFormatterParams): string => {
   return new Date(params.value).toLocaleDateString("en-us", {
@@ -116,4 +116,20 @@ export const BooleanFormatter = (params: ValueFormatterParams): JSX.Element => {
       )}
     </div>
   );
+};
+
+export const ListRenderer = (params: ValueFormatterParams): JSX.Element => {
+  return (
+    <div className="flex flex-col gap-2">
+      {params.value.map((item: any) => (
+        <p key={item.id} className="text-sm">
+          {item.title}
+        </p>
+      ))}
+    </div>
+  );
+};
+
+export const DurationFormatter = (params: ValueFormatterParams): string => {
+  return formatDuration(params.value);
 };
