@@ -29,10 +29,10 @@ export const NotiicationBell = ({
   return (
     <>
       <div
-        className="relative hover:bg-neutral-200 p-2 rounded-full dark:hover:bg-neutral-700
-        trainstion-all duration-200 ease-linear border-neutral-200 dark:border-neutral-700"
+        className="relative hover:bg-primary-200 p-2 rounded-full dark:hover:bg-neutral-700
+        trainstion-all duration-200 ease-linear border-primary-200 dark:border-neutral-700"
       >
-        <IoIosNotifications size={32} />
+        <IoIosNotifications className="text-white" size={32} />
         {notify && (
           <div
             className={cn(

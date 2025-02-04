@@ -195,7 +195,7 @@ export default function UserPage({
             content="Delete"
             trigger={
               <Button
-                className="px-3"
+                className="py-0 px-3"
                 variant="destructive"
                 onClick={() => setOpenAlert(true)}
               >

@@ -27,6 +27,11 @@ import {
   getCourseCollection,
 } from "@/lib/api";
 
+const customLight = themeQuartz.withPart(iconSetQuartzBold).withParams({
+  checkboxUncheckedBorderColor: "#2563eb",
+  checkboxCheckedBorderColor: "#2563eb",
+});
+
 const customDark = themeQuartz.withPart(iconSetQuartzBold).withParams({
   accentColor: "#FFFFFF",
   backgroundColor: "#404040",
@@ -98,7 +103,7 @@ export const Table = ({
         pagination={true}
         rowData={rowData}
         rowSelection={rowSelection}
-        theme={themeIsDark ? customDark : undefined}
+        theme={themeIsDark ? customDark : customLight}
         onCellValueChanged={(event) => {
           if (event.colDef.field === "is_default") {
             handleDefaultValueChange(event);

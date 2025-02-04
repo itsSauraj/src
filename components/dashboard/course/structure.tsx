@@ -1,54 +1,60 @@
 import type { CourseData } from "@/types/dashboard/view";
 
 import React from "react";
+import { FaClock } from "react-icons/fa";
 
 import { formatDuration } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { Separator } from "@/components/ui/separator";
 
 export const CourseLayout = ({ course }: { course: CourseData }) => {
   return (
     <div className="p-6">
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>{course.metadata.title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>{course.metadata.description}</p>
-          <p>
-            <strong>Duration:</strong>{" "}
-            {formatDuration(course.metadata.duration)}
-          </p>
-        </CardContent>
-      </Card>
-
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-xl font-bold capitalize">
+          {course.metadata.title}
+        </h3>
+        <p className="flex items-center gap-2">
+          <FaClock />
+          {formatDuration(course.metadata.duration)}
+        </p>
+      </div>
+      <p>{course.metadata.description}</p>
+      <div className="my-4">
+        <h3 className="font-bold text-xl">Lessons</h3>
+        <Separator />
+      </div>
       <Accordion collapsible type="single">
         {course.modules.map((module, moduleIndex: number) => (
-          <AccordionItem key={moduleIndex} value={`module-${moduleIndex}`}>
+          <AccordionItem
+            key={moduleIndex}
+            className="border-1 px-4"
+            value={`module-${moduleIndex}`}
+          >
             <AccordionTrigger>
-              {module.metadata.sequence}. {module.metadata.title}
+              <div className="w-full flex justify-between items-center px-2">
+                {module.metadata.sequence}. {module.metadata.title}
+                <p className="flex items-center gap-2">
+                  <FaClock /> {formatDuration(module.metadata.duration)}
+                </p>
+              </div>
             </AccordionTrigger>
             <AccordionContent>
               <p>{module.metadata.description}</p>
-              <p>
-                <strong>Duration:</strong>{" "}
-                {formatDuration(module.metadata.duration)}
-              </p>
-
               {module.sub_modules.length > 0 && (
                 <Accordion collapsible className="mt-4" type="single">
                   {module.sub_modules.map((subModule, subModuleIndex) => (
                     <AccordionItem
                       key={subModuleIndex}
+                      className="border-l-1"
                       value={`submodule-${subModuleIndex}`}
                     >
                       <AccordionTrigger>
-                        {subModule.metadata.sequence}.{" "}
                         {subModule.metadata.title}
                       </AccordionTrigger>
                       <AccordionContent>
@@ -59,7 +65,7 @@ export const CourseLayout = ({ course }: { course: CourseData }) => {
                         </p>
 
                         {subModule.lessons.length > 0 && (
-                          <div className="mt-4">
+                          <div className="mt-4 flex flex-col gap-2 px-3">
                             {subModule.lessons.map((lesson, lessonIndex) => (
                               <LessonCard
                                 key={lessonIndex}
@@ -76,7 +82,7 @@ export const CourseLayout = ({ course }: { course: CourseData }) => {
               )}
 
               {module.lessons.length > 0 && (
-                <div className="mt-4">
+                <div className="mt-4 flex flex-col gap-2 px-3">
                   {module.lessons.map((lesson, lessonIndex) => (
                     <LessonCard
                       key={lessonIndex}
@@ -101,17 +107,9 @@ const LessonCard = ({
   lesson: CourseData["modules"][0]["lessons"][0];
   index: number;
 }) => (
-  <Card className="mb-4">
-    <CardHeader>
-      <CardTitle>
-        {index + 1}. {lesson.title}
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <p>{lesson.description}</p>
-      <p>
-        <strong>Duration:</strong> {lesson.duration}
-      </p>
-    </CardContent>
-  </Card>
+  <div className="flex justify-between items-center">
+    {index + 1}. {lesson.title}
+    <p>{lesson.description}</p>
+    <p className="flex items-center gap-2">{lesson.duration}</p>
+  </div>
 );

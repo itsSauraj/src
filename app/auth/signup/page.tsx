@@ -2,17 +2,25 @@
 
 import type { StoreDispatch, RootState } from "@/redux/store";
 
-import React, { useState, ChangeEvent } from "react";
-import { Loader2 } from "lucide-react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Loader2 } from "lucide-react";
 
-// Importing Yup schemas (assuming you'll create this)
 import { registerSchema } from "@/dependencies/yup";
-// Import the ui components
-import { Input } from "@/components/ui/custom-input";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-// api actions
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { registerUser } from "@/redux/slice/user";
 
 interface RegistrationRequest {
@@ -24,118 +32,192 @@ interface RegistrationRequest {
   confirm_password: string;
 }
 
-const RegisterPage = () => {
-  const app = useSelector((state: RootState) => state.app);
+export default function RegisterForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"form">) {
+  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const dispatch = useDispatch<StoreDispatch>();
 
-  const [formData, setFormData] = useState<RegistrationRequest>({
-    username: "",
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    confirm_password: "",
+  const form = useForm<RegistrationRequest>({
+    resolver: yupResolver(registerSchema),
+    defaultValues: {
+      username: "",
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+    },
   });
 
-  const [errors, setErrors] = useState<Partial<RegistrationRequest>>({
-    username: "",
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    confirm_password: "",
-  });
-
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (formData: RegistrationRequest) => {
     try {
-      await registerSchema.validate(formData, { abortEarly: false });
-      // Assuming you'll create a registration action
-      console.log(formData);
-      dispatch(registerUser(formData));
-    } catch (error: any) {
-      if (error.name === "ValidationError") {
-        const newErrors: Partial<RegistrationRequest> = {};
-
-        error.inner.forEach((e: any) => {
-          newErrors[e.path as keyof RegistrationRequest] = e.message;
-        });
-        setErrors(newErrors);
-      }
+      await dispatch(registerUser(formData));
+    } catch (error) {
+      console.error("Registration failed:", error);
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
   return (
-    <form
-      className="flex justify-center items-center flex-col space-y-4 gap-3 p-4"
-      onSubmit={handleRegister}
-    >
-      <Input
-        className="text-lg"
-        error={errors.username}
-        name="username"
-        placeholder="Username"
-        onChange={handleChange}
-      />
-      <Input
-        className="text-lg"
-        error={errors.first_name}
-        name="first_name"
-        placeholder="First Name"
-        onChange={handleChange}
-      />
-      <Input
-        className="text-lg"
-        error={errors.last_name}
-        name="last_name"
-        placeholder="Last Name"
-        onChange={handleChange}
-      />
-      <Input
-        className="text-lg"
-        error={errors.email}
-        name="email"
-        placeholder="Email"
-        type="email"
-        onChange={handleChange}
-      />
-      <Input
-        className="text-lg"
-        error={errors.password}
-        name="password"
-        placeholder="Password"
-        type="password"
-        onChange={handleChange}
-      />
-      <Input
-        className="text-lg"
-        error={errors.confirm_password}
-        name="confirm_password"
-        placeholder="Confirm Password"
-        type="password"
-        onChange={handleChange}
-      />
-      <Button className="w-full" disabled={app.auth.isLoading} type="submit">
-        {app.auth.isLoading && <Loader2 className="animate-spin" />}
-        Register
-      </Button>
-      <Link href="/auth/login">Login</Link>
-    </form>
-  );
-};
+    <Form {...form}>
+      <form
+        className={cn("flex flex-col gap-6", className)}
+        onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
+      >
+        <div className="flex flex-col items-center gap-2 text-center">
+          <h1 className="text-2xl font-bold">Create an account</h1>
+        </div>
 
-export default RegisterPage;
+        <div className="grid gap-2">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black dark:text-white">
+                  Username
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your username"
+                    {...field}
+                    autoComplete="username"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="first_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-black dark:text-white">
+                    First Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your first name"
+                      {...field}
+                      autoComplete="given-name"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-black dark:text-white">
+                    Last Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your last name"
+                      {...field}
+                      autoComplete="family-name"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black dark:text-white">
+                  Email
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your email"
+                    type="email"
+                    {...field}
+                    autoComplete="email"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black dark:text-white">
+                  Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Create a password"
+                    type="password"
+                    {...field}
+                    autoComplete="new-password"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirm_password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black dark:text-white">
+                  Confirm Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Confirm your password"
+                    type="password"
+                    {...field}
+                    autoComplete="new-password"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button className="w-full" disabled={isLoading} type="submit">
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating account...
+              </>
+            ) : (
+              "Register"
+            )}
+          </Button>
+        </div>
+
+        <div className="text-center text-sm">
+          Already have an account?{" "}
+          <Link
+            className="text-primary hover:underline underline-offset-4"
+            href="/auth/login"
+          >
+            Login
+          </Link>
+        </div>
+      </form>
+    </Form>
+  );
+}

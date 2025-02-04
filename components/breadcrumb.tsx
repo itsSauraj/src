@@ -107,14 +107,14 @@ export function BreadcrumbResponsive() {
               <>
                 <BreadcrumbLink
                   asChild
-                  className="max-w-20 truncate md:max-w-none"
+                  className="max-w-20 truncate md:max-w-none text-white hover:text-white hover:opacity-70"
                 >
                   <Link href={item.href}>{item.label}</Link>
                 </BreadcrumbLink>
                 <BreadcrumbSeparator />
               </>
             ) : (
-              <BreadcrumbPage className="max-w-20 truncate md:max-w-none">
+              <BreadcrumbPage className="max-w-20 truncate md:max-w-none text-white hover:text-white hover:opacity-70">
                 {item.label}
               </BreadcrumbPage>
             )}

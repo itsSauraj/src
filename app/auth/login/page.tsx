@@ -3,93 +3,137 @@
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { LoginRequest } from "@/types/auth/actions";
 
-import React, { useState, ChangeEvent } from "react";
-import { Loader2 } from "lucide-react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Loader2 } from "lucide-react";
 
-// Importing Yup schemas
 import { loginSchema } from "@/dependencies/yup";
-// import the redux actions
-import { logInUser } from "@/redux/slice/user";
-// Import the ui components
-import { Input } from "@/components/ui/custom-input";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { logInUser } from "@/redux/slice/user";
 
-const LoginPage = () => {
-  const app = useSelector((state: RootState) => state.app);
-
+export default function LoginForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<"form">) {
   const dispatch = useDispatch<StoreDispatch>();
+  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
-  const [formData, setFormData] = useState<LoginRequest>({
-    username: "",
-    password: "",
+  const form = useForm<LoginRequest>({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
   });
 
-  const [errors, setErrors] = useState<LoginRequest>({
-    username: "",
-    password: "",
-  });
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (formData: LoginRequest) => {
     try {
-      await loginSchema.validate(formData, { abortEarly: false });
-      dispatch(logInUser(formData));
-    } catch (error: any) {
-      dispatch(logInUser(formData));
-      if (error.name === "ValidationError") {
-        error.inner.forEach((e: any) => {
-          setErrors((prev) => ({
-            ...prev,
-            [e.path]: e.message,
-          }));
-        });
-      }
+      await dispatch(logInUser(formData));
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      form.reset();
     }
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setErrors({
-      ...errors,
-      [name]: "",
-    });
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
   return (
-    <form
-      className="flex justify-center items-center flex-col space-y-4 gap-3 p-4"
-      onSubmit={handleLogin}
-    >
-      <Input
-        className="text-lg"
-        error={errors.username}
-        name="username"
-        placeholder="Username"
-        onChange={handleChange}
-      />
-      <Input
-        className="text-lg"
-        error={errors.password}
-        name="password"
-        placeholder="Pawword"
-        type="password"
-        onChange={handleChange}
-      />
-      <Button className="w-full" disabled={app.auth.isLoading} type="submit">
-        {app.auth.isLoading && <Loader2 className="animate-spin" />}
-        Login
-      </Button>
-      <Link href="/auth/signup">Signup</Link>
-    </form>
-  );
-};
+    <Form {...form}>
+      <form
+        className={cn("flex flex-col gap-6", className)}
+        onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
+      >
+        <div className="flex flex-col items-center gap-2 text-center">
+          <h1 className="text-2xl font-bold">Login to your account</h1>
+        </div>
 
-export default LoginPage;
+        <div className="grid gap-2">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black dark:text-white">
+                  Username
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your username"
+                    {...field}
+                    autoComplete="username"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center justify-between">
+                  <FormLabel className="text-black dark:text-white">
+                    Password
+                  </FormLabel>
+                  {/* Uncomment if you want to add forgot password
+                  <Link
+                    className="text-sm text-muted-foreground hover:underline"
+                    href="/auth/forgot-password"
+                  >
+                    Forgot password?
+                  </Link>
+                  */}
+                </div>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    {...field}
+                    autoComplete="current-password"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button className="w-full" disabled={isLoading} type="submit">
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
+          </Button>
+        </div>
+
+        <div className="text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <Link
+            className="text-primary hover:underline underline-offset-4"
+            href="/auth/signup"
+          >
+            Sign up
+          </Link>
+        </div>
+      </form>
+    </Form>
+  );
+}

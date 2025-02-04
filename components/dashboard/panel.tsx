@@ -27,9 +27,9 @@ export const PagePanel = ({ className }: { className: string }) => {
           onClick={() => dispatch(toogleSideBarPin())}
         >
           {sidebar ? (
-            <BiDockLeft className="text-2xl cursor-pointer" />
+            <BiDockLeft className="text-2xl cursor-pointer text-white" />
           ) : (
-            <BiSolidDockLeft className="text-2xl cursor-pointer" />
+            <BiSolidDockLeft className="text-2xl cursor-pointer text-white" />
           )}
         </button>
         <Separator

@@ -25,7 +25,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 mx-auto \
+        "rounded-md flex flex-col md:flex-row bg-primary dark:bg-card w-full flex-1 mx-auto \
         border border-neutral-200 dark:border-neutral-700 overflow-hidden",
         "h-screen w-screen",
       )}
@@ -56,7 +56,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
           <PagePanel className="rounded-tl-2xl hidden md:flex " />
           <div
             className="w-full h-full p-4 border-neutral-200 dark:border-neutral-700 bg-white \
-           dark:bg-neutral-900 rounded-tl-2xl flex-grow"
+           dark:bg-card/60 rounded-tl-2xl flex-grow "
           >
             {children}
           </div>

@@ -7,8 +7,11 @@ export const loginSchema = yup.object().shape({
     .required("Username is required"),
   password: yup
     .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    .required("Password is required")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+      "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    ),
 });
 
 export const registerSchema = yup.object().shape({
@@ -22,10 +25,9 @@ export const registerSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
     .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character"
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+      "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     ),
   confirm_password: yup
     .string()

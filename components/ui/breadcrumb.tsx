@@ -84,7 +84,7 @@ const BreadcrumbSeparator = ({
 }: React.ComponentProps<"li">) => (
   <li
     aria-hidden="true"
-    className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}
+    className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5 text-white", className)}
     role="presentation"
     {...props}
   >

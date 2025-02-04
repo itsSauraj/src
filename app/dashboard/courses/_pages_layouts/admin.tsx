@@ -17,12 +17,10 @@ import { getCourses } from "@/lib/api";
 // compoenets
 import { AddCouse } from "@/components/dashboard/forms";
 import { AddDialog } from "@/components/collection/modal";
-import { Button } from "@/components/ui/button";
-import MyDrawer from "@/components/ui/next-drawer";
+import MyDrawer from "@/components/collection/mySheetDrawer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 // my collections
-import FolderScanner from "@/components/collection/folderScanner";
 
 export const CourseDashboard = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -49,7 +47,7 @@ export const CourseDashboard = () => {
         {/* // This is a custom component FIXME: Adds import of course form files storage works only on chromeium broswers.*/}
         {/* <FolderScanner /> */}
         <AddDialog
-          className="sm:min-w-[100svw] lg:min-w-[80svw]"
+          className="sm:min-w-[100svw] lg:min-w-[50svw]"
           description="Add a new mentor to your training group"
           setState={setOpen}
           state={open}
@@ -82,36 +80,19 @@ export const CourseDashboard = () => {
       ) : (
         <>
           <ScrollArea className="h-full">
-            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 justify-center">
+            <div className="grid grid-cols-1 p-4 sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
               {courses.map((course) => (
-                <div
+                <CourseCard
                   key={course.id}
-                  className="flex justify-center p-3 max-h-[260px]"
-                >
-                  <CourseCard
-                    className="min-w-full"
-                    course={course}
-                    openCourse={handleBackdropChange}
-                    setOpenCourseID={setOpenCourseID}
-                  />
-                </div>
+                  className="min-w-full"
+                  course={course}
+                  openCourse={handleBackdropChange}
+                  setOpenCourseID={setOpenCourseID}
+                />
               ))}
             </div>
           </ScrollArea>
-          <MyDrawer
-            footer={
-              <Button
-                className="capitalize"
-                color="primary"
-                onClick={() => onOpenChange()}
-              >
-                Close
-              </Button>
-            }
-            isOpen={isOpen}
-            title="Course View"
-            onOpenChange={onOpenChange}
-          >
+          <MyDrawer isOpen={isOpen} onOpenChange={onOpenChange}>
             <ViewCourse courseId={openCourseID as UUID} />
           </MyDrawer>
         </>

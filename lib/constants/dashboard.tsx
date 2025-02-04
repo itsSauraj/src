@@ -8,41 +8,31 @@ export const links = [
   {
     label: "Dashboard",
     href: "/dashboard",
-    icon: (
-      <MdSpaceDashboard className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-    ),
+    icon: <MdSpaceDashboard className="text-white h-5 w-5 flex-shrink-0" />,
     for: ["admin", "mentor", "trainee"],
   },
   {
     label: "Mentors",
     href: "/dashboard/mentors",
-    icon: (
-      <FaPeopleRoof className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-    ),
+    icon: <FaPeopleRoof className="text-white h-5 w-5 flex-shrink-0" />,
     for: ["admin"],
   },
   {
     label: "Courses",
     href: "/dashboard/courses",
-    icon: (
-      <IoBookSharp className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-    ),
+    icon: <IoBookSharp className="text-white h-5 w-5 flex-shrink-0" />,
     for: ["admin", "trainee"],
   },
   {
     label: "Collections",
     href: "/dashboard/collections",
-    icon: (
-      <SiBookstack className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-    ),
+    icon: <SiBookstack className="text-white h-5 w-5 flex-shrink-0" />,
     for: ["admin"],
   },
   {
     label: "Trainees",
     href: "/dashboard/trainees",
-    icon: (
-      <PiStudentFill className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-    ),
+    icon: <PiStudentFill className="text-white h-5 w-5 flex-shrink-0" />,
     for: ["admin", "mentor"],
   },
 ];

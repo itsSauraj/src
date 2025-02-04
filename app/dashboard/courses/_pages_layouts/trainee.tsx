@@ -18,7 +18,7 @@ import {
 } from "@/components/dashboard/course/client/collectionCard";
 import { StatusBadge } from "@/components/collection/status-badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import MyDrawer from "@/components/ui/next-drawer";
+import MyDrawer from "@/components/collection/mySheetDrawer";
 // API
 import { getTarineeAggignedCollection } from "@/lib/api";
 

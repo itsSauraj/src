@@ -52,7 +52,7 @@ export const ActionsFormatter = (
     <div className="flex justify-around gap-2 items-center h-full">
       {props.data.groups && props.data.groups[0] !== "trainee" ? null : (
         <Button
-          className="text-lg bg-gray-500 dark:bg-gray-200/80 dark:text-black/60 h-auto p-2 hover:opacity-70"
+          className="text-lg bg-primary dark:bg-gray-200/80 dark:text-black/60 h-auto p-2 hover:opacity-70"
           onClick={handleView}
         >
           <TbViewportWide />

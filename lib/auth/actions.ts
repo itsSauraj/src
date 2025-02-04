@@ -24,8 +24,6 @@ export const register = async (
 
     return response.data;
   } catch (error) {
-    toast.error("Error registering");
-
     return error;
   }
 };
@@ -41,8 +39,6 @@ export const login = async (
 
     return response.data;
   } catch (error) {
-    toast.error("Error logging in");
-
     return error;
   }
 };

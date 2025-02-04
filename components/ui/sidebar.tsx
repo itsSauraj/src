@@ -112,7 +112,7 @@ export const DesktopSidebar = ({
           width: animate ? (open ? "200px" : "60px") : "200px",
         }}
         className={cn(
-          "h-full px-4 py-4 hidden  md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[200px] flex-shrink-0",
+          "h-full px-4 py-4 hidden  md:flex md:flex-col w-[200px] flex-shrink-0 bg-primary dark:bg-card",
           className,
         )}
         onMouseEnter={() => setOpen(true)}
@@ -140,7 +140,7 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex md:hidden items-center justify-between bg-neutral-100 dark:bg-neutral-800",
+          "h-10 px-4 py-4 flex md:hidden items-center justify-between bg-primary dark:bg-card",
         )}
         {...props}
       >
@@ -149,17 +149,14 @@ export const MobileSidebar = ({
         </div>
         <div className="flex z-20 items-center gap-2">
           <NotificationDropdown className="text-xl" />
-          <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
-            onClick={() => setOpen(!open)}
-          />
+          <IconMenu2 className="text-white" onClick={() => setOpen(!open)} />
         </div>
         <AnimatePresence>
           {open && (
             <motion.div
               animate={{ x: 0, opacity: 1 }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+                "fixed h-full w-full inset-0 bg-primary dark:bg-card p-10 z-[100] flex flex-col justify-between",
                 className,
               )}
               exit={{ x: "-100%", opacity: 0 }}
@@ -170,7 +167,7 @@ export const MobileSidebar = ({
               }}
             >
               <div
-                className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+                className="absolute right-10 top-10 z-50 text-white"
                 role="button"
                 tabIndex={0}
                 onClick={() => setOpen(!open)}
@@ -241,7 +238,7 @@ export const LinkContent = ({ link }: { link: Links }) => {
 
   return (
     <>
-      <span className={`${link.href === "/logout" && "text-red-500"}`}>
+      <span className={`text-white ${link.href === "/logout" && "text-white"}`}>
         {link.icon}
       </span>
 
@@ -250,7 +247,7 @@ export const LinkContent = ({ link }: { link: Links }) => {
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className="text-white text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         <span
           className={`${link.label.toLowerCase() === "logout" && "text-red-500"}`}
