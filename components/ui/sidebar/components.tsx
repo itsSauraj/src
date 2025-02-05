@@ -2,66 +2,16 @@
 
 import type { RootState } from "@/redux/store";
 
-import Link, { LinkProps } from "next/link";
-import React, { useState, createContext, useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
 
+import { SidebarProvider, useSidebar } from "./provider";
+
 import { cn } from "@/lib/utils";
 import { NotificationDropdown } from "@/components/dashboard/dropdown/noification";
 import { BreadcrumbResponsive } from "@/components/breadcrumb";
-
-interface Links {
-  label: string;
-  href?: string;
-  icon?: React.JSX.Element | React.ReactNode;
-  child?: React.JSX.Element;
-  type?: string;
-}
-
-interface SidebarContextProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  animate: boolean;
-}
-
-const SidebarContext = createContext<SidebarContextProps | undefined>(
-  undefined,
-);
-
-export const useSidebar = () => {
-  const context = useContext(SidebarContext);
-
-  if (!context) {
-    throw new Error("useSidebar must be used within a SidebarProvider");
-  }
-
-  return context;
-};
-
-export const SidebarProvider = ({
-  children,
-  open: openProp,
-  setOpen: setOpenProp,
-  animate = true,
-}: {
-  children: React.ReactNode;
-  open?: boolean;
-  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  animate?: boolean;
-}) => {
-  const [openState, setOpenState] = useState(false);
-
-  const open = openProp !== undefined ? openProp : openState;
-  const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
-
-  return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
-      {children}
-    </SidebarContext.Provider>
-  );
-};
 
 export const Sidebar = ({
   children,
@@ -184,77 +134,6 @@ export const MobileSidebar = ({
           )}
         </AnimatePresence>
       </div>
-    </>
-  );
-};
-
-export const SidebarLink = ({
-  link,
-  className,
-  onClick,
-  ...props
-}: {
-  link: Links;
-  className?: string;
-  onClick?: () => void;
-  props?: LinkProps;
-}) => {
-  return (
-    <>
-      {link.child ? (
-        link.child
-      ) : (
-        <>
-          {link.type === "button" ? (
-            <button
-              className={cn(
-                "flex items-center justify-start gap-2  group/sidebar py-2",
-                className,
-              )}
-              onClick={onClick}
-            >
-              <LinkContent link={link} />
-            </button>
-          ) : (
-            <Link
-              className={cn(
-                "flex items-center justify-start gap-2  group/sidebar py-2",
-                className,
-              )}
-              href={link.href || "#"}
-              {...props}
-            >
-              <LinkContent link={link} />
-            </Link>
-          )}
-        </>
-      )}
-    </>
-  );
-};
-
-export const LinkContent = ({ link }: { link: Links }) => {
-  const { open, animate } = useSidebar();
-
-  return (
-    <>
-      <span className={`text-white ${link.href === "/logout" && "text-white"}`}>
-        {link.icon}
-      </span>
-
-      <motion.span
-        animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
-          opacity: animate ? (open ? 1 : 0) : 1,
-        }}
-        className="text-white text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-      >
-        <span
-          className={`${link.label.toLowerCase() === "logout" && "text-red-500"}`}
-        >
-          {link.label}
-        </span>
-      </motion.span>
     </>
   );
 };

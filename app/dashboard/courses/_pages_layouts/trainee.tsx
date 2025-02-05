@@ -36,8 +36,10 @@ const ClientPage = () => {
     string,
     number
   > | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     dispatch(getTarineeAggignedCollection()).then((data) => {
       setAssignedCollections(data as any);
     });
@@ -58,6 +60,10 @@ const ClientPage = () => {
     );
     onOpenChange();
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   if (isLoading) {
     return (

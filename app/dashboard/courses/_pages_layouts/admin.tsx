@@ -13,7 +13,7 @@ import { Empty } from "antd";
 import CourseCard from "@/components/dashboard/course/courseCard";
 import ViewCourse from "@/components/dashboard/course/view";
 /* APIs */
-import { getCourses } from "@/lib/api";
+import { getCourses, deleteCourse } from "@/lib/api";
 // compoenets
 import { AddCouse } from "@/components/dashboard/forms";
 import { AddDialog } from "@/components/collection/modal";
@@ -21,12 +21,17 @@ import MyDrawer from "@/components/collection/mySheetDrawer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 // my collections
+import { MyAlertDialog } from "@/components/collection/alert-dialog";
 
 export const CourseDashboard = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
   const [courses, setCourses] = useState<Course[]>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
   const [openCourseID, setOpenCourseID] = useState<UUID | null>(null);
+  const [deleteCourseID, setDeleteCourseID] = useState<UUID | null>(null);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const dispatch = useDispatch<StoreDispatch>();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
@@ -36,10 +41,31 @@ export const CourseDashboard = () => {
   };
 
   useEffect(() => {
+    setIsMounted(true);
     dispatch(getCourses()).then((data) => {
       setCourses(data);
     });
   }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  const handleDeleteAction = (id: UUID) => {
+    setDeleteCourseID(id);
+    setOpenAlert(true);
+  };
+
+  const onConfirmDelete = () => {
+    if (deleteCourseID) {
+      dispatch(deleteCourse(deleteCourseID)).then(() => {
+        dispatch(getCourses()).then((data) => {
+          setCourses(data);
+        });
+      });
+    }
+    setOpenAlert(false);
+  };
 
   return (
     <div className="flex flex-col w-full h-[80svh]">
@@ -87,6 +113,7 @@ export const CourseDashboard = () => {
                   className="min-w-full"
                   course={course}
                   openCourse={handleBackdropChange}
+                  setDeleteCourseID={handleDeleteAction}
                   setOpenCourseID={setOpenCourseID}
                 />
               ))}
@@ -97,6 +124,13 @@ export const CourseDashboard = () => {
           </MyDrawer>
         </>
       )}
+      <MyAlertDialog
+        description="Are you sure you want to delete this Collection?"
+        setOpen={setOpenAlert}
+        title="Delete Collection"
+        onContinue={onConfirmDelete}
+        onOpen={openAlert}
+      />
     </div>
   );
 };

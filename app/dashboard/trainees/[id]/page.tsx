@@ -9,9 +9,9 @@ const Page = async ({ params }: { params: Promise<{ id: UUID }> }) => {
   const trainee_id = (await params).id;
 
   return (
-    <div className="h-full w-full p-2">
+    <div className="h-full w-full lg:p-2">
       <ScrollArea className="h-full w-full">
-        <div className="absolute flex flex-col md:flex-row gap-4 h-full w-full overflow-scroll">
+        <div className="absolute flex flex-col md:flex-row gap-4 h-full w-full overflow-y-scroll lg:overflow-hidden">
           <UserReport trainee_id={trainee_id} />
         </div>
       </ScrollArea>

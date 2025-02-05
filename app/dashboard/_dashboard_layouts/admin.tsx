@@ -38,6 +38,12 @@ const MemoizedInfoCard = memo(
 MemoizedInfoCard.displayName = "MemoizedInfoCard";
 
 const AdminPageDashboard = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const [reportData, setReportData] = useState<InfoCardData[] | null>(null);
   const [graphData, setGraphData] = useState<any>(null);
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
@@ -60,12 +66,16 @@ const AdminPageDashboard = () => {
     fetchDashboardData();
   }, [fetchDashboardData]);
 
+  if (!isMounted) {
+    return null;
+  }
+
   if (isLoading) return <AdminSkeleton />;
   if (!reportData && !isLoading) return <div>Failed to load data</div>;
 
   return (
     <div>
-      <section className="flex gap-3">
+      <section className="flex gap-3 flex-wrap">
         {reportData?.map((card, index) => (
           <MemoizedInfoCard
             key={`${index}-${card.title}`}

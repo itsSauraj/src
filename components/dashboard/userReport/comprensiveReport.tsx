@@ -32,10 +32,10 @@ export const ComprehensiveTrainingReport: React.FC<{
       return {
         key: course.id,
         label: (
-          <div className="flex justify-between items-center">
+          <div key={course.id} className="flex justify-between items-center">
             <div>
               <h3 className="font-semibold">{course.title}</h3>
-              <p className="text-xs text-gray-500">{course.description}</p>
+              {/* <p className="text-xs text-gray-500">{course.description}</p> */}
             </div>
             <Badge
               color={
@@ -90,6 +90,7 @@ export const ComprehensiveTrainingReport: React.FC<{
                     strokeColor={getProgressColor(moduleProgress)}
                   />
                   <Table
+                    key={module.id}
                     columns={[
                       { title: "Lesson", dataIndex: "title", key: "title" },
                       {
@@ -126,10 +127,10 @@ export const ComprehensiveTrainingReport: React.FC<{
     return {
       key: collection.id,
       label: (
-        <div className="flex justify-between items-center">
+        <div key={collection.id} className="flex justify-between items-center">
           <div>
             <h2 className="text-lg font-bold">{collection.title}</h2>
-            <p className="text-sm text-gray-500">{collection.description}</p>
+            {/* <p className="text-sm text-gray-500">{collection.description}</p> */}
           </div>
           <Badge
             color={

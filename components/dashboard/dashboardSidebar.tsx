@@ -2,8 +2,9 @@
 
 import type { RootState } from "@/redux/store";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 import { Logo, LogoIcon } from "@/components/ui/appLogo";
 import {
@@ -14,6 +15,9 @@ import {
 import { cn } from "@/lib/utils";
 import { links } from "@/lib/constants/dashboard";
 import { PagePanel } from "@/components/dashboard/panel";
+import { ProfileAvatar } from "@/components/dashboard/dropdown/profile";
+//hooks
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -49,14 +53,15 @@ export function SideBar({ children }: { children: React.ReactNode }) {
               })}
             </div>
           </div>
+          <ProfileLink />
         </SidebarBody>
       </SidebarUI>
       <div className="flex flex-1 py-3">
         <div className="flex flex-col flex-1 ">
           <PagePanel className="rounded-tl-2xl hidden md:flex " />
           <div
-            className="w-full h-full p-4 border-neutral-200 dark:border-neutral-700 bg-white \
-           dark:bg-card/60 rounded-tl-2xl flex-grow "
+            className="w-full h-full p-2 lg:p-4 border-neutral-200 dark:border-neutral-700 bg-white \
+            dark:bg-card/60 rounded-tl-2xl flex-grow "
           >
             {children}
           </div>
@@ -65,3 +70,22 @@ export function SideBar({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+export const ProfileLink = () => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
+  return !isDesktop ? (
+    <Link href={"/profile"}>
+      <ProfileAvatar />
+    </Link>
+  ) : null;
+};

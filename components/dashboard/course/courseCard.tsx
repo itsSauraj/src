@@ -25,11 +25,13 @@ export default function CourseCard({
   className,
   openCourse,
   setOpenCourseID,
+  setDeleteCourseID,
   course,
 }: {
   className?: string;
   openCourse: () => void;
   setOpenCourseID: (id: UUID) => void;
+  setDeleteCourseID: (id: UUID) => void;
   course: Course;
 }) {
   function handleCourseView() {
@@ -50,17 +52,20 @@ export default function CourseCard({
           // }
         />
         <CardTitle className="z-20">
-          <h3 
+          <h3
             className="text-2xl hover:underline cursor-pointer max-w-fit mr-4"
             onClick={handleCourseView}
           >
             {course.title}
           </h3>
         </CardTitle>
-        <CardOptions courseId={course.id} viewAction={handleCourseView} />
+        <CardOptions
+          courseID={course.id}
+          setDeleteCourseID={setDeleteCourseID}
+        />
       </CardHeader>
       <CardContent className="flex-grow space-y-4 p-4">
-        <p className="line-clamp-3 overflow-y-scroll no-scrollbar text-base">
+        <p className="line-clamp-3 overflow-y-scroll no-scrollbar text-sm text-neutral-500">
           {course.description}
         </p>
       </CardContent>
@@ -78,12 +83,33 @@ export default function CourseCard({
 }
 
 const CardOptions = ({
-  courseId,
-  viewAction,
+  courseID,
+  setDeleteCourseID,
 }: {
-  courseId: UUID;
-  viewAction: () => void;
+  courseID: UUID;
+  setDeleteCourseID: (id: UUID) => void;
 }) => {
+  const actionItems = [
+    {
+      name: "Edit",
+      action: "edit",
+    },
+    {
+      name: "Delete",
+      action: "delete",
+    },
+  ];
+
+  const handleAction = (action: string) => {
+    switch (action) {
+      case "edit":
+        break;
+      case "delete":
+        setDeleteCourseID(courseID);
+        break;
+    }
+  };
+
   return (
     <div className="absolute top-0 right-0 p-2">
       <DropdownMenu>
@@ -94,9 +120,14 @@ const CardOptions = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem onClick={viewAction}>View</DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          {actionItems.map((item) => (
+            <DropdownMenuItem
+              key={item.action}
+              onClick={() => handleAction(item.action)}
+            >
+              {item.name}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

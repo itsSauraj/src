@@ -37,7 +37,11 @@ export const login = async (
       credentials,
     );
 
-    return response.data;
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return null;
   } catch (error) {
     return error;
   }
@@ -49,9 +53,13 @@ export const validateToken = async (token: string): Promise<string | any> => {
       token: token,
     });
 
-    return response.data.token as string;
+    if (response.status === 200) {
+      return response.data.token as string;
+    }
+
+    return null;
   } catch (error) {
-    return error;
+    return null;
   }
 };
 

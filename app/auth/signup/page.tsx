@@ -52,11 +52,7 @@ export default function RegisterForm({
   });
 
   const onSubmit = async (formData: RegistrationRequest) => {
-    try {
-      await dispatch(registerUser(formData));
-    } catch (error) {
-      console.error("Registration failed:", error);
-    }
+    await dispatch(registerUser(formData));
   };
 
   return (
@@ -64,7 +60,6 @@ export default function RegisterForm({
       <form
         className={cn("flex flex-col gap-6", className)}
         onSubmit={form.handleSubmit(onSubmit)}
-        {...props}
       >
         <div className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-2xl font-bold">Create an account</h1>

@@ -7,7 +7,6 @@ import axios from "axios";
 // sonner
 import { toast } from "sonner";
 
-import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
 const updateUserDetails =
@@ -16,7 +15,6 @@ const updateUserDetails =
     dispatch: StoreDispatch,
     getState: () => RootState,
   ): Promise<Boolean | any> => {
-    dispatch(setAuthLoading(true));
     try {
       const response = await axios.patch(
         `${apiConfig.url}/member/${user_id}`,
@@ -28,8 +26,6 @@ const updateUserDetails =
           },
         },
       );
-
-      dispatch(setAuthLoading(false));
 
       if (response.status === 200) {
         toast.success("User details updated successfully");

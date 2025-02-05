@@ -2,7 +2,7 @@
 
 import type { StoreDispatch, RootState } from "@/redux/store";
 
-import React from "react";
+import React, { useState } from "react";
 import { BiDockLeft, BiSolidDockLeft } from "react-icons/bi";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -14,8 +14,18 @@ import { ProfileDropDown } from "@/components/dashboard/dropdown/profile";
 import { NotificationDropdown } from "@/components/dashboard/dropdown/noification";
 
 export const PagePanel = ({ className }: { className: string }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const sidebar = useSelector((state: RootState) => state.app.settings.sidebar);
   const dispatch = useDispatch<StoreDispatch>();
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div

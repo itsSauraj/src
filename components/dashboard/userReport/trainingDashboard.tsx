@@ -56,6 +56,9 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
                 format={themeProgressText}
                 percent={calculateOverallProgress()}
                 size={120}
+                status={
+                  calculateOverallProgress() === 100 ? "success" : "active"
+                }
                 strokeColor={getProgressColor(calculateOverallProgress())}
                 type="circle"
               />

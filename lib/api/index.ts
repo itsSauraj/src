@@ -17,6 +17,7 @@ import {
 import {
   getCourses,
   getCourseDetails,
+  deleteCourse,
   createNewCourse,
   createNewCollection,
   getCourseCollection,
@@ -57,6 +58,7 @@ export {
   // Course
   getCourses,
   getCourseDetails,
+  deleteCourse,
   createNewCourse,
   createNewCollection,
   getCourseCollection,

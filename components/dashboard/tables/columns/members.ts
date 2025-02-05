@@ -1,19 +1,3 @@
-// {
-//     "employee_id": "T788",
-//     "id": "1bd3402b-5639-4bd5-93fa-680f72a9b78e",
-//     "username": "trainee1",
-//     "first_name": "Trainee",
-//     "last_name": "Lanet",
-//     "email": "trainee@gmail.com",
-//     "address": null,
-//     "birth_date": null,
-//     "phone_number": "6317971287389",
-//     "joining_date": "2025-02-01",
-//     "groups": [
-//         "trainee"
-//     ]
-// }
-
 import {
   ActionsFormatter,
   DateFormatter,
