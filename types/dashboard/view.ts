@@ -5,6 +5,7 @@ export interface Course {
   title: string;
   description: string;
   duration: string;
+  image: string;
 }
 
 export interface Metadata {

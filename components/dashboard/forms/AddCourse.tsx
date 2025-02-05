@@ -10,9 +10,9 @@ import {
   ChevronDown,
   Plus,
   Clock,
-  Trash2,
   ImageIcon,
 } from "lucide-react";
+import { MdDelete } from "react-icons/md";
 
 import { createNewCourse } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -346,32 +346,24 @@ const NotionLikeCourseEditor: React.FC<NotionLikeCourseEditorProps> = ({
         formData.append("image", courseData.image);
       }
 
-      courseData.modules.forEach((module, moduleIndex) => {
-        formData.append(`modules[${moduleIndex}][title]`, module.title);
+      const modules = courseData.modules.map((module, moduleIndex) => {
+        return {
+          title: module.title,
+          lessons: module.lessons.map((lesson, lessonIndex) => {
+            const [hours = "0", minutes = "0", seconds = "0"] =
+              lesson.duration.split(":");
 
-        module.lessons.forEach((lesson, lessonIndex) => {
-          const [hours = "0", minutes = "0", seconds = "0"] = lesson.duration
-            .split(":")
-            .reverse();
-
-          formData.append(
-            `modules[${moduleIndex}][lessons][${lessonIndex}][title]`,
-            lesson.title,
-          );
-          formData.append(
-            `modules[${moduleIndex}][lessons][${lessonIndex}][hours]`,
-            hours,
-          );
-          formData.append(
-            `modules[${moduleIndex}][lessons][${lessonIndex}][minutes]`,
-            minutes,
-          );
-          formData.append(
-            `modules[${moduleIndex}][lessons][${lessonIndex}][seconds]`,
-            seconds,
-          );
-        });
+            return {
+              title: lesson.title,
+              hours,
+              minutes,
+              seconds,
+            };
+          }),
+        };
       });
+
+      formData.append("modules", JSON.stringify(modules));
 
       const created_course = await dispatch(
         createNewCourse(formData as unknown as CourseFormData),
@@ -515,7 +507,7 @@ const NotionLikeCourseEditor: React.FC<NotionLikeCourseEditorProps> = ({
                         className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600"
                         onClick={() => deleteModule(course.id, module.id)}
                       >
-                        <Trash2 size={16} />
+                        <MdDelete size={16} />
                       </button>
                     </div>
 
@@ -587,7 +579,7 @@ const NotionLikeCourseEditor: React.FC<NotionLikeCourseEditorProps> = ({
                                 deleteLesson(course.id, module.id, lesson.id)
                               }
                             >
-                              <Trash2 size={16} />
+                              <MdDelete size={16} />
                             </button>
                           </div>
                         ))}

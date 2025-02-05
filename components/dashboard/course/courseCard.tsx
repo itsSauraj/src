@@ -41,16 +41,19 @@ export default function CourseCard({
 
   return (
     <Card className={cn("dark:bg-neutral-800 flex flex-col", className)}>
-      <CardHeader className="relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30">
-        <img
-          alt={course.title}
-          className="absolute top-0 left-0 pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-30"
-          src="https://www.atakinteractive.com/hs-fs/hubfs/react%2010.jpg?width=1200&height=600&name=react%2010.jpg"
-          // src={
-          //   (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
-          //   metadata["collection"].image
-          // }
-        />
+      <CardHeader
+        className={cn(
+          "relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30 rounded-xl",
+          !course.image && "bg-primary-200",
+        )}
+      >
+        {course.image && (
+          <img
+            alt={course.title}
+            className="absolute top-0 left-0 pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-30"
+            src={(process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + course.image}
+          />
+        )}
         <CardTitle className="z-20">
           <h3
             className="text-2xl hover:underline cursor-pointer max-w-fit mr-4"
@@ -114,7 +117,10 @@ const CardOptions = ({
     <div className="absolute top-0 right-0 p-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="h-8 w-8 p-0" variant="ghost">
+          <Button
+          className="h-8 w-8 p-0 hover:bg-primary-300 rounded-full hover:text-white"
+            variant="ghost"
+          >
             <span className="sr-only">Open menu</span>
             <HiDotsVertical />
           </Button>

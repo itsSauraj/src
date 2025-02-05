@@ -56,6 +56,28 @@ const getCourseDetails =
     return [];
   };
 
+const deleteCourse =
+  (id: UUID) => async (dispatch: StoreDispatch, getState: () => RootState) => {
+    dispatch(setAuthLoading(true));
+
+    const response = await axios.delete(`${apiConfig.url}/course/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getState().user.token}`,
+      },
+    });
+
+    dispatch(setAuthLoading(false));
+
+    if (response.status === 204) {
+      toast.success("Course deleted successfully");
+
+      return true;
+    } else {
+      toast.error("Failed to delete course");
+    }
+  };
+
 const createNewCourse =
   (courseData: CourseFormData) =>
   async (
@@ -66,7 +88,7 @@ const createNewCourse =
 
     const response = await axios.post(`${apiConfig.url}/course/`, courseData, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${getState().user.token}`,
       },
     });
@@ -115,8 +137,6 @@ const updateCollection =
     dispatch: StoreDispatch,
     getState: () => RootState,
   ): Promise<CollectionFormData | any> => {
-    dispatch(setAuthLoading(true));
-
     const response = await axios.patch(
       `${apiConfig.url}/course/collection/${id}`,
       formData,
@@ -127,14 +147,9 @@ const updateCollection =
       },
     );
 
-    dispatch(setAuthLoading(false));
-
     if (response.status === 200) {
       toast.success("Upadted successfully");
-
-      return response.data;
     } else {
-      dispatch(setAuthLoading(false));
       toast.error("Failed to update");
     }
   };
@@ -320,6 +335,7 @@ const setDefaultCollection =
 export {
   getCourses,
   getCourseDetails,
+  deleteCourse,
   createNewCourse,
   createNewCollection,
   getCourseCollection,
