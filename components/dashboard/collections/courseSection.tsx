@@ -8,7 +8,7 @@ import { X } from "lucide-react";
 import { CourseSectioSelection } from "@/components/dashboard/forms";
 import { CreateToolTipT } from "@/components/collection/tooltip";
 // UI
-import { AddDialog } from "@/components/collection/modal";
+import { ModalDialog } from "@/components/collection/modal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const CourseSection = ({
@@ -27,7 +27,7 @@ const CourseSection = ({
   return (
     <>
       <div className="flex justify-end gap-2 h-max">
-        <AddDialog
+        <ModalDialog
           description="Add a new mentor to your training group"
           setState={setOpen}
           state={open}
@@ -41,7 +41,7 @@ const CourseSection = ({
               setState={setOpen}
             />
           </div>
-        </AddDialog>
+        </ModalDialog>
       </div>
       <ScrollArea className="max-h-[450px] rounded-md p-3 border-2">
         <div className="grid gap-2">

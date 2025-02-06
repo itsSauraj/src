@@ -24,10 +24,7 @@ import {
 } from "@/components/ui/form";
 import { logInUser } from "@/redux/slice/user";
 
-export default function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+export default function LoginFormPage() {
   const dispatch = useDispatch<StoreDispatch>();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
@@ -43,7 +40,7 @@ export default function LoginForm({
     try {
       await dispatch(logInUser(formData));
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error); // eslint-disable-line
     } finally {
       form.reset();
     }
@@ -52,7 +49,7 @@ export default function LoginForm({
   return (
     <Form {...form}>
       <form
-        className={cn("flex flex-col gap-6", className)}
+        className={cn("flex flex-col gap-6")}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex flex-col items-center gap-2 text-center">

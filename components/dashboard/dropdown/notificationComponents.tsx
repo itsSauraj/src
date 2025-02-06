@@ -18,11 +18,9 @@ import {
 import { cn } from "@/lib/utils";
 
 export const NotiicationBell = ({
-  className,
   notify,
   count,
 }: {
-  className?: string;
   notify: boolean;
   count: number;
 }) => {

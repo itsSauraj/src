@@ -33,7 +33,7 @@ const ModuleCombobox: React.FC<{
   form: UseFormReturn<ICourse>;
   moduleIndex: number;
 }> = ({ form, moduleIndex }) => {
-  const [existingModules, setExistingModules] = useState<IExistingModule[]>([]);
+  const [existingModules, setExistingModules] = useState<IExistingModule[]>([]); // eslint-disable-line
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const ModuleCombobox: React.FC<{
       title: module.title,
     }));
 
-    console.log(existingModules);
+    console.log(existingModules); // eslint-disable-line
   }, [form.watch("modules")]);
 
   return (

@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-export const NotificationDropdown = ({ className }: { className?: string }) => {
+export const NotificationDropdown = () => {
   const notificationObj: NotificationState = useSelector(
     (state: RootState) => state.app.notifications,
   );
@@ -42,7 +42,6 @@ export const NotificationDropdown = ({ className }: { className?: string }) => {
       <DropdownMenu open={dropDownnOpen} onOpenChange={setDropDownnOpen}>
         <DropdownMenuTrigger>
           <NotiicationBell
-            className={className}
             count={notificationObj.unreadCount}
             notify={notify}
           />

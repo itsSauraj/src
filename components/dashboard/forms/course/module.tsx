@@ -4,7 +4,6 @@ import React from "react";
 import { Trash2, Plus } from "lucide-react";
 import { useFieldArray } from "react-hook-form";
 
-import ModuleCombobox from "./ModuleCombo";
 import LessonSection from "./lesson";
 
 // Components

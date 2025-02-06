@@ -1,7 +1,4 @@
-import type {
-  IExistingModule,
-  ILessonSectionProps,
-} from "@/types/dashboard/forms";
+import type { ILessonSectionProps } from "@/types/dashboard/forms";
 
 import React from "react";
 import { Trash2 } from "lucide-react";

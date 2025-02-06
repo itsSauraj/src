@@ -32,10 +32,7 @@ interface RegistrationRequest {
   confirm_password: string;
 }
 
-export default function RegisterForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"form">) {
+export default function RegisterFormPage() {
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const dispatch = useDispatch<StoreDispatch>();
 
@@ -58,7 +55,7 @@ export default function RegisterForm({
   return (
     <Form {...form}>
       <form
-        className={cn("flex flex-col gap-6", className)}
+        className={cn("flex flex-col gap-6")}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex flex-col items-center gap-2 text-center">

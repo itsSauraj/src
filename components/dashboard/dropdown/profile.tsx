@@ -50,7 +50,6 @@ export function ProfileDropDown() {
           <DropdownMenuItem onClick={() => handleClick("profile")}>
             Profile
           </DropdownMenuItem>
-          {/* <DropdownMenuItem>Settings</DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         {/* <DropdownMenuItem>

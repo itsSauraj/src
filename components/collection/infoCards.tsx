@@ -6,6 +6,7 @@ import Link from "next/link";
 import { cn, getColor } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const colorClasses = {
   border: [
     "border-red-500 dark:border-red-700",

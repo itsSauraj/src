@@ -63,7 +63,6 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
 const RenderAntProvider = ({ children }: ProvidersProps) => {
   const { theme } = useTheme();
-  // const sockt = useNotifications();
 
   return (
     <ConfigProvider

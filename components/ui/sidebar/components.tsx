@@ -98,7 +98,7 @@ export const MobileSidebar = ({
           <BreadcrumbResponsive />
         </div>
         <div className="flex z-20 items-center gap-2">
-          <NotificationDropdown className="text-xl" />
+          <NotificationDropdown />
           <IconMenu2 className="text-white" onClick={() => setOpen(!open)} />
         </div>
         <AnimatePresence>

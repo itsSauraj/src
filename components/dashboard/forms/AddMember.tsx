@@ -48,7 +48,7 @@ const AddMember = ({
   const app = useSelector((state: RootState) => state.app);
   const dispatch = useDispatch<StoreDispatch>();
 
-  const form = useForm<IMemberForm>({
+  const form = useForm<IMemberForm | any>({
     resolver: yupResolver(memberSchema),
     defaultValues: {
       employee_id: "",

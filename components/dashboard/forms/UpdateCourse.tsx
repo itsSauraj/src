@@ -1,11 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+
+import type { UUID } from "crypto";
 import type { StoreDispatch } from "@/redux/store";
 import type { CourseFormData } from "@/dependencies/yup";
-import type { SetStateAction } from "react";
-import type { Course } from "@/types/dashboard/view";
 import type { CourseContent } from "@/types/dashboard/course";
+import type { TraineeCourseView } from "@/types/dashboard/view";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   ChevronRight,
@@ -19,18 +21,10 @@ import { MdDelete } from "react-icons/md";
 import { createNewCourse } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+// api
+import { getCourseDetails } from "@/lib/api";
 
-interface CourseFormProps {
-  setCourses: React.Dispatch<SetStateAction<Course[]>>;
-  setState: (value: boolean) => void;
-  onClose?: () => void;
-}
-
-const CourseForm: React.FC<CourseFormProps> = ({
-  setCourses,
-  setState,
-  onClose,
-}) => {
+const CourseForm = ({ courseID }: { courseID: UUID }) => {
   const dispatch = useDispatch<StoreDispatch>();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -58,6 +52,24 @@ const CourseForm: React.FC<CourseFormProps> = ({
       ],
     },
   ]);
+  // const course = {
+  //   title: data.metadata.title,
+  //   description: data.metadata.description,
+  //   image: data.metadata.image,
+  // }
+
+  const constructStructure = (data: any) => {
+    
+    const context = {
+      
+    }
+  }
+
+  useEffect(() => {
+    dispatch(getCourseDetails(courseID)).then((data) => {
+      
+    });
+  }, []);
 
   const [errors, setErrors] = useState<{
     course?: { title?: string; description?: string; image?: string };
@@ -338,14 +350,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
       });
 
       formData.append("modules", JSON.stringify(modules));
-
-      const created_course = await dispatch(
-        createNewCourse(formData as unknown as CourseFormData),
-      );
-
-      setCourses((courses) => [created_course, ...courses]);
-      setState(false);
-      onClose?.();
     } catch (error) {
       console.error("Course creation failed", error); // eslint-disable-line no-console
     }
@@ -558,7 +562,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
                           </div>
                         ))}
 
-                        {/* Add Lesson Button */}
                         <Button
                           className="text-gray-500 hover:text-gray-700 -ml-2"
                           size="sm"
@@ -573,7 +576,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
                   </div>
                 ))}
 
-                {/* Add Module Button */}
                 <Button
                   className="text-gray-500 hover:text-gray-700 ml-2"
                   size="sm"
@@ -588,7 +590,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
           </div>
         ))}
 
-        {/* Submit Button */}
         <div className="mt-8">
           <Button
             className="w-full bg-blue-600 hover:bg-blue-700 text-white"

@@ -5,7 +5,6 @@ import type { StoreDispatch, RootState } from "@/redux/store";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -37,14 +36,14 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           alt="auth-background-image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
           layout="fill"
-          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="/images/auth-background.avif"
         />
       </div>
       <div className="flex flex-col gap-4 p-6 md:p-10 lg:max-h-[100svh] lg:overflow-y-scroll">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link className="flex items-center gap-2 font-medium" href="#">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <GalleryVerticalEnd className="size-4" />
+            <div className="px-2 py-1 rounded-br-lg bg-primary rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0">
+              <Image src="/abra-icon.png" alt="logo" height={25} width={25} />
             </div>
             Abra
           </Link>

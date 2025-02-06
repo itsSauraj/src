@@ -20,7 +20,7 @@ export const ReadOneButton = ({ id }: { id: UUID }) => {
     try {
       dispatch(markNotificationAsRead(id));
     } catch (error) {
-      console.error(error);
+      console.error(error); // eslint-disable-line no-console
     }
   };
 
@@ -47,7 +47,7 @@ export const ReadAllButton = () => {
     try {
       dispatch(markAllNotificationAsRead());
     } catch (error) {
-      console.error(error);
+      console.error(error); // eslint-disable-line no-console
     }
   };
 

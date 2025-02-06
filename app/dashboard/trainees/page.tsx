@@ -16,7 +16,7 @@ import {
 import { RenderTableMembers } from "@/components/dashboard/tables";
 // collections
 import { ColumnSelectorDropdown } from "@/components/collection/tableColumnsSelector";
-import { AddDialog } from "@/components/collection/modal";
+import { ModalDialog } from "@/components/collection/modal";
 import { AddMember } from "@/components/dashboard/forms";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ import Loader from "@/components/ui/loader";
 // API
 import { getTrainees, deleteMember } from "@/lib/api";
 
-export const Dashboard = () => {
+const TraineesPage = () => {
   const [rowData, setRowData] = useState<IMemberForm[]>([]);
   const [open, setOpen] = useState(false);
   const [openAlertDeleteMultiple, setOpenAlertDeleteMultiple] =
@@ -78,14 +78,14 @@ export const Dashboard = () => {
               Delete Mentors
             </Button>
           )}
-          <AddDialog
+          <ModalDialog
             description="Add a new trainee to your training group"
             setState={setOpen}
             state={open}
             title="Add Trainee"
           >
             <AddMember setData={setRowData} setState={setOpen} type="trainee" />
-          </AddDialog>
+          </ModalDialog>
           <ColumnSelectorDropdown
             columns={allColumns}
             parentSelectedColumns={selectedColumns}
@@ -133,4 +133,4 @@ export const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default TraineesPage;

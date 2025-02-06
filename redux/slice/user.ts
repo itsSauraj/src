@@ -7,6 +7,7 @@ import type { RootState, StoreDispatch } from "@/redux/store";
 
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "sonner";
+import { setCookie, deleteCookie } from "cookies-next";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
 import { login, register } from "@/lib/auth/actions";
@@ -61,6 +62,16 @@ const logInUser =
         return;
       }
 
+      localStorage.setItem("token", userObj.token);
+
+      setCookie("token", userObj.token, {
+        maxAge: 60 * 60 * 24 * 7,
+        secure: true,
+        httpOnly: true,
+        sameSite: "strict",
+        path: "/",
+      });
+
       dispatch(toggleToken(userObj.token));
       dispatch(toggleUser(userObj.user));
       dispatch(setUserType(userObj.groups[0]));
@@ -76,6 +87,9 @@ const logoutUser =
     const token = getState().user.token;
 
     await logout(token);
+    localStorage.removeItem("token");
+    deleteCookie("token");
+
     dispatch(toggleToken(null));
     dispatch(toggleUser(null));
     dispatch(setUserType(null));

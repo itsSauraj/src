@@ -28,7 +28,7 @@ export const allColumns = [
 ];
 
 export const getAllColumns = (actions: any, displayColumns: string[]) => {
-  const allColumnsObject = {
+  const allColumnsObject: { [key: string]: any } = {
     title: {
       headerName: "Title",
       field: "title",

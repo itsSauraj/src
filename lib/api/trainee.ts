@@ -116,8 +116,7 @@ const unmarkLessonAsComplete =
       dispatch(setAuthLoading(false));
 
       return response.status === 200;
-    } catch (error) {
-      console.error("Error unmarking lesson as complete:", error);
+    } catch (error) { // eslint-disable-line
       dispatch(setAuthLoading(false));
 
       return false;

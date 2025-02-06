@@ -71,7 +71,7 @@ const AdminPageDashboard = () => {
   }
 
   if (isLoading) return <AdminSkeleton />;
-  if (!reportData && !isLoading) return <div>Failed to load data</div>;
+  if (!reportData && !isLoading) return null;
 
   return (
     <div>

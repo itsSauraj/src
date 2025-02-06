@@ -25,13 +25,15 @@ export default function CourseCard({
   className,
   openCourse,
   setOpenCourseID,
-  setDeleteCourseID,
+  handleEditAction,
+  handleDeleteAction,
   course,
 }: {
   className?: string;
   openCourse: () => void;
   setOpenCourseID: (id: UUID) => void;
-  setDeleteCourseID: (id: UUID) => void;
+  handleEditAction: (id: UUID) => void;
+  handleDeleteAction: (id: UUID) => void;
   course: Course;
 }) {
   function handleCourseView() {
@@ -55,16 +57,17 @@ export default function CourseCard({
           />
         )}
         <CardTitle className="z-20">
-          <h3
+          <button
             className="text-2xl hover:underline cursor-pointer max-w-fit mr-4"
             onClick={handleCourseView}
           >
             {course.title}
-          </h3>
+          </button>
         </CardTitle>
         <CardOptions
           courseID={course.id}
-          setDeleteCourseID={setDeleteCourseID}
+          handleDeleteAction={handleDeleteAction}
+          handleEditAction={handleEditAction}
         />
       </CardHeader>
       <CardContent className="flex-grow space-y-4 p-4">
@@ -87,10 +90,12 @@ export default function CourseCard({
 
 const CardOptions = ({
   courseID,
-  setDeleteCourseID,
+  handleEditAction,
+  handleDeleteAction,
 }: {
   courseID: UUID;
-  setDeleteCourseID: (id: UUID) => void;
+  handleEditAction: (id: UUID) => void;
+  handleDeleteAction: (id: UUID) => void;
 }) => {
   const actionItems = [
     {
@@ -106,9 +111,10 @@ const CardOptions = ({
   const handleAction = (action: string) => {
     switch (action) {
       case "edit":
+        handleEditAction(courseID);
         break;
       case "delete":
-        setDeleteCourseID(courseID);
+        handleDeleteAction(courseID);
         break;
     }
   };
@@ -118,7 +124,7 @@ const CardOptions = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-          className="h-8 w-8 p-0 hover:bg-primary-300 rounded-full hover:text-white"
+            className="h-8 w-8 p-0 hover:bg-primary-300 rounded-full hover:text-white"
             variant="ghost"
           >
             <span className="sr-only">Open menu</span>

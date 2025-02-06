@@ -15,7 +15,7 @@ import {
   defaultColumns,
   allColumns,
 } from "@/components/dashboard/tables/columns/collections";
-import { AddDialog } from "@/components/collection/modal";
+import { ModalDialog } from "@/components/collection/modal";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/loader";
@@ -25,7 +25,7 @@ import { AddCollection } from "@/components/dashboard/forms";
 // API
 import { getCourseCollection, deleteCollection } from "@/lib/api";
 
-export const Dashboard = () => {
+const CollectoinsPage = () => {
   const [rowData, setRowData] = useState<CollectionFormData[]>([]);
   const [open, setOpen] = useState(false);
   const [openAlertDeleteMultiple, setOpenAlertDeleteMultiple] =
@@ -77,7 +77,7 @@ export const Dashboard = () => {
               Delete Collection
             </Button>
           )}
-          <AddDialog
+          <ModalDialog
             description="Add a new Course Collection"
             setState={setOpen}
             state={open}
@@ -88,7 +88,7 @@ export const Dashboard = () => {
                 <AddCollection setCollections={setRowData} setState={setOpen} />
               </div>
             </ScrollArea>
-          </AddDialog>
+          </ModalDialog>
           <ColumnSelectorDropdown
             columns={allColumns}
             parentSelectedColumns={selectedColumns}
@@ -141,4 +141,4 @@ export const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CollectoinsPage;

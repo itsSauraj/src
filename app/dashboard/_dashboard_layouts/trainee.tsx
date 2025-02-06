@@ -34,7 +34,7 @@ const TraineePageDashboard = () => {
         const data = (await dispatch(getTraineeReport(trainee_id))) as any;
 
         if (data) setTraineeReport(data as TrainingReportData);
-      } catch (error) {
+      } catch (error) { // eslint-disable-line
         toast.error("Failed to fetch your report");
       }
     };

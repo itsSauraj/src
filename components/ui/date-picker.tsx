@@ -15,13 +15,11 @@ import {
 
 export function DatePicker({
   className,
-  error,
   placeholder,
   date,
   setDate,
 }: {
   className?: string;
-  error?: string;
   placeholder: string;
   date: Date;
   setDate: (date: Date | undefined) => void;

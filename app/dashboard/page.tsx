@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import ClientPage from "./_dashboard_layouts/trainee";
 import AdminPage from "./_dashboard_layouts/admin";
 
-export const Page = () => {
+const Page = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
   if (!user) return null;

@@ -36,7 +36,7 @@ const updateUserDetails =
       toast.error("Failed to update user details");
 
       return false;
-    } catch (error) {
+    } catch (error) { // eslint-disable-line
       toast.error("Something went wrong, please try again");
 
       return false;

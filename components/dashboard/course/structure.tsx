@@ -1,4 +1,4 @@
-import type { CourseData } from "@/types/dashboard/view";
+import type { CourseData, Module } from "@/types/dashboard/view";
 
 import React from "react";
 import { FaClock } from "react-icons/fa";
@@ -29,76 +29,79 @@ export const CourseLayout = ({ course }: { course: CourseData }) => {
         <h3 className="font-bold text-xl">Lessons</h3>
         <Separator />
       </div>
-      <Accordion collapsible type="single">
-        {course.modules.map((module, moduleIndex: number) => (
-          <AccordionItem
-            key={moduleIndex}
-            className="border-1 px-4"
-            value={`module-${moduleIndex}`}
-          >
-            <AccordionTrigger>
-              <div className="w-full flex justify-between items-center px-2">
-                {module.metadata.sequence}. {module.metadata.title}
-                <p className="flex items-center gap-2">
-                  <FaClock /> {formatDuration(module.metadata.duration)}
-                </p>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <p>{module.metadata.description}</p>
-              {module.sub_modules.length > 0 && (
-                <Accordion collapsible className="mt-4" type="single">
-                  {module.sub_modules.map((subModule, subModuleIndex) => (
-                    <AccordionItem
-                      key={subModuleIndex}
-                      className="border-l-1"
-                      value={`submodule-${subModuleIndex}`}
-                    >
-                      <AccordionTrigger>
-                        {subModule.metadata.title}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <p>{subModule.metadata.description}</p>
-                        <p>
-                          <strong>Duration:</strong>{" "}
-                          {formatDuration(subModule.metadata.duration)}
-                        </p>
-
-                        {subModule.lessons.length > 0 && (
-                          <div className="mt-4 flex flex-col gap-2 px-3">
-                            {subModule.lessons.map((lesson, lessonIndex) => (
-                              <LessonCard
-                                key={lessonIndex}
-                                index={lessonIndex}
-                                lesson={lesson}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              )}
-
-              {module.lessons.length > 0 && (
-                <div className="mt-4 flex flex-col gap-2 px-3">
-                  {module.lessons.map((lesson, lessonIndex) => (
-                    <LessonCard
-                      key={lessonIndex}
-                      index={lessonIndex}
-                      lesson={lesson}
-                    />
-                  ))}
-                </div>
-              )}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <RenderLessons modules={course.modules} />
     </div>
   );
 };
+
+export const RenderLessons = ({ modules }: { modules: Module[] }) => (
+  <Accordion collapsible type="single">
+    {modules.map((module, moduleIndex: number) => (
+      <AccordionItem
+        key={moduleIndex}
+        className="border-1 px-4"
+        value={`module-${moduleIndex}`}
+      >
+        <AccordionTrigger>
+          <div className="w-full flex justify-between items-center px-2">
+            {module.metadata.sequence}. {module.metadata.title}
+            <p className="flex items-center gap-2">
+              <FaClock /> {formatDuration(module.metadata.duration)}
+            </p>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <p>{module.metadata.description}</p>
+          {module.sub_modules.length > 0 && (
+            <Accordion collapsible className="mt-4" type="single">
+              {module.sub_modules.map((subModule, subModuleIndex) => (
+                <AccordionItem
+                  key={subModuleIndex}
+                  className="border-l-1"
+                  value={`submodule-${subModuleIndex}`}
+                >
+                  <AccordionTrigger>
+                    <div className="w-full flex justify-between items-center px-2">
+                      {subModule.metadata.title}
+                      <p className="flex items-center gap-2">
+                        <FaClock /> {formatDuration(module.metadata.duration)}
+                      </p>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    {subModule.lessons.length > 0 && (
+                      <div className="mt-4 flex flex-col gap-2 px-3">
+                        {subModule.lessons.map((lesson, lessonIndex) => (
+                          <LessonCard
+                            key={lessonIndex}
+                            index={lessonIndex}
+                            lesson={lesson}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
+
+          {module.lessons.length > 0 && (
+            <div className="mt-4 flex flex-col gap-2 px-3">
+              {module.lessons.map((lesson, lessonIndex) => (
+                <LessonCard
+                  key={lessonIndex}
+                  index={lessonIndex}
+                  lesson={lesson}
+                />
+              ))}
+            </div>
+          )}
+        </AccordionContent>
+      </AccordionItem>
+    ))}
+  </Accordion>
+);
 
 const LessonCard = ({
   lesson,

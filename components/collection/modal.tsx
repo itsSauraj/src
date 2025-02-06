@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,26 +11,33 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-export function AddDialog({
+export function ModalDialog({
   state,
   setState,
+  type,
   title,
   description,
   children,
   className,
 }: {
   state: boolean;
-  setState: (value: boolean) => void;
+  setState: (open: boolean) => void;
+  type?: "add" | "import";
   title: string;
   description: string;
   children?: React.JSX.Element;
   className?: string;
 }) {
+  const icons = {
+    add: <Plus className="h-4 w-4 mr-2" />,
+    import: <Upload className="h-4 w-4 mr-2" />,
+  };
+
   return (
     <Dialog open={state} onOpenChange={setState}>
       <DialogTrigger asChild>
         <Button>
-          <Plus className="h-4 w-4 mr-2" />
+          {icons[type || "add"]}
           {title}
         </Button>
       </DialogTrigger>

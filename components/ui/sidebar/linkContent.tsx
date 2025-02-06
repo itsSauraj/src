@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 
 import { useSidebar } from "./provider";
 
-import { cn } from "@/lib/utils";
-
 interface Links {
   label: string;
   href?: string;
