@@ -133,6 +133,24 @@ export const userUpdateSchema = yup.object().shape({
     .max(new Date(), "Joining date cannot be in the future"),
 });
 
+export const ImportCourseSchema = yup
+  .object({
+    title: yup
+      .string()
+      .required("Course title is required")
+      .min(3, "Title must be at least 3 characters")
+      .max(100, "Title must not exceed 100 characters"),
+    description: yup
+      .string()
+      .required("Description is required")
+      .min(10, "Description must be at least 10 characters")
+      .max(1000, "Description must not exceed 1000 characters"),
+    image: yup.mixed().required("Image is required"),
+  })
+  .required();
+
+export type ImportFormData = yup.InferType<typeof ImportCourseSchema>;
+
 export type CourseFormData = yup.InferType<typeof courseSchema>;
 export interface IMemberForm
   extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {

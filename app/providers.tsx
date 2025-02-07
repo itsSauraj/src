@@ -12,7 +12,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { persistor, store } from "@/redux/store";
 // custom hooks
-// import { useNotifications } from "@/hooks/useNotifications";
+import { IconLoader } from "@/components/ui/loader";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -42,6 +42,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
         <NextUIProvider navigate={router.push}>
           <NextThemesProvider {...themeProps}>
             <RenderAntProvider>{children}</RenderAntProvider>
+            <IconLoader />
           </NextThemesProvider>
         </NextUIProvider>
       </ReduxProvder>

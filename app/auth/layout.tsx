@@ -1,26 +1,20 @@
 "use client";
 
-import type { StoreDispatch, RootState } from "@/redux/store";
+import type { RootState } from "@/redux/store";
 
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
-import { validateToken } from "@/redux/slice/user";
-
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+  const [isMounted, setIsMounted] = React.useState(false);
   const router = useRouter();
-  const dispatch = useDispatch<StoreDispatch>();
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (!user.token) {
-      return;
-    }
-
-    dispatch(validateToken(user.token));
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -29,13 +23,16 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user.token]);
 
+  if (!isMounted) return null;
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden bg-muted lg:block">
         <Image
           alt="auth-background-image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          layout="fill"
+          fill={true}
+          priority={true}
           src="/images/auth-background.avif"
         />
       </div>
@@ -43,7 +40,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex justify-center gap-2 md:justify-start">
           <Link className="flex items-center gap-2 font-medium" href="#">
             <div className="px-2 py-1 rounded-br-lg bg-primary rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0">
-              <Image src="/abra-icon.png" alt="logo" height={25} width={25} />
+              <Image alt="logo" height={25} src="/abra-icon.png" width={25} />
             </div>
             Abra
           </Link>

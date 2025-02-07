@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import type { StoreDispatch } from "@/redux/store";
 import type { CourseFormData } from "@/dependencies/yup";
 import type { SetStateAction } from "react";
@@ -15,6 +14,7 @@ import {
   ImageIcon,
 } from "lucide-react";
 import { MdDelete } from "react-icons/md";
+import Image from "next/image";
 
 import { createNewCourse } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -356,22 +356,23 @@ const CourseForm: React.FC<CourseFormProps> = ({
       <div className="max-w-5xl mx-auto px-4 py-8">
         {content.map((course) => (
           <div key={course.id} className="space-y-1">
-            {/* Course Title and Image */}
             <div className="group flex items-center gap-2 px-2 py-1 -ml-2 hover:bg-gray-100 rounded-md cursor-text mb-4">
               <label
                 className="flex items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg cursor-pointer hover:border-blue-500"
                 htmlFor="image-upload"
               >
                 {imagePreview ? (
-                  <img
+                  <Image
                     alt="Course"
                     className="w-full h-full object-cover rounded-lg"
+                    height={60}
                     src={imagePreview}
+                    width={60}
                   />
                 ) : (
                   <div className="flex flex-col items-center text-gray-500">
                     <ImageIcon size={32} />
-                    <span className="text-sm mt-2">Add cover</span>
+                    <span className="text-sm mt-2">Cover Image</span>
                   </div>
                 )}
               </label>

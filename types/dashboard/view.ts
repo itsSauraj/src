@@ -26,13 +26,30 @@ export interface Lesson {
 }
 
 export interface Module {
-  metadata: Metadata;
+  id?: string | UUID;
+  title: string;
+  description: string;
+  duration: string;
+  parent_module?: string | null;
+  sequence?: number;
   sub_modules: Module[];
   lessons: Lesson[];
 }
 
+export interface ImportModule {
+  title: string;
+  sub_modules: ImportModule[];
+  lessons: Lesson[];
+}
+
 export interface CourseData {
-  metadata: Metadata;
+  id: string;
+  title: string;
+  description: string;
+  duration: string;
+  image: string;
+  parent_module?: string | null;
+  sequence?: number;
   modules: Module[];
 }
 

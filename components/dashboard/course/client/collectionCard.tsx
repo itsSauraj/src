@@ -1,10 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 import type { UUID } from "crypto";
 import type { MemberCollection } from "@/types/dashboard/view";
 
 import * as React from "react";
 import Link from "next/link";
 import { Progress, Tooltip } from "antd";
+import Image from "next/image";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -83,9 +83,10 @@ export const CollectionCard = ({
           >
             <CardHeader className="relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30">
               {metadata["collection"].image && (
-                <img
+                <Image
                   alt={metadata["collection"].title}
                   className="absolute top-0 left-0 pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-40"
+                  fill={true}
                   src={
                     (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
                     metadata["collection"].image

@@ -19,6 +19,7 @@ export function ModalDialog({
   description,
   children,
   className,
+  disabled,
 }: {
   state: boolean;
   setState: (open: boolean) => void;
@@ -27,6 +28,7 @@ export function ModalDialog({
   description: string;
   children?: React.JSX.Element;
   className?: string;
+  disabled?: boolean;
 }) {
   const icons = {
     add: <Plus className="h-4 w-4 mr-2" />,
@@ -41,7 +43,10 @@ export function ModalDialog({
           {title}
         </Button>
       </DialogTrigger>
-      <DialogContent className={cn("sm:max-w-[425px]", className)}>
+      <DialogContent
+        className={cn("sm:max-w-[425px]", className)}
+        onPointerDownOutside={(e) => disabled && e.preventDefault()}
+      >
         <DialogHeader className="">
           <DialogTitle className="captalize">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

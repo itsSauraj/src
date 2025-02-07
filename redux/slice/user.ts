@@ -62,15 +62,15 @@ const logInUser =
         return;
       }
 
-      localStorage.setItem("token", userObj.token);
-
       setCookie("token", userObj.token, {
         maxAge: 60 * 60 * 24 * 7,
         secure: true,
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "strict",
         path: "/",
       });
+
+      localStorage.setItem("token", userObj.token);
 
       dispatch(toggleToken(userObj.token));
       dispatch(toggleUser(userObj.user));
@@ -87,6 +87,7 @@ const logoutUser =
     const token = getState().user.token;
 
     await logout(token);
+
     localStorage.removeItem("token");
     deleteCookie("token");
 

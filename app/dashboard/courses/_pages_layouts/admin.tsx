@@ -2,13 +2,13 @@
 
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { Course } from "@/types/dashboard/view";
-
-import { UUID } from "crypto";
+import type { UUID } from "crypto";
 
 import { useEffect, useState } from "react";
 import { useDisclosure } from "@nextui-org/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "antd";
+import { useRouter } from "next/navigation";
 
 import CourseCard from "@/components/dashboard/course/courseCard";
 import ViewCourse from "@/components/dashboard/course/view";
@@ -16,19 +16,22 @@ import ViewCourse from "@/components/dashboard/course/view";
 import { getCourses, deleteCourse } from "@/lib/api";
 // compoenets
 import { AddCouse } from "@/components/dashboard/forms";
-import { AddDialog } from "@/components/collection/modal";
+import { ModalDialog } from "@/components/collection/modal";
 import MyDrawer from "@/components/collection/mySheetDrawer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { CourseUpload } from "@/components/dashboard/course/courseUploader";
 // my collections
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 
 export const CourseDashboard = () => {
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   const [courses, setCourses] = useState<Course[]>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [importOpen, setImportOpen] = useState<boolean>(false);
   const [openCourseID, setOpenCourseID] = useState<UUID | null>(null);
   const [deleteCourseID, setDeleteCourseID] = useState<UUID | null>(null);
   const [openAlert, setOpenAlert] = useState(false);
@@ -56,6 +59,10 @@ export const CourseDashboard = () => {
     setOpenAlert(true);
   };
 
+  const handleEditAction = (id: UUID) => {
+    router.push(`/dashboard/courses/update/${id}`);
+  };
+
   const onConfirmDelete = () => {
     if (deleteCourseID) {
       dispatch(deleteCourse(deleteCourseID)).then(() => {
@@ -69,10 +76,19 @@ export const CourseDashboard = () => {
 
   return (
     <div className="flex flex-col w-full h-[80svh]">
-      <div className="flex justify-end">
-        {/* // This is a custom component FIXME: Adds import of course form files storage works only on chromeium broswers.*/}
-        {/* <FolderScanner /> */}
-        <AddDialog
+      <div className="flex justify-end gap-3">
+        <ModalDialog
+          disabled
+          className="sm:min-w-[100svw] lg:min-w-[45svw]"
+          description="Add a new mentor to your training group"
+          setState={setImportOpen}
+          state={importOpen}
+          title="Import Course"
+          type="import"
+        >
+          <CourseUpload setCourses={setCourses} setState={setImportOpen} />
+        </ModalDialog>
+        <ModalDialog
           className="sm:min-w-[100svw] lg:min-w-[50svw]"
           description="Add a new mentor to your training group"
           setState={setOpen}
@@ -84,7 +100,7 @@ export const CourseDashboard = () => {
               <AddCouse setCourses={setCourses} setState={setOpen} />
             </div>
           </ScrollArea>
-        </AddDialog>
+        </ModalDialog>
       </div>
       {!isLoading && courses.length === 0 ? (
         <div className="w-full h-full flex justify-center items-center">
@@ -112,8 +128,9 @@ export const CourseDashboard = () => {
                   key={course.id}
                   className="min-w-full"
                   course={course}
+                  handleDeleteAction={handleDeleteAction}
+                  handleEditAction={handleEditAction}
                   openCourse={handleBackdropChange}
-                  setDeleteCourseID={handleDeleteAction}
                   setOpenCourseID={setOpenCourseID}
                 />
               ))}

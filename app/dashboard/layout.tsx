@@ -1,36 +1,32 @@
 "use client";
 
-import type { StoreDispatch, RootState } from "@/redux/store";
+import type { RootState } from "@/redux/store";
 
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import { SideBar } from "@/components/dashboard/dashboardSidebar";
-import { validateToken } from "@/redux/slice/user";
-// custom hooks
 import { useNotifications } from "@/hooks/useNotifications";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const [isMounted, setIsMounted] = React.useState(false);
   const router = useRouter();
-
-  const dispatch = useDispatch<StoreDispatch>();
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (!user.token) {
-      router.replace("/auth/login");
-    }
-    dispatch(validateToken(user.token));
+    setIsMounted(true);
   }, []);
 
   useNotifications();
 
   useEffect(() => {
     if (!user.token) {
-      router.replace("/auth/login");
+      router.push("/auth/login");
     }
   }, [user.token]);
+
+  if (!isMounted) return null;
 
   return <SideBar>{children}</SideBar>;
 };
