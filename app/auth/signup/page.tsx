@@ -46,6 +46,7 @@ export default function RegisterFormPage() {
       password: "",
       confirm_password: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (formData: RegistrationRequest) => {

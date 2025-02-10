@@ -16,7 +16,9 @@ const CreateToolTipT = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-        <TooltipContent>{content}</TooltipContent>
+        <TooltipContent className="bg-neutral-500 text-white">
+          {content}
+        </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

@@ -41,6 +41,8 @@ import {
 } from "./trainee";
 // User
 import { updateUserDetails } from "./user";
+// Profile
+import { getProfile, updateProfile, changePassword } from "./profile";
 
 export {
   // App
@@ -79,4 +81,8 @@ export {
   deassignCourseCollection,
   // User
   updateUserDetails,
+  // Profile
+  getProfile,
+  updateProfile,
+  changePassword,
 };

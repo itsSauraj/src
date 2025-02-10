@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { cn, formatDuration } from "@/lib/utils";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 
 export const DateFormatter = (params: ValueFormatterParams): string => {
   return new Date(params.value).toLocaleDateString("en-us", {
@@ -51,23 +52,32 @@ export const ActionsFormatter = (
   return (
     <div className="flex justify-around gap-2 items-center h-full">
       {props.data.groups && props.data.groups[0] !== "trainee" ? null : (
-        <Button
-          className="text-lg bg-primary dark:bg-gray-200/80 dark:text-black/60 h-auto p-2 hover:opacity-70"
-          onClick={handleView}
-        >
-          <TbViewportWide />
-        </Button>
+        <CreateToolTipT
+          content="View"
+          trigger={
+            <Button
+              className="text-lg bg-primary dark:bg-gray-200/80 dark:text-black/60 h-auto p-2 hover:opacity-70"
+              onClick={handleView}
+            >
+              <TbViewportWide />
+            </Button>
+          }
+        />
       )}
-      <Button
-        className={cn(
-          "text-lg bg-red-500 dark:bg-red-600/80 dark:text-white h-auto p-2 \
+      <CreateToolTipT
+        content="Delete"
+        trigger={
+          <Button
+            className={cn(
+              "text-lg bg-red-500 dark:bg-red-600/80 dark:text-white h-auto p-2 \
           hover:bg-red-600/80 hover:opacity-70",
-        )}
-        disabled={props.data.is_default}
-        onClick={props.data.is_default ? undefined : handleDelete}
-      >
-        <MdDelete />
-      </Button>
+            )}
+            onClick={handleDelete}
+          >
+            <MdDelete />
+          </Button>
+        }
+      />
     </div>
   );
 };

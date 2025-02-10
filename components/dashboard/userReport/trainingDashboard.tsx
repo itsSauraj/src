@@ -1,31 +1,18 @@
 import type { TrainingReportData } from "@/types/dashboard/report";
 
 import React from "react";
-import {
-  Progress,
-  Card as AntCard,
-  Row,
-  Col,
-  Statistic,
-  Timeline,
-  Typography,
-  Tooltip,
-} from "antd";
 import { SiBookstack } from "react-icons/si";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoBookSharp } from "react-icons/io5";
+import { Progress } from "antd";
 
-import { StatusBadge } from "@/components/collection/status-badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const { Text } = Typography;
-
-export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
-  data,
-}) => {
+export const TrainingDashboard = ({ data }: { data: TrainingReportData }) => {
   const calculateOverallProgress = () => {
     const totalProgress = data.collections.reduce(
-      (sum: number, collection: any) => sum + collection.progress,
+      (sum, collection) => sum + collection.progress,
       0,
     );
 
@@ -33,173 +20,173 @@ export const TrainingDashboard: React.FC<{ data: TrainingReportData }> = ({
   };
 
   const getProgressColor = (progress: number) => {
-    if (progress < 30) return "#ff4d4f";
-    if (progress < 70) return "#faad14";
+    if (progress < 35) return "#EF4444";
+    if (progress < 70) return "#F59E0B";
 
-    return "#52c41a";
+    return "#52CA14";
   };
 
   const themeProgressText = (progress?: number, successPercent?: number) => { // eslint-disable-line
     return <span className="dark:text-white">{progress}%</span>;
   };
 
+  const StatCard = ({
+    icon: Icon,
+    title,
+    value,
+  }: {
+    icon: React.ElementType;
+    title: string;
+    value: number;
+  }) => (
+    <Card className="h-full">
+      <CardContent className="pt-6">
+        <div className="flex items-center space-x-2">
+          <Icon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+          <div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+            <h3 className="text-2xl font-bold">{value}</h3>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
-    <div className="min-h-max lg:p-9">
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <AntCard
-            hoverable
-            className="dark:bg-neutral-900 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
-          >
-            <div className="flex flex-col lg:flex-row items-center space-x-4">
-              <Progress
-                format={themeProgressText}
-                percent={calculateOverallProgress()}
-                size={120}
-                status={
-                  calculateOverallProgress() === 100 ? "success" : "active"
-                }
-                strokeColor={getProgressColor(calculateOverallProgress())}
-                type="circle"
-              />
-              <div className="flex-grow">
-                <h2 className="m-0 dark:text-white text-lg lg:text-2xl font-bold">
+    <div className="p-6">
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="md:col-span-1 h-full">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="relative h-32 w-32">
+                <Progress
+                  format={themeProgressText}
+                  percent={calculateOverallProgress()}
+                  size={120}
+                  status={
+                    calculateOverallProgress() === 100 ? "success" : "active"
+                  }
+                  strokeColor={getProgressColor(calculateOverallProgress())}
+                  type="circle"
+                />
+              </div>
+              <div className="text-center">
+                <h2 className="text-xl font-bold">
                   Training Progress Overview
                 </h2>
-                <p className="dark:text-white text-[12px]">
-                  Comprehensive view of{" "}
-                  <span className="font-semibold underline capitalize">
-                    {data.trainee.first_name + " " + data.trainee.last_name}{" "}
-                  </span>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {data.trainee.first_name} {data.trainee.last_name}&#39;s
                   learning journey
                 </p>
               </div>
             </div>
-          </AntCard>
-        </Col>
+          </CardContent>
+        </Card>
 
-        <Col span={24}>
-          <AntCard
-            hoverable
-            className="dark:bg-neutral-900 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
-          >
-            <Row align="middle" justify="space-around">
-              <Col span={6}>
-                <Statistic
-                  className="text-center items-center"
-                  prefix={<SiBookstack className="text-xl dark:text-white" />}
-                  title="Total Collections"
-                  value={data.collections.length}
-                />
-              </Col>
-              <Col span={6}>
-                <Statistic
-                  className="text-center items-center"
-                  prefix={
-                    <FaCircleCheck className="text-xl  dark:text-white" />
-                  }
-                  title="Completed Collections"
-                  value={
-                    data.collections.filter((c: any) => c.is_completed).length
-                  }
-                />
-              </Col>
-              <Col span={6}>
-                <Statistic
-                  className="text-center items-center"
-                  prefix={
-                    <IoBookSharp className="text-xl -m-[2px]  dark:text-white" />
-                  }
-                  title="Total Courses"
-                  value={data.collections.reduce(
-                    (sum: number, collection: any) =>
-                      sum + collection.courses.length,
-                    0,
-                  )}
-                />
-              </Col>
-              <Col span={6}>
-                <Statistic
-                  className="text-center items-center"
-                  prefix={
-                    <FaCircleCheck className="text-xl  dark:text-white" />
-                  }
-                  title="Completed Courses"
-                  value={data.collections.reduce(
-                    (sum: number, collection: any) =>
-                      sum +
-                      collection.courses.filter(
-                        (course: any) => course.is_completed,
-                      ).length,
-                    0,
-                  )}
-                />
-              </Col>
-            </Row>
-          </AntCard>
-        </Col>
-
-        {data.collections.map((collection: any, index: number) => (
-          <Col key={index} lg={8} sm={12} xs={24}>
-            <AntCard
-              hoverable
-              className="dark:bg-neutral-900 dark:border-0 bg-opacity-100 rounded-lg shadow-md"
-            >
-              <div className="flex items-center">
-                <Col className="w-[120px]">
+        <div className="md:col-span-2 grid grid-cols-2 gap-4">
+          <StatCard
+            icon={SiBookstack}
+            title="Total Collections"
+            value={data.collections.length}
+          />
+          <StatCard
+            icon={FaCircleCheck}
+            title="Completed Collections"
+            value={data.collections.filter((c) => c.is_completed).length}
+          />
+          <StatCard
+            icon={IoBookSharp}
+            title="Total Courses"
+            value={data.collections.reduce(
+              (sum, collection) => sum + collection.courses.length,
+              0,
+            )}
+          />
+          <StatCard
+            icon={FaCircleCheck}
+            title="Completed Courses"
+            value={data.collections.reduce(
+              (sum, collection) =>
+                sum +
+                collection.courses.filter((course) => course.is_completed)
+                  .length,
+              0,
+            )}
+          />
+        </div>
+      </div>
+      <div className="grid gap-6 mt-6 md:grid-cols-3">
+        {data.collections.map((collection, index) => (
+          <Card key={index}>
+            <CardHeader>
+              <div className="flex items-center space-x-4">
+                <div className="relative h-16 w-16">
                   <Progress
+                    format={themeProgressText}
                     percent={collection.progress}
-                    size={80}
+                    size={64}
                     strokeColor={getProgressColor(collection.progress)}
                     type="circle"
                   />
-                </Col>
-                <Col className="w-[60%]">
-                  <Tooltip
-                    className="text-ellipsis whitespace-nowrap overflow-hidden relative w-full"
-                    title={collection.title}
-                  >
-                    <h2 className="font-bold text-lg">{collection.title}</h2>
-                  </Tooltip>
-                  <StatusBadge
-                    status={
-                      !collection.is_started
-                        ? "not-started"
+                </div>
+                <div>
+                  <CardTitle className="line-clamp-2">
+                    {collection.title}
+                  </CardTitle>
+                  <div className="flex items-center space-x-2 space-y-1">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+                        !collection.is_started
+                          ? "bg-gray-100 text-gray-800 border-gray-300"
+                          : collection.is_completed
+                            ? "bg-green-100 text-green-800 border-green-300"
+                            : "bg-blue-100 text-blue-800 border-blue-300"
+                      }`}
+                    >
+                      {!collection.is_started
+                        ? "Not Started"
                         : collection.is_completed
-                          ? "completed"
-                          : "started"
-                    }
-                  />
-                </Col>
+                          ? "Completed"
+                          : "In Progress"}
+                    </span>
+                    {collection.due_time && (
+                      <span
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border 
+                      bg-red-100 text-red-800 border-red-300"
+                      >
+                        Due ({collection.due_time} days)
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-
+            </CardHeader>
+            <CardContent>
               <ScrollArea className="h-[200px]">
-                <Timeline
-                  className="mt-4 px-2"
-                  items={collection.courses.map((course: any) => ({
-                    color: course.is_completed ? "green" : "blue",
-                    children: (
-                      <div>
-                        <Text strong>{course.title}</Text>
-                        <Progress
-                          percent={course.progress}
-                          size="small"
-                          strokeColor={getProgressColor(course.progress)}
-                        />
-                      </div>
-                    ),
-                    dot: course.is_completed ? (
-                      <FaCircleCheck />
-                    ) : (
-                      <IoBookSharp />
-                    ),
-                  }))}
-                />
+                <div className="space-y-4">
+                  {collection.courses.map((course, courseIndex: number) => (
+                    <div key={courseIndex} className="relative pl-8">
+                      <span className="absolute left-0 top-1">
+                        {course.is_completed ? (
+                          <FaCircleCheck className="h-4 w-4 text-[#52CA14]" />
+                        ) : (
+                          <IoBookSharp className="h-4 w-4 text-blue-500" />
+                        )}
+                      </span>
+                      <p className="font-medium">{course.title}</p>
+                      <Progress
+                        percent={course.progress}
+                        showInfo={false}
+                        strokeColor={getProgressColor(course.progress)}
+                      />
+                    </div>
+                  ))}
+                </div>
               </ScrollArea>
-            </AntCard>
-          </Col>
+            </CardContent>
+          </Card>
         ))}
-      </Row>
+      </div>
     </div>
   );
 };

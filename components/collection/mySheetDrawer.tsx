@@ -11,6 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function MyDrawer({
   isOpen,
@@ -27,11 +28,11 @@ export default function MyDrawer({
 }) {
   return (
     <Sheet modal={true} open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="min-w-[800px] max-w-[px]">
+      <SheetContent className="min-w-[100svw] lg:min-w-[800px]">
         <SheetHeader>
           <SheetTitle>{title && title}</SheetTitle>
         </SheetHeader>
-        {children}
+        <ScrollArea className="h-[100svh] py-3">{children}</ScrollArea>
         <SheetFooter>{footer}</SheetFooter>
       </SheetContent>
     </Sheet>

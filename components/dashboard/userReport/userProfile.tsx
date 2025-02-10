@@ -207,18 +207,16 @@ export default function UserPage({
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <ScrollArea className="h-[70vh] pr-4 pb-6">
-            <div className="space-y-4">
+          <ScrollArea className="h-[70vh] pr-4 pb-2">
+            <div className="space-y-2">
               {Object.entries(information).map(([key, value]) => {
-                // Skip unnecessary fields
                 if (key === "id" || key === "groups") return null;
 
-                // Special handling for date fields
                 const isDateField =
                   key === "birth_date" || key === "joining_date";
 
                 return (
-                  <div key={key} className="space-y-2 px-1">
+                  <div key={key} className="space-y-1 px-1">
                     <Label className="text-sm font-medium" htmlFor={key}>
                       {formatLabel(key)}
                     </Label>

@@ -15,12 +15,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { CreateToolTipT } from "@/components/collection/tooltip";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { logoutUser } from "@/redux/slice/user";
 
 export function ProfileDropDown() {
   const dispatch = useDispatch<StoreDispatch>();
   const username = useSelector((state: RootState) => state.user.user?.username);
+  const userAvatar = useSelector((state: RootState) => state.user.user?.avatar);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -41,38 +43,54 @@ export function ProfileDropDown() {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <ProfileAvatar username={username} />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => handleClick("profile")}>
-            Profile
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        {/* <DropdownMenuItem>
+    <CreateToolTipT
+      content="Profile"
+      trigger={
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <ProfileAvatar avatar={userAvatar} username={username} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => handleClick("profile")}>
+                Profile
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem>
           <ThemeSwitch />
         </DropdownMenuItem> */}
-        {/* <DropdownMenuSeparator /> */}
-        <DropdownMenuItem
-          className="text-red-500 hover:text-red-500"
-          onClick={handleLogout}
-        >
-          Log out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuItem
+              className="text-red-500 hover:text-red-500"
+              onClick={handleLogout}
+            >
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      }
+    />
   );
 }
 
-export function ProfileAvatar({ username }: { username?: string }) {
+export function ProfileAvatar({
+  avatar,
+  username,
+}: {
+  avatar?: string;
+  username?: string;
+}) {
   return (
     <Avatar>
-      {/* <AvatarImage alt="@shadcn" src="https://github.com/shadcn.png" /> */}
+      {avatar && (
+        <AvatarImage
+          alt={username}
+          src={(process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + avatar}
+        />
+      )}
       <AvatarFallback className="uppercase">
         {username ? username.slice(0, 2) : "AB"}
       </AvatarFallback>

@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 //utils
 import { cn } from "@/lib/utils";
 
@@ -24,34 +25,36 @@ export const NotiicationBell = ({
   notify: boolean;
   count: number;
 }) => {
-
   return (
-    <>
-      <div
-        className="relative hover:bg-primary-200 p-2 rounded-full dark:hover:bg-neutral-700
+    <CreateToolTipT
+      content="Notifications"
+      trigger={
+        <div
+          className="relative hover:bg-primary-200 p-2 rounded-full dark:hover:bg-neutral-700
         trainstion-all duration-200 ease-linear border-primary-200 dark:border-neutral-700"
-      >
-        <IoIosNotifications className="text-white text-[1rem] md:text-[1.5rem] lg:text-[2rem]" />
-        {notify && (
-          <div
-            className={cn(
-              "pointer-events-none",
-              "text-[12px] h-5 w-5 flex text-center absolute top-0 bg-yellow-400",
-              "border-1 border-black/20 rounded-full px-1 dark:text-black",
-              count > 99
-                ? "right-0 w-6 h-6"
-                : count > 9
-                  ? "right-0 w-5 h-5"
-                  : "right-0 flex items-center justify-center",
-            )}
-          >
-            <span className="text-center flex items-center justify-center text-[8px] lg:text-md">
-              {count > 99 ? "99+" : count}
-            </span>
-          </div>
-        )}
-      </div>
-    </>
+        >
+          <IoIosNotifications className="text-white text-[1rem] md:text-[1.5rem] lg:text-[2rem]" />
+          {notify && (
+            <div
+              className={cn(
+                "pointer-events-none",
+                "text-[12px] h-5 w-5 flex text-center absolute top-0 bg-yellow-400",
+                "border-1 border-black/20 rounded-full px-1 dark:text-black",
+                count > 99
+                  ? "right-0 w-6 h-6"
+                  : count > 9
+                    ? "right-0 w-5 h-5"
+                    : "right-0 flex items-center justify-center",
+              )}
+            >
+              <span className="text-center flex items-center justify-center text-[8px] lg:text-md">
+                {count > 99 ? "99+" : count}
+              </span>
+            </div>
+          )}
+        </div>
+      }
+    />
   );
 };
 

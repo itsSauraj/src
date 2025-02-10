@@ -59,7 +59,7 @@ const UserReport = ({ trainee_id }: { trainee_id: UUID }) => {
       {traineeReport && (
         <Card className="flex-grow">
           <CardContent className="p-3">
-            <ScrollArea className="h-[70vh] pr-4">
+            <ScrollArea className="h-[80vh] pr-4">
               <UserActionPage
                 information={traineeReport}
                 setTraineeReport={setTraineeReport}

@@ -1,6 +1,7 @@
 import {
   ActionsFormatter,
   DateFormatter,
+  TextFormatter,
 } from "@/components/ui/table/formater";
 
 export const defaultColumns: string[] = [
@@ -16,6 +17,7 @@ export const allColumns = [
   { key: "employee_id", label: "Employee ID" },
   { key: "first_name", label: "First Name" },
   { key: "last_name", label: "Last Name" },
+  { key: "username", label: "Username" },
   { key: "email", label: "Email" },
   { key: "phone_number", label: "Phone Number" },
   { key: "address", label: "Address" },
@@ -33,6 +35,7 @@ export const getAllColumns = (actions: any, displayColumns: string[]) => {
       cellClass: "font-bold",
       headerClass: "font-bold",
       editable: false,
+      cellRenderer: TextFormatter,
     },
     first_name: {
       headerName: "First Name",
@@ -40,27 +43,38 @@ export const getAllColumns = (actions: any, displayColumns: string[]) => {
       flex: 1,
       cellClass: "font-bold",
       headerClass: "font-bold",
+      cellRenderer: TextFormatter,
     },
     last_name: {
       headerName: "Last Name",
       field: "last_name",
       width: 250,
+      cellRenderer: TextFormatter,
+    },
+    username: {
+      headerName: "Username",
+      field: "username",
+      width: 200,
+      cellRenderer: TextFormatter,
     },
     email: {
       headerName: "Email",
       field: "email",
       width: 250,
+      cellRenderer: TextFormatter,
     },
     phone_number: {
       headerName: "Phone Number",
       field: "phone_number",
       width: 200,
       sortable: false,
+      cellRenderer: TextFormatter,
     },
     address: {
       headerName: "Address",
       field: "address",
       width: 200,
+      cellRenderer: TextFormatter,
     },
     birth_date: {
       headerName: "Birth Date",

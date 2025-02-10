@@ -22,8 +22,9 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 export function SideBar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const user = useSelector((state: RootState) => state.user.user);
-  const userTypes: string[] = user.groups || [];
-  const username: string = user.username || "";
+  const userTypes: string[] = (user && user.groups) || [];
+  const username: string = (user && user.username) || "";
+  const userAvatar: string = (user && user.avatar) || "";
 
   return (
     <div
@@ -52,7 +53,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
               })}
             </div>
           </div>
-          <ProfileLink username={username} />
+          <ProfileLink userAvatar={userAvatar} username={username} />
         </SidebarBody>
       </SidebarUI>
       <div className="flex flex-1">
@@ -70,7 +71,13 @@ export function SideBar({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const ProfileLink = ({ username }: { username: string }) => {
+export const ProfileLink = ({
+  userAvatar,
+  username,
+}: {
+  userAvatar: string;
+  username: string;
+}) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [isMounted, setIsMounted] = useState(false);
 
@@ -83,8 +90,8 @@ export const ProfileLink = ({ username }: { username: string }) => {
   }
 
   return !isDesktop ? (
-    <Link href={"/profile"}>
-      <ProfileAvatar username={username} />
+    <Link href={"/dashboard/profile"}>
+      <ProfileAvatar avatar={userAvatar} username={username} />
     </Link>
   ) : null;
 };

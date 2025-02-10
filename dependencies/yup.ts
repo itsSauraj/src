@@ -121,16 +121,37 @@ export const userUpdateSchema = yup.object().shape({
     .string()
     .matches(/^[0-9]+$/, "Phone number must be only digits")
     .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number must not exceed 15 digits")
-    .required("Phone number is required"),
+    .max(15, "Phone number must not exceed 15 digits"),
   birth_date: yup
     .date()
     .nullable()
-    .max(new Date(), "Date of birth cannot be in the future"),
+    .max(new Date(), "Date of birth cannot be in the future")
+    .transform((value, originalValue) =>
+      originalValue ? new Date(originalValue) : null,
+    ),
   joining_date: yup
     .date()
     .nullable()
-    .max(new Date(), "Joining date cannot be in the future"),
+    .max(new Date(), "Joining date cannot be in the future")
+    .transform((value, originalValue) =>
+      originalValue ? new Date(originalValue) : null,
+    ),
+});
+export const userProfileUpdateSchema = userUpdateSchema.shape({
+  employee_id: yup.string().nullable(),
+  // avatar: yup
+  //   .mixed<File | string>()
+  //   .nullable()
+  //   .test("fileSize", "Image size must be less than 5MB", (value) => {
+  //     if (!value) return true;
+
+  //     return value instanceof File && value.size <= MAX_FILE_SIZE;
+  //   })
+  //   .test("fileType", "Unsupported file type", (value) => {
+  //     if (!value) return true;
+
+  //     return value instanceof File && ACCEPTED_IMAGE_TYPES.includes(value.type);
+  //   }),
 });
 
 export const ImportCourseSchema = yup
@@ -148,6 +169,32 @@ export const ImportCourseSchema = yup
     image: yup.mixed().required("Image is required"),
   })
   .required();
+
+export const passwordSchema = yup.object().shape({
+  current_password: yup.string().required("Current password is required"),
+  new_password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("New password is required")
+    .test(
+      "password-strength",
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      (value) =>
+        /[A-Z]/.test(value) &&
+        /[a-z]/.test(value) &&
+        /[0-9]/.test(value) &&
+        /[^A-Za-z0-9]/.test(value),
+    ),
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref("new_password")], "Passwords must match")
+    .required("Please confirm your password"),
+});
+
+export type UserProfileUpdateSchema = yup.InferType<
+  typeof userProfileUpdateSchema
+>;
+export type PasswordSchema = yup.InferType<typeof passwordSchema>;
 
 export type ImportFormData = yup.InferType<typeof ImportCourseSchema>;
 

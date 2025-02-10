@@ -23,7 +23,11 @@ export default function ViewCourse({ courseId }: { courseId: UUID }) {
   }, []);
 
   if (!courseDetails || courseDetails === null || courseDetails.length === 0) {
-    return <Loader />;
+    return (
+      <div className="h-[90svh] flex items-center justify-center">
+        <Loader />;
+      </div>
+    );
   }
 
   return <CourseLayout course={courseDetails} />;

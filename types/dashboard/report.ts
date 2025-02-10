@@ -61,6 +61,7 @@ export interface TrainingReportData {
 export interface MiniCollection {
   id: string | UUID;
   title: string;
+  is_default: boolean;
 }
 
 export interface ResponseMiniFiedTraineeCollectionData {

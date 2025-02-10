@@ -29,6 +29,120 @@ import {
   getTraineeReport,
 } from "@/lib/api";
 
+const CourseList = ({
+  courses,
+  selected,
+  setSelected,
+  searchValue,
+}: {
+  courses: any[];
+  selected: UUID[];
+  setSelected: (ids: UUID[]) => void;
+  searchValue: string;
+}) => {
+  const filteredCourses = courses.filter((course) =>
+    course.title.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  // Get selectable courses (non-default ones)
+  const selectableCourses = filteredCourses.filter(
+    (course) => !course.is_default,
+  );
+
+  // Calculate if all selectable courses are selected
+  const allSelected =
+    selectableCourses.length > 0 &&
+    selectableCourses.every((course) => selected.includes(course.id));
+
+  if (filteredCourses.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-[300px]">
+        <Empty
+          description="No Collections Found"
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <ScrollArea className="h-[300px] w-full rounded-md border">
+      <div className="flex items-center space-x-2 hover:bg-neutral-500/30 px-3 transition-all ease-linear duration-100">
+        <Checkbox
+          checked={allSelected}
+          className="peer"
+          id={"all"}
+          onCheckedChange={(checked) => {
+            if (checked) {
+              // Only select non-default courses
+              setSelected(selectableCourses.map((course) => course.id));
+            } else {
+              setSelected([]);
+            }
+          }}
+        />
+        <label
+          className="text-sm font-medium leading-none 
+          peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-full h-full px-2 py-3"
+          htmlFor="all"
+        >
+          Select All
+        </label>
+      </div>
+      {filteredCourses.map((course) =>
+        course.is_default ? (
+          <div
+            key={course.id}
+            className={cn(
+              "flex items-center space-x-2 hover:bg-neutral-500/30 px-3 \
+              transition-all ease-linear duration-100 hover:cursor-not-allowed",
+              { "bg-neutral-500/30": selected.includes(course.id) },
+            )}
+          >
+            <div className="h-[17px] w-[17px] border-[1px] border-gray-400 rounded-sm" />
+            <label
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+              w-full h-full px-2 py-3 hover:cursor-not-allowed"
+              htmlFor={course.id}
+            >
+              {course.title}{" "}
+              <span className="italic text-light text-gray-500">(Default)</span>
+            </label>
+          </div>
+        ) : (
+          <div
+            key={course.id}
+            className={cn(
+              "flex items-center space-x-2 hover:bg-neutral-500/30 px-3 transition-all ease-linear duration-100",
+              { "bg-neutral-500/30": selected.includes(course.id) },
+            )}
+          >
+            <Checkbox
+              checked={selected.includes(course.id)}
+              disabled={course.is_default}
+              id={course.id}
+              onCheckedChange={(checked) => {
+                if (checked) {
+                  setSelected([...selected, course.id]);
+                } else {
+                  setSelected(selected.filter((id) => id !== course.id));
+                }
+              }}
+            />
+            <label
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+              w-full h-full px-2 py-3"
+              htmlFor={course.id}
+            >
+              {course.title}
+            </label>
+          </div>
+        ),
+      )}
+    </ScrollArea>
+  );
+};
+
 export default function CourseTransfer({
   trainee_id,
   setTraineeReport,
@@ -98,7 +212,7 @@ export default function CourseTransfer({
             ...coursesToTransfer,
           ]);
           setAssignedCourses(
-            (availableCourses ?? []).filter(
+            (assignedCourses ?? []).filter(
               (course) => !selectedAssigned.includes(course.id as UUID),
             ),
           );
@@ -108,87 +222,6 @@ export default function CourseTransfer({
           setTraineeReport(data);
         });
       },
-    );
-  };
-
-  const CourseList = ({
-    courses,
-    selected,
-    setSelected,
-    searchValue,
-  }: {
-    courses: any[];
-    selected: UUID[];
-    setSelected: (ids: UUID[]) => void;
-    searchValue: string;
-  }) => {
-    const filteredCourses = courses.filter((course) =>
-      course.title.toLowerCase().includes(searchValue.toLowerCase()),
-    );
-
-    if (filteredCourses.length === 0) {
-      return (
-        <div className="flex items-center justify-center h-[300px]">
-          <Empty
-            description="No Collections Found"
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-          />
-        </div>
-      );
-    }
-
-    return (
-      <ScrollArea className="h-[300px] w-full rounded-md border">
-        <div className="flex items-center space-x-2 hover:bg-neutral-500/30 px-3 transition-all ease-linear duration-100">
-          <Checkbox
-            checked={selected.length === filteredCourses.length}
-            className="peer"
-            id={"all"}
-            onCheckedChange={(checked) => {
-              if (checked) {
-                setSelected(filteredCourses.map((course) => course.id));
-              } else {
-                setSelected([]);
-              }
-            }}
-          />
-          <label
-            className="text-sm font-medium leading-none 
-            peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-full h-full px-2 py-3"
-            htmlFor="all"
-          >
-            Select All
-          </label>
-        </div>
-        {filteredCourses.map((course) => (
-          <div
-            key={course.id}
-            className={cn(
-              "flex items-center space-x-2 hover:bg-neutral-500/30 px-3 transition-all ease-linear duration-100",
-              { "bg-neutral-500/30": selected.includes(course.id) },
-            )}
-          >
-            <Checkbox
-              checked={selected.includes(course.id)}
-              id={course.id}
-              onCheckedChange={(checked) => {
-                if (checked) {
-                  setSelected([...selected, course.id]);
-                } else {
-                  setSelected(selected.filter((id) => id !== course.id));
-                }
-              }}
-            />
-            <label
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
-              w-full h-full px-2 py-3"
-              htmlFor={course.id}
-            >
-              {course.title}
-            </label>
-          </div>
-        ))}
-      </ScrollArea>
     );
   };
 

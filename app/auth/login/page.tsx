@@ -34,6 +34,7 @@ export default function LoginFormPage() {
       username: "",
       password: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (formData: LoginRequest) => {

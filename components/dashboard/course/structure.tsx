@@ -9,10 +9,10 @@ import RenderLessons from "@/components/collection/renderImported";
 
 export const CourseLayout = ({ course }: { course: CourseData }) => {
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
+    <div className="p-6 flex flex-col gap-1 h-full">
+      <div className="flex justify-between items-center">
         <h3 className="text-xl font-bold capitalize">{course.title}</h3>
-        <p className="flex items-center gap-2">
+        <p className="flex items-center gap-2 min-w-max border-2 px-2 rounded-lg text-sm">
           <FaClock />
           {formatDuration(course.duration)}
         </p>

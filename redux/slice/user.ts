@@ -76,7 +76,9 @@ const logInUser =
       dispatch(toggleUser(userObj.user));
       dispatch(setUserType(userObj.groups[0]));
     } catch (error: any) {
-      return;
+      toast.error("Error logging in");
+
+      return error;
     } finally {
       dispatch(setAuthLoading(false));
     }
@@ -116,5 +118,5 @@ const registerUser =
     }
   };
 
-export { logInUser, logoutUser, validateToken, registerUser };
+export { logInUser, logoutUser, validateToken, registerUser, toggleUser };
 export default userSlice.reducer;

@@ -5,9 +5,11 @@ import type { TrainingReportData } from "@/types/dashboard/report";
 import React, { useState } from "react";
 
 // Components
+import { TrainingDashboard } from "./trainingDashboard";
+import { ComprehensiveTrainingReport } from "./comprensiveReport";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CourseTransfer from "@/components/dashboard/collections/courseTransfer";
-import TraineeActivity from "@/components/dashboard/userReport/traineeActivity";
 
 export default function UserActionPage({
   information,
@@ -16,29 +18,40 @@ export default function UserActionPage({
   information: TrainingReportData;
   setTraineeReport: (data: TrainingReportData) => void;
 }) {
-  const [activeTab, setActiveTab] = useState<any>("profile");
+  const [activeTab, setActiveTab] = useState<any>("userProfileReport");
 
   return (
     <div className="space-y-6">
       <Tabs
-        defaultValue="profile"
+        defaultValue="userProfileReport"
         value={activeTab}
         onValueChange={setActiveTab}
       >
         <TabsList>
-          <TabsTrigger value="profile">User Report</TabsTrigger>
-          <TabsTrigger value="courses">Course Management</TabsTrigger>
+          <TabsTrigger value="userProfileReport">User Report</TabsTrigger>
+          <TabsTrigger value="userCourseProgress">Course Progress</TabsTrigger>
+          <TabsTrigger value="userCoursesManagement">
+            Course Assignment
+          </TabsTrigger>
+          <TabsTrigger value="userExamManagement">Exam Report</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="profile">
-          <TraineeActivity report={information} />
+        <TabsContent value="userProfileReport">
+          <TrainingDashboard data={information} />
         </TabsContent>
 
-        <TabsContent value="courses">
+        <TabsContent value="userCourseProgress">
+          <ComprehensiveTrainingReport data={information} />
+        </TabsContent>
+
+        <TabsContent value="userCoursesManagement">
           <CourseTransfer
             setTraineeReport={setTraineeReport}
             trainee_id={information.trainee.id}
           />
+        </TabsContent>
+        <TabsContent value="userExamManagement">
+          <div>Comming soon</div>
         </TabsContent>
       </Tabs>
     </div>
