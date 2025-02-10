@@ -24,23 +24,28 @@ export const NotiicationBell = ({
   notify: boolean;
   count: number;
 }) => {
+
   return (
     <>
       <div
         className="relative hover:bg-primary-200 p-2 rounded-full dark:hover:bg-neutral-700
         trainstion-all duration-200 ease-linear border-primary-200 dark:border-neutral-700"
       >
-        <IoIosNotifications className="text-white" size={32} />
+        <IoIosNotifications className="text-white text-[1rem] md:text-[1.5rem] lg:text-[2rem]" />
         {notify && (
           <div
             className={cn(
               "pointer-events-none",
-              "text-[12px] h-5 flex text-center absolute top-0 bg-yellow-400",
+              "text-[12px] h-5 w-5 flex text-center absolute top-0 bg-yellow-400",
               "border-1 border-black/20 rounded-full px-1 dark:text-black",
-              count > 99 ? " -right-3" : count > 9 ? "-right-1" : "right-0",
+              count > 99
+                ? "right-0 w-6 h-6"
+                : count > 9
+                  ? "right-0 w-5 h-5"
+                  : "right-0 flex items-center justify-center",
             )}
           >
-            <span className="text-center flex items-center justify-center">
+            <span className="text-center flex items-center justify-center text-[8px] lg:text-md">
               {count > 99 ? "99+" : count}
             </span>
           </div>
@@ -99,7 +104,7 @@ export const AllNotificationDialog = ({
 }) => {
   return (
     <Dialog open={state} onOpenChange={setState}>
-      <DialogContent className={cn("sm:max-w-[425px]", className)}>
+      <DialogContent className={cn("sm:max-w-[425px] rounded-md", className)}>
         <DialogHeader className="flex flex-row justify-between items-center">
           <DialogTitle className="captalize w-max">
             All Notifications

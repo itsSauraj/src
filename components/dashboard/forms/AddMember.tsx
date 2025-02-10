@@ -71,7 +71,7 @@ const AddMember = ({
       setData((prev) => [...prev, response]);
       setState(false);
       dispatch(setAuthLoading(false));
-    };
+    }
   };
 
   return (

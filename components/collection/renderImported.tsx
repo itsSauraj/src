@@ -18,7 +18,7 @@ interface ModuleAccordionProps {
   selectable?: boolean;
   isStared?: boolean;
   toggleLesson?: (lessonId: string) => void;
-  checkedLessons: Set<string>;
+  checkedLessons?: Set<string>;
 }
 
 const LessonItem = ({
@@ -32,7 +32,7 @@ const LessonItem = ({
   isStared?: boolean;
   selectable?: boolean;
   toggleLesson?: (lessonId: string) => void;
-  checkedLessons: Set<string>;
+  checkedLessons?: Set<string>;
 }) => (
   <div
     className="flex items-center gap-3 p-2 hover:bg-accent \
@@ -42,7 +42,7 @@ const LessonItem = ({
       <PlayCircle className="w-4 h-4 text-muted-foreground group-hover:text-primary" />
     ) : (
       <Checkbox
-        checked={checkedLessons.has(lesson.id)}
+        checked={checkedLessons?.has(lesson.id) ?? false}
         className="ml-6"
         disabled={!isStared}
         onCheckedChange={() => toggleLesson && toggleLesson(lesson.id)}
@@ -132,7 +132,7 @@ const ModuleList = ({
   selectable?: boolean;
   isStared?: boolean;
   toggleLesson?: (lessonId: string) => void;
-  checkedLessons: Set<string>;
+  checkedLessons?: Set<string>;
   modules?: Module[];
 }) => {
   return (

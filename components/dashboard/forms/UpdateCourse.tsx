@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
 import type { UUID } from "crypto";
 import type { StoreDispatch } from "@/redux/store";
-import type { CourseFormData } from "@/dependencies/yup";
 import type { CourseContent } from "@/types/dashboard/course";
-import type { TraineeCourseView } from "@/types/dashboard/view";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,7 +17,6 @@ import {
 } from "lucide-react";
 import { MdDelete } from "react-icons/md";
 
-import { createNewCourse } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 // api
@@ -59,16 +57,11 @@ const CourseForm = ({ courseID }: { courseID: UUID }) => {
   // }
 
   const constructStructure = (data: any) => {
-    
-    const context = {
-      
-    }
-  }
+    const context = {};
+  };
 
   useEffect(() => {
-    dispatch(getCourseDetails(courseID)).then((data) => {
-      
-    });
+    dispatch(getCourseDetails(courseID)).then((data) => {});
   }, []);
 
   const [errors, setErrors] = useState<{

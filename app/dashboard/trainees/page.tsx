@@ -86,13 +86,13 @@ const TraineesPage = () => {
           >
             <AddMember setData={setRowData} setState={setOpen} type="trainee" />
           </ModalDialog>
-          {rowData.length > 0 &&
+          {rowData.length > 0 && (
             <ColumnSelectorDropdown
               columns={allColumns}
               parentSelectedColumns={selectedColumns}
               setParentSelectedColumns={setSelectedColumns}
             />
-          }
+          )}
         </div>
         <div className="flex flex-col w-full h-full">
           {isLoading ? (

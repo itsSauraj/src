@@ -88,7 +88,7 @@ const addMember =
         toast.error("Failed to add member");
       }
     } catch (error) {
-      const errorData = error.response.data;
+      const errorData = (error as any).response.data;
 
       const errorFields = [
         "email",

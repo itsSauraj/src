@@ -1,8 +1,10 @@
 "use client";
 
+import type { StoreDispatch, RootState } from "@/redux/store";
+
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   DropdownMenu,
@@ -13,12 +15,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { StoreDispatch } from "@/redux/store";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { logoutUser } from "@/redux/slice/user";
 
 export function ProfileDropDown() {
   const dispatch = useDispatch<StoreDispatch>();
+  const username = useSelector((state: RootState) => state.user.user?.username);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -41,7 +43,7 @@ export function ProfileDropDown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <ProfileAvatar />
+        <ProfileAvatar username={username} />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -67,11 +69,13 @@ export function ProfileDropDown() {
   );
 }
 
-export function ProfileAvatar() {
+export function ProfileAvatar({ username }: { username?: string }) {
   return (
     <Avatar>
-      <AvatarImage alt="@shadcn" src="https://github.com/shadcn.png" />
-      <AvatarFallback>CN</AvatarFallback>
+      {/* <AvatarImage alt="@shadcn" src="https://github.com/shadcn.png" /> */}
+      <AvatarFallback className="uppercase">
+        {username ? username.slice(0, 2) : "AB"}
+      </AvatarFallback>
     </Avatar>
   );
 }

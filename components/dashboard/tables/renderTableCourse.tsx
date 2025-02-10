@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import type { UUID } from "crypto";
@@ -231,9 +232,6 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
             <span>Title</span>
             <span>Duration</span>
           </div>
-          {/* <Accordion type="multiple">
-            {courseData.modules.map((module) => renderModule(module))}
-          </Accordion> */}
           <ModuleList
             selectable
             checkedLessons={checkedLessons}

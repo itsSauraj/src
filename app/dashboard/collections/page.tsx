@@ -89,13 +89,13 @@ const CollectoinsPage = () => {
               </div>
             </ScrollArea>
           </ModalDialog>
-          {rowData.length > 0 &&
+          {rowData.length > 0 && (
             <ColumnSelectorDropdown
               columns={allColumns}
               parentSelectedColumns={selectedColumns}
               setParentSelectedColumns={setSelectedColumns}
             />
-          }
+          )}
         </div>
 
         {isLoading ? (

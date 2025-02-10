@@ -21,10 +21,9 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const userTypes: string[] = useSelector((state: RootState) => {
-    if (state.user.user) return state.user.user.groups;
-    else return [];
-  });
+  const user = useSelector((state: RootState) => state.user.user);
+  const userTypes: string[] = user.groups || [];
+  const username: string = user.username || "";
 
   return (
     <div
@@ -36,7 +35,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
     >
       <SidebarUI open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden pt-4">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden pt-1">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => {
@@ -53,7 +52,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
               })}
             </div>
           </div>
-          <ProfileLink />
+          <ProfileLink username={username} />
         </SidebarBody>
       </SidebarUI>
       <div className="flex flex-1">
@@ -71,7 +70,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const ProfileLink = () => {
+export const ProfileLink = ({ username }: { username: string }) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [isMounted, setIsMounted] = useState(false);
 
@@ -85,7 +84,7 @@ export const ProfileLink = () => {
 
   return !isDesktop ? (
     <Link href={"/profile"}>
-      <ProfileAvatar />
+      <ProfileAvatar username={username} />
     </Link>
   ) : null;
 };
