@@ -64,13 +64,14 @@ const AddMember = ({
   });
 
   const onSubmit = async (data: IMemberForm) => {
-    dispatch(setAuthLoading(true));
     data.joining_date = format(data.joining_date, "yyyy-MM-dd");
     const response: IMemberForm = await dispatch(addMember(data, type));
 
-    setData((prev) => [...prev, response]);
-    setState(false);
-    dispatch(setAuthLoading(false));
+    if (response) {
+      setData((prev) => [...prev, response]);
+      setState(false);
+      dispatch(setAuthLoading(false));
+    };
   };
 
   return (
@@ -170,9 +171,13 @@ const AddMember = ({
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent align="start" className="w-auto p-0">
+                  <PopoverContent
+                    align="start"
+                    className="w-auto p-0 pointer-events-auto"
+                  >
                     <Calendar
                       initialFocus
+                      className="pointer-events-auto"
                       mode="single"
                       selected={field.value as any}
                       onSelect={field.onChange}

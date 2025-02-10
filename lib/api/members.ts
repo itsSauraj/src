@@ -64,26 +64,49 @@ const addMember =
     dispatch: StoreDispatch,
     getState: () => RootState,
   ): Promise<IMemberForm | any> => {
-    const response = await axios.post(
-      `${apiConfig.url}/auth/user/member/`,
-      {
-        ...formData,
-        role: type,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getState().user.token}`,
+    dispatch(setAuthLoading(true));
+    try {
+      const response = await axios.post(
+        `${apiConfig.url}/auth/user/member/`,
+        {
+          ...formData,
+          role: type,
         },
-      },
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+        },
+      );
 
-    if (response.status === 201) {
-      toast.success("Member added successfully");
+      if (response.status === 201) {
+        toast.success("Member added successfully");
 
-      return response.data;
-    } else {
-      toast.error("Failed to add member");
+        return response.data;
+      } else {
+        toast.error("Failed to add member");
+      }
+    } catch (error) {
+      const errorData = error.response.data;
+
+      const errorFields = [
+        "email",
+        "employee_id",
+        "phone_number",
+        "username",
+        "password",
+        "non_field_errors",
+      ];
+      const errorMessage =
+        errorFields.find((field) => errorData[field]) || "Failed to add member";
+
+      toast.error(errorData[errorMessage] || errorMessage);
+      dispatch(setAuthLoading(false));
+
+      return null;
+    } finally {
+      dispatch(setAuthLoading(false));
     }
   };
 
