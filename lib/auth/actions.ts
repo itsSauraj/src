@@ -41,20 +41,26 @@ export const login = async (
       return response.data;
     }
 
-    return null;
+    return { message: "Invalid credentials" };
   } catch (error) {
-    return error;
+    return {
+      message: (error as any).response.data.detail,
+    };
   }
 };
 
 export const verifyOtp = async (
+  user_id: string,
   otp: string,
 ): Promise<LoginResponse | boolean> => {
   try {
-    const response = await axios.post(`${apiConfig.url}/profile/verify/`, {
-      otp: otp,
-      user_id: localStorage.getItem("user_id"),
-    });
+    const response = await axios.post(
+      `${apiConfig.url}/profile/verify_account/`,
+      {
+        otp: otp,
+        user_id: user_id,
+      },
+    );
 
     if (response.status === 200) {
       return response.data;

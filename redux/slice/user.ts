@@ -71,10 +71,12 @@ const logInUser =
 
       localStorage.setItem("token", userObj.token);
 
-      dispatch(toggleToken(userObj.token));
-      dispatch(toggleUser(userObj.user));
-      dispatch(setUserType(userObj.groups[0]));
+      if (typeof userObj !== "boolean") {
+        dispatch(toggleToken(userObj.token));
+        dispatch(toggleUser(userObj.user));
+      }
     } catch (error: any) {
+      console.log(error);
       toast.error("Error logging in");
 
       return error;
@@ -123,19 +125,29 @@ const registerUser =
     }
   };
 
-const verifyOtpAction = (otp: string) => async (dispatch: StoreDispatch) => {
+const verifyOTP = (otp: string) => async (dispatch: StoreDispatch) => {
   try {
-    const response = await verifyOtp(otp);
+    const user_id = localStorage.getItem("user_id") as string;
+    const response = await verifyOtp(user_id, otp);
 
     if (response) {
       const userObj = response;
 
-      deleteCookie("otp_verification_pending");
-      localStorage.removeItem("user_id");
+      if (typeof userObj !== "boolean") {
+        setCookie("token", userObj.token, {
+          maxAge: 60 * 60 * 24 * 7,
+          secure: true,
+          httpOnly: false,
+          sameSite: "strict",
+        });
+        deleteCookie("otp_verification_pending");
+        localStorage.removeItem("user_id");
+        localStorage.setItem("token", userObj.token);
 
-      dispatch(toggleToken(userObj.token));
-      dispatch(toggleUser(userObj.user));
-      dispatch(setUserType(userObj.groups[0]));
+        dispatch(toggleToken(userObj.token));
+        dispatch(toggleUser(userObj.user));
+        dispatch(setUserType(userObj.user.groups[0]));
+      }
       return;
     }
   } catch (error: any) {
@@ -143,7 +155,15 @@ const verifyOtpAction = (otp: string) => async (dispatch: StoreDispatch) => {
 
     return error;
   }
-}
+};
 
-export { logInUser, logoutUser, validateToken, registerUser, toggleUser, verifyOtpAction };
+export {
+  logInUser,
+  logoutUser,
+  validateToken,
+  registerUser,
+  toggleToken,
+  toggleUser,
+  verifyOTP,
+};
 export default userSlice.reducer;

@@ -1,5 +1,7 @@
 "use client";
 
+import type { StoreDispatch } from "@/redux/store";
+
 import React, {
   useState,
   useRef,
@@ -7,11 +9,15 @@ import React, {
   KeyboardEvent,
   ClipboardEvent,
 } from "react";
+import { useDispatch } from "react-redux";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+// apis
+import { verifyOTP } from "@/redux/slice/user";
 
 const OTPVerification: React.FC = () => {
+  const dispatch = useDispatch<StoreDispatch>();
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const inputRefs = [
     useRef<HTMLInputElement>(null),
@@ -30,14 +36,12 @@ const OTPVerification: React.FC = () => {
     newOtp[index] = element.value;
     setOtp(newOtp);
 
-    // Move to next input if current field is filled
     if (element.value && index < 5) {
       inputRefs[index + 1].current?.focus();
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
-    // Move to previous input on backspace
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       inputRefs[index - 1].current?.focus();
     }
@@ -57,7 +61,6 @@ const OTPVerification: React.FC = () => {
       });
       setOtp(newOtp);
 
-      // Focus last filled input or first empty input
       const lastIndex = Math.min(pastedData.length - 1, 5);
 
       inputRefs[lastIndex].current?.focus();
@@ -68,8 +71,7 @@ const OTPVerification: React.FC = () => {
     const otpValue = otp.join("");
 
     if (otpValue.length === 6) {
-      console.log("OTP Submitted:", otpValue);
-      // Add your verification logic here
+      dispatch(verifyOTP(otpValue));
     }
   };
 

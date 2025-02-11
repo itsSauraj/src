@@ -34,7 +34,9 @@ const UserProfileUpdate = () => {
   const userData = useSelector((state: RootState) => state.user.user);
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(
-    (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + (userData?.avatar || ""),
+    userData?.avatar &&
+      (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
+        (userData?.avatar || ""),
   );
 
   const profileForm = useForm({
@@ -137,24 +139,26 @@ const UserProfileUpdate = () => {
             onSubmit={profileForm.handleSubmit(onProfileSubmit)}
           >
             <div className="grid gap-2 sm:grid-cols-2">
-              <FormField
-                control={profileForm.control}
-                name="employee_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Employee ID</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled
-                        placeholder="Employee ID"
-                        {...field}
-                        value={field.value ?? ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {userData?.groups && userData.groups[0] !== "admin" && (
+                <FormField
+                  control={profileForm.control}
+                  name="employee_id"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Employee ID</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled
+                          placeholder="Employee ID"
+                          {...field}
+                          value={field.value ?? ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <FormField
                 control={profileForm.control}

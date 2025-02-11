@@ -42,7 +42,12 @@ import {
 // User
 import { updateUserDetails } from "./user";
 // Profile
-import { getProfile, updateProfile, changePassword } from "./profile";
+import {
+  getProfile,
+  updateProfile,
+  deleteProfile,
+  changePassword,
+} from "./profile";
 
 export {
   // App
@@ -84,5 +89,6 @@ export {
   // Profile
   getProfile,
   updateProfile,
+  deleteProfile,
   changePassword,
 };

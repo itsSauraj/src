@@ -5,9 +5,10 @@ import type { PasswordSchema } from "@/dependencies/yup";
 
 import axios from "axios";
 import { toast } from "sonner";
+import { deleteCookie } from "cookies-next";
 
 import { setAuthLoading } from "@/redux/slice/app";
-import { toggleUser } from "@/redux/slice/user";
+import { toggleUser, toggleToken } from "@/redux/slice/user";
 import { apiConfig } from "@/config/api";
 
 const getProfile =
@@ -58,7 +59,6 @@ const updateProfile =
       if (response.status === 200) {
         toast.success("Profile updated successfully");
         dispatch(setAuthLoading(false));
-
         dispatch(toggleUser(response.data));
 
         return response.data;
@@ -69,6 +69,44 @@ const updateProfile =
       return false;
     } catch (error) {
       toast.error("Failed to get profile data");
+
+      return false;
+    } finally {
+      dispatch(setAuthLoading(false));
+    }
+  };
+
+const deleteProfile =
+  () =>
+  async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
+    try {
+      dispatch(setAuthLoading(true));
+      const response = await axios.delete(
+        `${apiConfig.url}/profile/delete_account/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().user.token}`,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        toast.success("Profile deleted successfully");
+
+        dispatch(setAuthLoading(false));
+        dispatch(toggleUser(null));
+        dispatch(toggleToken(null));
+        deleteCookie("token");
+
+        return true;
+      }
+
+      toast.error("Failed to delete profile");
+
+      return false;
+    } catch (error) {
+      toast.error("Failed to delete profile");
 
       return false;
     } finally {
@@ -111,4 +149,4 @@ const changePassword =
     }
   };
 
-export { getProfile, updateProfile, changePassword };
+export { getProfile, updateProfile, deleteProfile, changePassword };
