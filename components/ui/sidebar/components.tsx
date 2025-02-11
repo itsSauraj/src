@@ -6,12 +6,15 @@ import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
 
 import { SidebarProvider, useSidebar } from "./provider";
 
 import { cn } from "@/lib/utils";
 import { NotificationDropdown } from "@/components/dashboard/dropdown/noification";
 import { BreadcrumbResponsive } from "@/components/breadcrumb";
+// custom hook
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export const Sidebar = ({
   children,
@@ -81,10 +84,16 @@ export const MobileSidebar = ({
   ...props
 }: React.ComponentProps<"div">) => {
   const { open, setOpen } = useSidebar();
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const pathname = usePathname();
 
   useEffect(() => {
     setOpen(false);
   }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [isMobile, pathname]);
 
   return (
     <>

@@ -14,17 +14,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { formatDuration, formatDateTimeToLocal } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StatusBadge } from "@/components/collection/status-badge";
 import { cn } from "@/lib/utils";
+import { getProgressColor } from "@/lib/utils_components";
 
 export const CollectionCard = ({
+  className,
   collections,
   onExplore,
 }: {
+  className?: string;
   collections: MemberCollection[];
   onExplore: (value: UUID) => void;
 }) => {
@@ -79,9 +82,15 @@ export const CollectionCard = ({
         return (
           <Card
             key={metadata["collection"].id}
-            className="w-[350px] flex-grow p-0 rounded-xl h-full flex flex-col"
+            className={cn(
+              "md:max-w-[300px] lg:max-w-[350px] p-0 rounded-xl flex-grow relative",
+              className,
+            )}
           >
-            <CardHeader className="relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30">
+            <CardHeader
+              className="relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 \
+              dark:bg-neutal-700/30"
+            >
               {metadata["collection"].image && (
                 <Image
                   alt={metadata["collection"].title}
@@ -94,12 +103,16 @@ export const CollectionCard = ({
                 />
               )}
               <CardTitle className="z-20">
-                <h3 className="text-2xl">{metadata["collection"].title}</h3>
+                <button
+                  className="text-2xl hover:underline"
+                  onClick={() => onExplore(metadata["collection"].id)}
+                >
+                  {metadata["collection"].title}
+                </button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-grow space-y-4 p-4">
-              <Label className="text-xl">Description</Label>
-              <p className="line-clamp-6 h-[6rem] overflow-y-scroll no-scrollbar">
+            <CardContent className="space-y-4 p-4 h-max">
+              <p className="line-clamp-5 text-xs text-gray-700">
                 {metadata["collection"].description}
               </p>
             </CardContent>
@@ -113,7 +126,7 @@ export const CollectionCard = ({
                     <Progress
                       className="w-full"
                       percent={metadata.progress}
-                      strokeColor={"#21a357"}
+                      strokeColor={getProgressColor(metadata.progress)}
                     />
                   </Tooltip>
                 </div>
@@ -143,9 +156,16 @@ export const CollectionCard = ({
                     {formatDuration(metadata["collection"].duration as string)}
                   </p>
                 </div>
-                <Button onClick={() => onExplore(metadata["collection"].id)}>
-                  Explore
-                </Button>
+                <CreateToolTipT
+                  content="Explore"
+                  trigger={
+                    <Button
+                      onClick={() => onExplore(metadata["collection"].id)}
+                    >
+                      Explore
+                    </Button>
+                  }
+                />
               </div>
             </CardFooter>
           </Card>
@@ -169,7 +189,7 @@ export const CollectionCourseView = ({
   const started_course_list = Object.keys(started_courses || {});
 
   return (
-    <>
+    <div className="flex flex-col gap-4 h-[90%]">
       <div className="bg-neutral-300/30 p-2 rounded-small flex flex-col gap-1">
         <div className="w-full text-sm">
           <p>
@@ -229,25 +249,27 @@ export const CollectionCourseView = ({
                   started_courses?.[course.id] != 100 ? "active" : undefined
                 }
                 strokeColor={
-                  started_courses?.[course.id] == 100
-                    ? "#21a357"
-                    : {
-                        from: "#108ee9",
-                        to: "#21a357",
-                      }
+                  !(started_courses?.[course.id] == 100)
+                    ? getProgressColor(started_courses?.[course.id] ?? 0)
+                    : undefined
                 }
               />
             </div>
-            <Link
-              className={cn(buttonVariants(), "w-full")}
-              href={`/dashboard/courses/${metadata?.collection.id}?course=${course.id}`}
-            >
-              View Course
-            </Link>
+            <CreateToolTipT
+              content="View Course"
+              trigger={
+                <Link
+                  className={cn(buttonVariants(), "w-full")}
+                  href={`/dashboard/courses/${metadata?.collection.id}?course=${course.id}`}
+                >
+                  View Course
+                </Link>
+              }
+            />
           </CardFooter>
         </Card>
       ))}
-    </>
+    </div>
   );
 };
 

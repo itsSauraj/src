@@ -16,11 +16,13 @@ const CourseSection = ({
   collection,
   handleRemoveCourse,
   setCollection,
+  handleOnOpenChange,
 }: {
   courses: Course[];
   collection: CourseCollection;
   handleRemoveCourse: (courseId: UUID) => void;
   setCollection: (data: CourseCollection) => void;
+  handleOnOpenChange: (id: UUID) => void;
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -51,10 +53,11 @@ const CourseSection = ({
             </p>
           ) : (
             (collection.courses ?? []).map((course: Course | any) => (
-              <div
+              <button
                 key={course.id}
                 className="flex items-center justify-between hover:bg-neutral-200 dark:hover:bg-neutral-700
                 bg-neutral-100 dark:bg-neutral-800 text-md p-2 rounded-md cursor-pointer"
+                onClick={() => handleOnOpenChange(course.id)}
               >
                 <p>{course.title}</p>
                 <CreateToolTipT
@@ -62,13 +65,16 @@ const CourseSection = ({
                   trigger={
                     <button
                       className="text-sm text-red-500"
-                      onClick={() => handleRemoveCourse(course.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveCourse(course.id);
+                      }}
                     >
                       <X className="h-4 w-4" />
                     </button>
                   }
                 />
-              </div>
+              </button>
             ))
           )}
         </div>

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import type { UUID } from "crypto";
 import type { CollectionFormData } from "@/dependencies/yup";
 import type { Course, CourseCollection } from "@/types/dashboard/view";
 import type { StoreDispatch } from "@/redux/store";
@@ -34,6 +35,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 //APIS
 import {
   updateCollection,
@@ -45,10 +47,12 @@ function CollectionView({
   collection,
   availableCourses,
   setCollection,
+  handleOnOpenChange,
 }: {
   availableCourses: Course[];
   collection: CourseCollection;
   setCollection: (data: CourseCollection) => void;
+  handleOnOpenChange: (id: UUID) => void;
 }) {
   const dispatch = useDispatch<StoreDispatch>();
   const [isEditing, setIsEditing] = useState(false);
@@ -268,27 +272,37 @@ function CollectionView({
                   />
                 </div>
                 <div className="flex gap-2">
-                  <Button disabled={isLoading} type="submit">
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      "Save"
-                    )}
-                  </Button>
-                  <Button
-                    disabled={isLoading}
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      form.reset();
-                      setIsEditing(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
+                  <CreateToolTipT
+                    content="Save changes"
+                    trigger={
+                      <Button disabled={isLoading} type="submit">
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                          </>
+                        ) : (
+                          "Save"
+                        )}
+                      </Button>
+                    }
+                  />
+                  <CreateToolTipT
+                    content="Cancel editing"
+                    trigger={
+                      <Button
+                        disabled={isLoading}
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          form.reset();
+                          setIsEditing(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    }
+                  />
                 </div>
               </form>
             </Form>
@@ -303,23 +317,33 @@ function CollectionView({
                 </CardDescription>
               </div>
               <div className="flex gap-2">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  disabled={collection.is_default}
-                  size="icon"
-                  variant="destructive"
-                  onClick={() => {
-                    collection.is_default ? null : setOpenAlert(true);
-                  }}
-                >
-                  <MdDelete className="h-4 w-4" />
-                </Button>
+                <CreateToolTipT
+                  content="Edit Collection"
+                  trigger={
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  }
+                />
+                <CreateToolTipT
+                  content="Delete Collection"
+                  trigger={
+                    <Button
+                      disabled={collection.is_default}
+                      size="icon"
+                      variant="destructive"
+                      onClick={() => {
+                        collection.is_default ? null : setOpenAlert(true);
+                      }}
+                    >
+                      <MdDelete className="h-4 w-4" />
+                    </Button>
+                  }
+                />
                 <MyAlertDialog
                   description="Are you sure you want to delete this Collection?"
                   setOpen={setOpenAlert}
@@ -335,6 +359,7 @@ function CollectionView({
           <CourseSection
             collection={collection}
             courses={availableCourses}
+            handleOnOpenChange={handleOnOpenChange}
             handleRemoveCourse={handleRemoveCourse}
             setCollection={setCollection}
           />

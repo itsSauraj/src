@@ -32,6 +32,7 @@ import {
   unmarkLessonAsComplete,
 } from "@/lib/api";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 
 const CourseView = ({ collection_id }: { collection_id: UUID }) => {
   const searchParams = useSearchParams();
@@ -223,9 +224,14 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
       <CardContent>
         <div className="flex w-full justify-between items-center mb-3">
           <h3 className="text-2xl font-bold capitalize">Course Lessons</h3>
-          <Button disabled={isStared} onClick={handleStartCourse}>
-            {isStared ? "Started" : "Start Course"}
-          </Button>
+          <CreateToolTipT
+            content={isStared ? "Started" : "Start Course"}
+            trigger={
+              <Button disabled={isStared} onClick={handleStartCourse}>
+                {isStared ? "Started" : "Start Course"}
+              </Button>
+            }
+          />
         </div>
         <div className="w-full">
           <div className="bg-neutral-300 dark:bg-neutral-700 font-semibold rounded-t-lg flex justify-between p-4  ">

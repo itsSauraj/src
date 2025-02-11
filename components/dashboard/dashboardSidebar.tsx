@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { links } from "@/lib/constants/dashboard";
 import { PagePanel } from "@/components/dashboard/panel";
 import { ProfileAvatar } from "@/components/dashboard/dropdown/profile";
+import { CreateToolTipT } from "@/components/collection/tooltip";
 //hooks
 import { useMediaQuery } from "@/hooks/use-media-query";
 
@@ -53,7 +54,12 @@ export function SideBar({ children }: { children: React.ReactNode }) {
               })}
             </div>
           </div>
-          <ProfileLink userAvatar={userAvatar} username={username} />
+          <CreateToolTipT
+            content="My Account"
+            trigger={
+              <ProfileLink userAvatar={userAvatar} username={username} />
+            }
+          />
         </SidebarBody>
       </SidebarUI>
       <div className="flex flex-1">

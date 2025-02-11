@@ -75,7 +75,6 @@ export default function UserPage({
       .join(" ");
   };
 
-  // On form submission
   function onSubmit(data: any) {
     const formattedData = {
       ...data,
@@ -98,7 +97,6 @@ export default function UserPage({
     });
   }
 
-  // Delete mentor handler
   const deleteMentor = () => {
     dispatch(deleteMember(information.id)).then(() => {
       router.push("/dashboard/trainees");

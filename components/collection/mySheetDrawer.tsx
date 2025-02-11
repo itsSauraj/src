@@ -1,7 +1,5 @@
 "use client";
 
-export type backdrop = "opaque" | "blur" | "transparent";
-
 import React from "react";
 
 import {
@@ -12,14 +10,19 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+
+export type backdrop = "opaque" | "blur" | "transparent";
 
 export default function MyDrawer({
+  className,
   isOpen,
   onOpenChange,
   title,
   children,
   footer,
 }: {
+  className?: string;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   title?: React.ReactNode;
@@ -28,7 +31,9 @@ export default function MyDrawer({
 }) {
   return (
     <Sheet modal={true} open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="min-w-[100svw] lg:min-w-[800px]">
+      <SheetContent
+        className={cn("min-w-[100svw] lg:min-w-[800px]", className)}
+      >
         <SheetHeader>
           <SheetTitle>{title && title}</SheetTitle>
         </SheetHeader>

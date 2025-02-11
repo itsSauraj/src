@@ -2,7 +2,7 @@ import type { UUID } from "crypto";
 
 import { ResponseMember as Trainee } from "./view";
 
-interface Collection {
+export interface Collection {
   id: string | UUID;
   title: string;
   description: string;
@@ -21,7 +21,7 @@ interface Collection {
   courses: Course[];
 }
 
-interface Course {
+export interface Course {
   id: string | UUID;
   title: string;
   description: string;
@@ -34,7 +34,7 @@ interface Course {
   modules: Module[];
 }
 
-interface Module {
+export interface Module {
   id: string | UUID;
   title: string;
   description: string;
@@ -43,7 +43,7 @@ interface Module {
   lessons: Lesson[];
 }
 
-interface Lesson {
+export interface Lesson {
   id: string | UUID;
   title: string;
   description: string;

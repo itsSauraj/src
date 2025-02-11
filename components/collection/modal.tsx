@@ -1,5 +1,7 @@
 import { Plus, Upload } from "lucide-react";
 
+import { CreateToolTipT } from "./tooltip";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -37,12 +39,17 @@ export function ModalDialog({
 
   return (
     <Dialog open={state} onOpenChange={setState}>
-      <DialogTrigger asChild>
-        <Button>
-          {icons[type || "add"]}
-          {title}
-        </Button>
-      </DialogTrigger>
+      <CreateToolTipT
+        content={title}
+        trigger={
+          <DialogTrigger asChild>
+            <Button>
+              {icons[type || "add"]}
+              {title}
+            </Button>
+          </DialogTrigger>
+        }
+      />
       <DialogContent
         className={cn("sm:max-w-[425px]", className)}
         onPointerDownOutside={(e) => disabled && e.preventDefault()}

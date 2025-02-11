@@ -50,7 +50,7 @@ const UserReport = ({ trainee_id }: { trainee_id: UUID }) => {
     <>
       {traineeReport?.trainee ? (
         <UserProfile
-          className="min-w-[350px] lg:w-1/4"
+          className="min-w-[350px] lg:w-[350px]"
           traineeData={traineeReport.trainee}
         />
       ) : (

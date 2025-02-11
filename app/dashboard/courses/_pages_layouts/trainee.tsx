@@ -92,8 +92,9 @@ const ClientPage = () => {
   return (
     <>
       <ScrollArea className="absolute h-[90svh]">
-        <div className="max-h-full flex justify-start items-center gap-4 p-4 flex-wrap">
+        <div className="max-h-content flex justify-start gap-4 p-4 flex-wrap">
           <CollectionCard
+            className="min-h-[100%]"
             collections={assignedCollections?.collections || []}
             onExplore={handelExplore}
           />
@@ -101,6 +102,7 @@ const ClientPage = () => {
       </ScrollArea>
       {(assignedCollections?.collections?.length ?? 0) > 0 && (
         <MyDrawer
+          className="min-w-[100svw] lg:min-w-[500px]"
           isOpen={isOpen}
           title={
             assignedCollections?.collections ? (

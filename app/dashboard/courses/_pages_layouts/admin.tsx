@@ -10,19 +10,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "antd";
 import { useRouter } from "next/navigation";
 
+// compoenets
 import CourseCard from "@/components/dashboard/course/courseCard";
 import ViewCourse from "@/components/dashboard/course/view";
-/* APIs */
-import { getCourses, deleteCourse } from "@/lib/api";
-// compoenets
+import MyDrawer from "@/components/collection/mySheetDrawer";
 import { AddCouse } from "@/components/dashboard/forms";
 import { ModalDialog } from "@/components/collection/modal";
-import MyDrawer from "@/components/collection/mySheetDrawer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CourseUpload } from "@/components/dashboard/course/courseUploader";
 // my collections
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
+/* APIs */
+import { getCourses, deleteCourse } from "@/lib/api";
 
 export const CourseDashboard = () => {
   const [isMounted, setIsMounted] = useState(false);

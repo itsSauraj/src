@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { ListFilter } from "lucide-react";
 
+import { CreateToolTipT } from "./tooltip";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +28,7 @@ const ColumnSelectorDropdown = ({
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     parentSelectedColumns,
   );
+  const [open, setOpen] = useState(false);
 
   const toggleColumn = (columnKey: string) => {
     setSelectedColumns((prev) => {
@@ -43,16 +46,22 @@ const ColumnSelectorDropdown = ({
 
   const applyColumns = () => {
     setParentSelectedColumns(selectedColumns);
+    setOpen(false); // Close the dropdown after applying
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button>
-          <ListFilter className="mr-2 h-4 w-4" />
-          Select Columns
-        </Button>
-      </DropdownMenuTrigger>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <CreateToolTipT
+        content="Select Columns"
+        trigger={
+          <DropdownMenuTrigger asChild>
+            <Button>
+              <ListFilter className="mr-2 h-4 w-4" />
+              Select Columns
+            </Button>
+          </DropdownMenuTrigger>
+        }
+      />
       <DropdownMenuContent className="w-64">
         <DropdownMenuLabel>Visible Columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -82,7 +91,10 @@ const ColumnSelectorDropdown = ({
             applyColumns();
           }}
         >
-          <Button className="w-full">Apply</Button>
+          <CreateToolTipT
+            content="Apply"
+            trigger={<Button className="w-full">Apply</Button>}
+          />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

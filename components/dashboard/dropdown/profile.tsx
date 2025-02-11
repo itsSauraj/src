@@ -43,36 +43,36 @@ export function ProfileDropDown() {
   };
 
   return (
-    <CreateToolTipT
-      content="Profile"
-      trigger={
-        <DropdownMenu>
+    <DropdownMenu>
+      <CreateToolTipT
+        content="My Account"
+        trigger={
           <DropdownMenuTrigger>
             <ProfileAvatar avatar={userAvatar} username={username} />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => handleClick("profile")}>
-                Profile
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem>
+        }
+      />
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => handleClick("profile")}>
+            Profile
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        {/* <DropdownMenuItem>
           <ThemeSwitch />
         </DropdownMenuItem> */}
-            {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem
-              className="text-red-500 hover:text-red-500"
-              onClick={handleLogout}
-            >
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      }
-    />
+        {/* <DropdownMenuSeparator /> */}
+        <DropdownMenuItem
+          className="text-red-500 hover:text-red-500"
+          onClick={handleLogout}
+        >
+          Log out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
