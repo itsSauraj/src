@@ -48,6 +48,8 @@ import {
   deleteProfile,
   changePassword,
 } from "./profile";
+// forgot-password
+import { sendResetEmail, verifyOTP } from "./forgot-password";
 
 export {
   // App
@@ -91,4 +93,7 @@ export {
   updateProfile,
   deleteProfile,
   changePassword,
+  // forgot-password
+  sendResetEmail,
+  verifyOTP,
 };

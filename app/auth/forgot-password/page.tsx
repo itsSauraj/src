@@ -1,7 +1,7 @@
 "use client";
 
 import type { StoreDispatch, RootState } from "@/redux/store";
-import type { LoginRequest } from "@/types/auth/actions";
+import type { EmailRequest } from "@/dependencies/yup";
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +9,9 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-import { loginSchema } from "@/dependencies/yup";
+import { emailSchema } from "@/dependencies/yup";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,28 +23,27 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { logInUser } from "@/redux/slice/user";
+//apis
+import { sendResetEmail } from "@/lib/api";
 
-export default function LoginFormPage() {
+const ForgotPasswordEmailPage = () => {
   const dispatch = useDispatch<StoreDispatch>();
+  const router = useRouter();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
-  const form = useForm<LoginRequest>({
-    resolver: yupResolver(loginSchema),
+  const form = useForm<EmailRequest>({
+    resolver: yupResolver(emailSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      email: "",
     },
     mode: "onChange",
   });
 
-  const onSubmit = async (formData: LoginRequest) => {
-    try {
-      await dispatch(logInUser(formData));
-    } catch (error) {
-      console.error("Login failed:", error); // eslint-disable-line
-    } finally {
-      form.reset();
+  const onSubmit = async (formData: EmailRequest) => {
+    const data = await dispatch(sendResetEmail(formData.email));
+
+    if (data) {
+      router.push("/auth/forgot-password/verify");
     }
   };
 
@@ -54,52 +54,27 @@ export default function LoginFormPage() {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <h1 className="text-2xl font-bold">Forgot Password</h1>
+          <p className="text-sm text-muted-foreground">
+            Enter your email address and we&apos;ll send you a reset code
+          </p>
         </div>
 
         <div className="grid gap-2">
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-black dark:text-white">
-                  Username
+                  Email
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter your username"
+                    placeholder="Enter your email address"
+                    type="email"
                     {...field}
-                    autoComplete="username"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center justify-between">
-                  <FormLabel className="text-black dark:text-white">
-                    Password
-                  </FormLabel>
-                  <Link
-                    className="text-sm text-muted-foreground hover:underline"
-                    href="/auth/forgot-password"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <FormControl>
-                  <Input
-                    placeholder="Enter your password"
-                    type="password"
-                    {...field}
-                    autoComplete="current-password"
+                    autoComplete="email"
                   />
                 </FormControl>
                 <FormMessage />
@@ -111,24 +86,26 @@ export default function LoginFormPage() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Logging in...
+                Sending...
               </>
             ) : (
-              "Login"
+              "Send Reset Code"
             )}
           </Button>
         </div>
 
         <div className="text-center text-sm">
-          Don&apos;t have an account?{" "}
+          Remember your password?{" "}
           <Link
             className="text-primary hover:underline underline-offset-4"
-            href="/auth/signup"
+            href="/auth/login"
           >
-            Sign up
+            Login
           </Link>
         </div>
       </form>
     </Form>
   );
-}
+};
+
+export default ForgotPasswordEmailPage;

@@ -13,6 +13,7 @@ export const loginSchema = yup.object().shape({
       "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     ),
 });
+export type LoginSchema = yup.InferType<typeof loginSchema>;
 
 export const registerSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -34,6 +35,7 @@ export const registerSchema = yup.object().shape({
     .required("Please confirm your password")
     .oneOf([yup.ref("password")], "Passwords must match"),
 });
+export type RegisterSchema = yup.InferType<typeof registerSchema>;
 
 export const memberSchema = yup.object().shape({
   employee_id: yup
@@ -54,8 +56,12 @@ export const memberSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password"), undefined], "Passwords must match"),
 });
+export type MemberSchema = yup.InferType<typeof memberSchema>;
+export interface IMemberForm
+  extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {
+  joining_date: string | Date;
+}
 
-// Course
 export const moduleSchema = yup.object({
   title: yup.string().required("Module title is required"),
   description: yup.string(),
@@ -70,12 +76,14 @@ export const moduleSchema = yup.object({
     }),
   ),
 });
+export type ModuleSchema = yup.InferType<typeof moduleSchema>;
 
 export const courseSchema = yup.object({
   title: yup.string().required("Course title is required"),
   description: yup.string().required("Course description is required"),
   modules: yup.array().of(moduleSchema),
 });
+export type CourseFormData = yup.InferType<typeof courseSchema>;
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -109,6 +117,10 @@ export const collectionSchema = yup.object().shape({
 export const collectionSchemaCourses = yup.object().shape({
   courses: yup.array().of(yup.string().uuid()),
 });
+export type CollectionFormData = yup.InferType<typeof collectionSchema>;
+export type CollectionCoursesFormData = yup.InferType<
+  typeof collectionSchemaCourses
+>;
 
 export const userUpdateSchema = yup.object().shape({
   employee_id: yup.string().required("Employee ID is required"),
@@ -139,20 +151,11 @@ export const userUpdateSchema = yup.object().shape({
 });
 export const userProfileUpdateSchema = userUpdateSchema.shape({
   employee_id: yup.string().nullable(),
-  // avatar: yup
-  //   .mixed<File | string>()
-  //   .nullable()
-  //   .test("fileSize", "Image size must be less than 5MB", (value) => {
-  //     if (!value) return true;
-
-  //     return value instanceof File && value.size <= MAX_FILE_SIZE;
-  //   })
-  //   .test("fileType", "Unsupported file type", (value) => {
-  //     if (!value) return true;
-
-  //     return value instanceof File && ACCEPTED_IMAGE_TYPES.includes(value.type);
-  //   }),
+  phone_number: yup.string().nullable(),
 });
+export type UserProfileUpdateSchema = yup.InferType<
+  typeof userProfileUpdateSchema
+>;
 
 export const ImportCourseSchema = yup
   .object({
@@ -169,6 +172,7 @@ export const ImportCourseSchema = yup
     image: yup.mixed().required("Image is required"),
   })
   .required();
+export type ImportFormData = yup.InferType<typeof ImportCourseSchema>;
 
 export const passwordSchema = yup.object().shape({
   current_password: yup.string().required("Current password is required"),
@@ -190,20 +194,32 @@ export const passwordSchema = yup.object().shape({
     .oneOf([yup.ref("new_password")], "Passwords must match")
     .required("Please confirm your password"),
 });
-
-export type UserProfileUpdateSchema = yup.InferType<
-  typeof userProfileUpdateSchema
->;
 export type PasswordSchema = yup.InferType<typeof passwordSchema>;
 
-export type ImportFormData = yup.InferType<typeof ImportCourseSchema>;
+export const emailSchema = yup.object({
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+});
+export type EmailRequest = yup.InferType<typeof emailSchema>;
 
-export type CourseFormData = yup.InferType<typeof courseSchema>;
-export interface IMemberForm
-  extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {
-  joining_date: string | Date;
-}
-export type CollectionFormData = yup.InferType<typeof collectionSchema>;
-export type CollectionCoursesFormData = yup.InferType<
-  typeof collectionSchemaCourses
->;
+export const otpSchema = yup.object({
+  otp: yup
+    .string()
+    .length(6, "OTP must be 6 digits")
+    .required("OTP is required"),
+});
+export type OTPRequest = yup.InferType<typeof otpSchema>;
+
+export const resetPasswordSchema = yup.object({
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
+});
+export type ResetPasswordRequest = yup.InferType<typeof resetPasswordSchema>;
