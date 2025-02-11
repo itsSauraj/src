@@ -4,6 +4,7 @@ import type { StoreDispatch, RootState } from "@/redux/store";
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,6 +36,7 @@ interface RegistrationRequest {
 export default function RegisterFormPage() {
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const dispatch = useDispatch<StoreDispatch>();
+  const router = useRouter();
 
   const form = useForm<RegistrationRequest>({
     resolver: yupResolver(registerSchema),
@@ -50,7 +52,9 @@ export default function RegisterFormPage() {
   });
 
   const onSubmit = async (formData: RegistrationRequest) => {
-    await dispatch(registerUser(formData));
+    await dispatch(registerUser(formData)).then(() => {
+      router.push("/auth/verify");
+    });
   };
 
   return (

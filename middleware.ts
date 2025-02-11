@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const otp_verification_pending = request.cookies.get("otp_verification_pending")?.value;
+
+  if (otp_verification_pending) {
+    return NextResponse.redirect("/auth/verify");
+  }
+
   const token = request.cookies.get("token")?.value;
   const { pathname } = request.nextUrl;
 

@@ -47,6 +47,25 @@ export const login = async (
   }
 };
 
+export const verifyOtp = async (
+  otp: string,
+): Promise<LoginResponse | boolean> => {
+  try {
+    const response = await axios.post(`${apiConfig.url}/profile/verify/`, {
+      otp: otp,
+      user_id: localStorage.getItem("user_id"),
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const validateToken = async (token: string): Promise<string | any> => {
   try {
     const response = await axios.post(`${apiConfig.url}/auth/user/refresh/`, {

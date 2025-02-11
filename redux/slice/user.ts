@@ -1,3 +1,4 @@
+import { verify } from 'crypto';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -10,9 +11,8 @@ import { toast } from "sonner";
 import { setCookie, deleteCookie } from "cookies-next";
 
 import { validateToken as ValidateToken } from "@/lib/auth/actions";
-import { login, register } from "@/lib/auth/actions";
+import { login, register, verifyOtp, logout } from "@/lib/auth/actions";
 import { setAuthLoading } from "@/redux/slice/app";
-import { logout } from "@/lib/auth/actions";
 
 const initialState: User = {
   token: null,
@@ -108,9 +108,15 @@ const registerUser =
         return;
       }
 
-      dispatch(toggleToken(userObj.token));
-      dispatch(toggleUser(userObj.user));
-      dispatch(setUserType(userObj.groups[0]));
+      setCookie("opt_verification_pending", true, {
+        maxAge: 60 * 60 * 24 * 7,
+        secure: true,
+        httpOnly: false,
+        sameSite: "strict",
+        path: "/",
+      });
+
+      localStorage.setItem("user_id", userObj.id);
     } catch (error: any) {
       toast.error("Error registering");
 
@@ -118,5 +124,27 @@ const registerUser =
     }
   };
 
-export { logInUser, logoutUser, validateToken, registerUser, toggleUser };
+const verifyOtpAction = (otp: string) => async (dispatch: StoreDispatch) => {
+  try {
+    const response = await verifyOtp(otp);
+
+    if (response) {
+      const userObj = response;
+
+      deleteCookie("otp_verification_pending");
+      localStorage.removeItem("user_id");
+
+      dispatch(toggleToken(userObj.token));
+      dispatch(toggleUser(userObj.user));
+      dispatch(setUserType(userObj.groups[0]));
+      return;
+    }
+  } catch (error: any) {
+    toast.error("Error verifying OTP");
+
+    return error;
+  }
+}
+
+export { logInUser, logoutUser, validateToken, registerUser, toggleUser, verifyOtpAction };
 export default userSlice.reducer;
