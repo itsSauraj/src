@@ -76,7 +76,6 @@ const logInUser =
         dispatch(toggleUser(userObj.user));
       }
     } catch (error: any) {
-      console.log(error);
       toast.error("Error logging in");
 
       return error;
@@ -148,6 +147,7 @@ const verifyOTP = (otp: string) => async (dispatch: StoreDispatch) => {
         dispatch(toggleUser(userObj.user));
         dispatch(setUserType(userObj.user.groups[0]));
       }
+
       return;
     }
   } catch (error: any) {

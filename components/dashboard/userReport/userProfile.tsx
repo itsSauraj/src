@@ -208,7 +208,8 @@ export default function UserPage({
           <ScrollArea className="h-[70vh] pr-4 pb-2">
             <div className="space-y-2">
               {Object.entries(information).map(([key, value]) => {
-                if (key === "id" || key === "groups") return null;
+                if (key === "id" || key === "groups" || key === "avatar")
+                  return null;
 
                 const isDateField =
                   key === "birth_date" || key === "joining_date";

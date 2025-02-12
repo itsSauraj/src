@@ -130,11 +130,14 @@ export const BooleanFormatter = (params: ValueFormatterParams): JSX.Element => {
 
 export const ListRenderer = (params: ValueFormatterParams): JSX.Element => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-scroll max-h-[100px] no-scrollbar border-r-1">
       {params.value.map((item: any) => (
-        <p key={item.id} className="text-sm">
-          {item.title}
-        </p>
+        <>
+          <p key={item.id} className="text-sm">
+            {item.title}
+          </p>
+          <hr />
+        </>
       ))}
     </div>
   );

@@ -49,7 +49,7 @@ import {
   changePassword,
 } from "./profile";
 // forgot-password
-import { sendResetEmail, verifyOTP } from "./forgot-password";
+import { sendResetEmail, verifyOTP, resetPassword } from "./forgot-password";
 
 export {
   // App
@@ -96,4 +96,5 @@ export {
   // forgot-password
   sendResetEmail,
   verifyOTP,
+  resetPassword,
 };

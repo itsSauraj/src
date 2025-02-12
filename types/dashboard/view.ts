@@ -1,11 +1,17 @@
 import { UUID } from "crypto";
 
+export interface MiniCollection {
+  id: UUID;
+  title: string;
+}
+
 export interface Course {
   id: UUID;
   title: string;
   description: string;
   duration: string;
   image: string;
+  collections: MiniCollection[];
 }
 
 export interface Metadata {
@@ -48,6 +54,7 @@ export interface CourseData {
   description: string;
   duration: string;
   image: string;
+  collections: MiniCollection[];
   parent_module?: string | null;
   sequence?: number;
   modules: Module[];

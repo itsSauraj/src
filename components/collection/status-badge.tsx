@@ -1,6 +1,7 @@
 import { FaPlay } from "react-icons/fa";
 import { SiBookstack } from "react-icons/si";
 import { FaCircleCheck } from "react-icons/fa6";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -40,3 +41,16 @@ export const StatusBadge = ({
     </Badge>
   );
 };
+
+export const LinkBadge = () => {
+  return (
+    <Link
+    key={`${index}-${collection.id}`}
+    className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-medium border 
+          bg-primary-100 text-primary-800 border-primary-300"
+    href={`/dashboard/collections/${collection.id}`}
+    >
+    {collection.title}
+    </Link>
+  )
+}

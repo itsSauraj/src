@@ -3,6 +3,7 @@
 import type { TrainingReportData } from "@/types/dashboard/report";
 
 import React, { useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 // Components
 import { TrainingDashboard } from "./trainingDashboard";
@@ -18,39 +19,51 @@ export default function UserActionPage({
   information: TrainingReportData;
   setTraineeReport: (data: TrainingReportData) => void;
 }) {
-  const [activeTab, setActiveTab] = useState<any>("userProfileReport");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState<any>(
+    searchParams.get("tab") || "user-report",
+  );
+
+  React.useEffect(() => {
+    if (activeTab) {
+      router.replace(`${pathname}?tab=${activeTab}`);
+    }
+  }, [activeTab]);
 
   return (
     <div className="space-y-6">
       <Tabs
-        defaultValue="userProfileReport"
+        defaultValue="user-report"
         value={activeTab}
         onValueChange={setActiveTab}
       >
         <TabsList>
-          <TabsTrigger value="userProfileReport">User Report</TabsTrigger>
-          <TabsTrigger value="userCourseProgress">Course Progress</TabsTrigger>
-          <TabsTrigger value="userCoursesManagement">
+          <TabsTrigger value="user-report">User Report</TabsTrigger>
+          <TabsTrigger value="course-progress">Course Progress</TabsTrigger>
+          <TabsTrigger value="courses-assignment">
             Course Assignment
           </TabsTrigger>
-          <TabsTrigger value="userExamManagement">Exam Report</TabsTrigger>
+          <TabsTrigger value="exam-reportcard">Exam Report</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="userProfileReport">
+        <TabsContent value="user-report">
           <TrainingDashboard data={information} />
         </TabsContent>
 
-        <TabsContent value="userCourseProgress">
+        <TabsContent value="course-progress">
           <ComprehensiveTrainingReport data={information} />
         </TabsContent>
 
-        <TabsContent value="userCoursesManagement">
+        <TabsContent value="courses-assignment">
           <CourseTransfer
             setTraineeReport={setTraineeReport}
             trainee_id={information.trainee.id}
           />
         </TabsContent>
-        <TabsContent value="userExamManagement">
+        <TabsContent value="exam-reportcard">
           <div>Comming soon</div>
         </TabsContent>
       </Tabs>

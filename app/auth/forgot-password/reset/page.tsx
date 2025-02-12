@@ -1,7 +1,7 @@
 "use client";
 
 import type { StoreDispatch, RootState } from "@/redux/store";
-import type { OTPRequest } from "@/dependencies/yup";
+import type { ResetPasswordRequest } from "@/dependencies/yup";
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { otpSchema } from "@/dependencies/yup";
+import { resetPasswordSchema } from "@/dependencies/yup";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,26 +23,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 //apis
-import { verifyOTP } from "@/lib/api";
+import { resetPassword } from "@/lib/api";
 
-const VerifyOTPPage = () => {
+const ResetPasswordPage = () => {
   const dispatch = useDispatch<StoreDispatch>();
   const router = useRouter();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
-  const form = useForm<OTPRequest>({
-    resolver: yupResolver(otpSchema),
+  const form = useForm<ResetPasswordRequest>({
+    resolver: yupResolver(resetPasswordSchema),
     defaultValues: {
-      otp: "",
+      new_password: "",
+      confirm_password: "",
     },
     mode: "onChange",
   });
 
-  const onSubmit = async (formData: OTPRequest) => {
-    const data = await dispatch(verifyOTP(formData.otp));
-
-    if (data) {
-      router.push("/auth/forgot-password/reset");
+  const onSubmit = async (formData: ResetPasswordRequest) => {
+    try {
+      await dispatch(resetPassword(formData));
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("Reset password failed:", error); // eslint-disable-line
     }
   };
 
@@ -53,26 +55,48 @@ const VerifyOTPPage = () => {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Verify Reset Code</h1>
+          <h1 className="text-2xl font-bold">Reset Password</h1>
           <p className="text-sm text-muted-foreground">
-            Enter the 6-digit code we sent to your email
+            Enter your new password
           </p>
         </div>
 
         <div className="grid gap-2">
           <FormField
             control={form.control}
-            name="otp"
+            name="new_password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-black dark:text-white">
-                  Reset Code
+                  New Password
                 </FormLabel>
                 <FormControl>
                   <Input
-                    maxLength={6}
-                    placeholder="Enter 6-digit code"
+                    placeholder="Enter new password"
+                    type="password"
                     {...field}
+                    autoComplete="new-password"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirm_password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-black dark:text-white">
+                  Confirm Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Confirm new password"
+                    type="password"
+                    {...field}
+                    autoComplete="new-password"
                   />
                 </FormControl>
                 <FormMessage />
@@ -84,24 +108,11 @@ const VerifyOTPPage = () => {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Verifying...
+                Resetting Password...
               </>
             ) : (
-              "Verify Code"
+              "Reset Password"
             )}
-          </Button>
-        </div>
-
-        <div className="text-center text-sm">
-          Didn&apos;t receive the code?{" "}
-          <Button
-            className="p-0 text-primary hover:underline underline-offset-4"
-            variant="link"
-            onClick={() => {
-              // Add resend code logic here
-            }}
-          >
-            Resend
           </Button>
         </div>
       </form>
@@ -109,4 +120,4 @@ const VerifyOTPPage = () => {
   );
 };
 
-export default VerifyOTPPage;
+export default ResetPasswordPage;

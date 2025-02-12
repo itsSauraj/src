@@ -2,6 +2,7 @@ import type { CourseData } from "@/types/dashboard/view";
 
 import React from "react";
 import { FaClock } from "react-icons/fa";
+import Link from "next/link";
 
 import { formatDuration } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -18,6 +19,18 @@ export const CourseLayout = ({ course }: { course: CourseData }) => {
         </p>
       </div>
       <p>{course.description}</p>
+      <div className="w-full flex flex-wrap gap-2">
+        {course.collections?.map((collection, index) => (
+          <Link
+            key={`${index}-${collection.id}`}
+            className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-medium border 
+                  bg-primary-100 text-primary-800 border-primary-300"
+            href={`/dashboard/collections/${collection.id}`}
+          >
+            {collection.title}
+          </Link>
+        ))}
+      </div>
       <div className="my-4">
         <h3 className="font-bold text-xl">Lessons</h3>
         <Separator />

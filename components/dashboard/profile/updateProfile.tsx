@@ -223,7 +223,11 @@ const UserProfileUpdate = () => {
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="Phone Number" {...field} />
+                      <Input
+                        placeholder="Phone Number"
+                        {...field}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

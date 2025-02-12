@@ -182,7 +182,8 @@ export const passwordSchema = yup.object().shape({
     .required("New password is required")
     .test(
       "password-strength",
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+      "Password must contain at least one uppercase letter, one lowercase letter, \
+      one number, and one special character",
       (value) =>
         /[A-Z]/.test(value) &&
         /[a-z]/.test(value) &&
@@ -213,13 +214,23 @@ export const otpSchema = yup.object({
 export type OTPRequest = yup.InferType<typeof otpSchema>;
 
 export const resetPasswordSchema = yup.object({
-  password: yup
+  new_password: yup
     .string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
-  confirmPassword: yup
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required")
+    .test(
+      "password-strength",
+      "Password must contain at least one uppercase letter, one lowercase letter, \
+      one number, and one special character",
+      (value) =>
+        /[A-Z]/.test(value) &&
+        /[a-z]/.test(value) &&
+        /[0-9]/.test(value) &&
+        /[^A-Za-z0-9]/.test(value),
+    ),
+  confirm_password: yup
     .string()
-    .oneOf([yup.ref("password")], "Passwords must match")
+    .oneOf([yup.ref("new_password")], "Passwords must match")
     .required("Confirm password is required"),
 });
 export type ResetPasswordRequest = yup.InferType<typeof resetPasswordSchema>;
