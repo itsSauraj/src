@@ -4,7 +4,6 @@ import type { UUID } from "crypto";
 
 import { HiDotsVertical } from "react-icons/hi";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LinkBadge } from "@/components/collection/status-badge";
 import { cn } from "@/lib/utils";
 
 export default function CourseCard({
@@ -79,14 +79,11 @@ export default function CourseCard({
       <CardFooter className="flex items-center justify-between w-full">
         <div className="w-full flex flex-wrap gap-2">
           {course.collections.map((collection, index) => (
-            <Link
+            <LinkBadge
               key={`${index}-${collection.id}`}
-              className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-medium border 
-                  bg-primary-100 text-primary-800 border-primary-300"
               href={`/dashboard/collections/${collection.id}`}
-            >
-              {collection.title}
-            </Link>
+              value={collection.title}
+            />
           ))}
         </div>
         <Button

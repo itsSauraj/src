@@ -1,3 +1,5 @@
+import type { UUID } from "crypto";
+
 import * as yup from "yup";
 
 export const loginSchema = yup.object().shape({
@@ -59,6 +61,7 @@ export const memberSchema = yup.object().shape({
 export type MemberSchema = yup.InferType<typeof memberSchema>;
 export interface IMemberForm
   extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {
+  id: string | UUID;
   joining_date: string | Date;
 }
 
@@ -234,3 +237,20 @@ export const resetPasswordSchema = yup.object({
     .required("Confirm password is required"),
 });
 export type ResetPasswordRequest = yup.InferType<typeof resetPasswordSchema>;
+
+export const examScheduleSchema = yup.object({
+  assigned_trainee: yup.string().required("Trainee selection is required"),
+  collection: yup.string().required("Collection ID is required"),
+  exam_date: yup
+    .date()
+    .required("Exam date is required")
+    .min(new Date(), "Exam date must be in the future"),
+  exam_time: yup.string().required("Exam time is required"),
+  duration: yup
+    .number()
+    .required("Duration is required")
+    .min(30, "Minimum duration is 30 minutes"),
+  assigned_mentor: yup.string().required("Mentor selection is required"),
+  exam_details: yup.string().required("Additional notes are required"),
+});
+export type ExamScheduleRequest = yup.Asserts<typeof examScheduleSchema>;

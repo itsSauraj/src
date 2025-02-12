@@ -83,11 +83,7 @@ const CollectoinsPage = () => {
             state={open}
             title="Add Collection"
           >
-            <ScrollArea className="h-[70svh]">
-              <div className="flex justify-center">
-                <AddCollection setCollections={setRowData} setState={setOpen} />
-              </div>
-            </ScrollArea>
+            <AddCollection setCollections={setRowData} setState={setOpen} />
           </ModalDialog>
           {rowData.length > 0 && (
             <ColumnSelectorDropdown

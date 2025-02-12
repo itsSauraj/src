@@ -42,15 +42,14 @@ export const StatusBadge = ({
   );
 };
 
-export const LinkBadge = () => {
+export const LinkBadge = ({ value, href }: { value: string; href: string }) => {
   return (
     <Link
-    key={`${index}-${collection.id}`}
-    className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-medium border 
-          bg-primary-100 text-primary-800 border-primary-300"
-    href={`/dashboard/collections/${collection.id}`}
+      className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-medium border \
+          bg-primary-100 text-primary-800 border-primary-300 hover:bg-primary-200 hover:text-primary-900"
+      href={href}
     >
-    {collection.title}
+      {value}
     </Link>
-  )
-}
+  );
+};

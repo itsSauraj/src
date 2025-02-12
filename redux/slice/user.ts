@@ -68,6 +68,13 @@ const logInUser =
         sameSite: "strict",
         path: "/",
       });
+      setCookie("group", userObj.user.groups[0], {
+        maxAge: 60 * 60 * 24 * 7,
+        secure: true,
+        httpOnly: false,
+        sameSite: "strict",
+        path: "/",
+      });
 
       localStorage.setItem("token", userObj.token);
 

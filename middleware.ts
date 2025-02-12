@@ -10,10 +10,15 @@ export function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get("token")?.value;
+  const userType = request.cookies.get("group")?.value;
   const { pathname } = request.nextUrl;
 
   const loginUrl = new URL("/auth/login", request.url);
   const dashboardUrl = new URL("/dashboard", request.url);
+  const examRoute = new URL(
+    `/dashboard/exam?user=${encodeURIComponent(userType as string)}`,
+    request.url,
+  );
 
   const protectedPaths = ["/dashboard", "/profile", "/settings"];
 
@@ -35,6 +40,12 @@ export function middleware(request: NextRequest) {
     }
     if (token && token !== "undefined") {
       return NextResponse.redirect(dashboardUrl);
+    }
+  }
+
+  if (pathname === "/dashboard/exam") {
+    if (request.nextUrl.href !== examRoute.href) {
+      return NextResponse.redirect(examRoute);
     }
   }
 

@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
 export default function AddCollection({
@@ -142,167 +143,172 @@ export default function AddCollection({
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter collection title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Enter collection description"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="alloted_time"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Duration (in days) </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter collection duration in number of days"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="image"
-          render={() => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <div
-                    {...getRootProps()}
-                    className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer
-                          ${isDragActive ? "border-primary bg-primary/10" : "border-border"}`}
-                  >
-                    <input {...getInputProps()} />
-                    {preview ? (
-                      <div className="relative w-full aspect-video">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          alt="Preview"
-                          className="rounded object-cover w-full h-full"
-                          src={preview}
-                        />
-                        <Button
-                          className="absolute top-2 right-2"
-                          size="icon"
-                          type="button"
-                          variant="destructive"
-                          onClick={removeImage}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center gap-2">
-                        <Upload className="h-8 w-8 text-muted-foreground" />
-                        <p className="text-sm text-muted-foreground">
-                          Drag & drop an image here, or click to select
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="courses"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Courses</FormLabel>
-              <Select
-                value=""
-                onValueChange={(value) =>
-                  field.onChange([...(field.value || []), value])
-                }
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select courses" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent className="max-h-60">
-                  {courses.length > 0 ? (
-                    <>
-                      {courses
-                        .filter((course) => !field.value?.includes(course.id))
-                        .map((course) => (
-                          <SelectItem key={course.id} value={course.id}>
-                            {course.title}
-                          </SelectItem>
-                        ))}
-                    </>
-                  ) : (
-                    <SelectItem disabled value="none">
-                      No Courses Found
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-              {(field.value?.length ?? 0) > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2 p-1 border-[1px] rounded-md">
-                  {(field.value ?? []).map((course) => (
-                    <Badge
-                      key={course}
-                      className="flex items-cnter gap-1 justify-between p-0 py-[5px] px-[4px]"
-                    >
-                      {courses.find((c) => c.id === course)?.title}
-                      <Button
-                        className="h-4 w-4 hover:bg-red-500 rounded-full"
-                        size="icon"
-                        type="button"
-                        variant="ghost"
-                        onClick={() => {
-                          field.onChange(
-                            field.value?.filter((c) => c !== course),
-                          );
-                        }}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </Badge>
-                  ))}
-                </div>
+        <ScrollArea className="h-[60svh]">
+          <div className="h-full flex flex-col p-3">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter collection title" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            />
 
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Enter collection description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="alloted_time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Duration (in days) </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter collection duration in number of days"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <div
+                        {...getRootProps()}
+                        className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer
+                          ${isDragActive ? "border-primary bg-primary/10" : "border-border"}`}
+                      >
+                        <input {...getInputProps()} />
+                        {preview ? (
+                          <div className="relative w-full aspect-video">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              alt="Preview"
+                              className="rounded object-cover w-full h-full"
+                              src={preview}
+                            />
+                            <Button
+                              className="absolute top-2 right-2"
+                              size="icon"
+                              type="button"
+                              variant="destructive"
+                              onClick={removeImage}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center gap-2">
+                            <Upload className="h-8 w-8 text-muted-foreground" />
+                            <p className="text-sm text-muted-foreground">
+                              Drag & drop an image here, or click to select
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="courses"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Courses</FormLabel>
+                  <Select
+                    value=""
+                    onValueChange={(value) =>
+                      field.onChange([...(field.value || []), value])
+                    }
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select courses" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="max-h-60">
+                      {courses.length > 0 ? (
+                        <>
+                          {courses
+                            .filter(
+                              (course) => !field.value?.includes(course.id),
+                            )
+                            .map((course) => (
+                              <SelectItem key={course.id} value={course.id}>
+                                {course.title}
+                              </SelectItem>
+                            ))}
+                        </>
+                      ) : (
+                        <SelectItem disabled value="none">
+                          No Courses Found
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                  {(field.value?.length ?? 0) > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2 p-1 border-[1px] rounded-md">
+                      {(field.value ?? []).map((course) => (
+                        <Badge
+                          key={course}
+                          className="flex items-cnter gap-1 justify-between p-0 py-[5px] px-[4px]"
+                        >
+                          {courses.find((c) => c.id === course)?.title}
+                          <Button
+                            className="h-4 w-4 hover:bg-red-500 rounded-full"
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            onClick={() => {
+                              field.onChange(
+                                field.value?.filter((c) => c !== course),
+                              );
+                            }}
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </ScrollArea>
         <Button className="w-full" disabled={app.auth.isLoading} type="submit">
           {app.auth.isLoading && <Loader2 className="animate-spin" />}
           {app.auth.isLoading ? "Creating..." : "Create Collection"}
