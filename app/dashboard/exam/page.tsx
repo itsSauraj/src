@@ -6,8 +6,6 @@ import TraineePage from "./_pages_layouts/trainee";
 import MentorPage from "./_pages_layouts/mentor";
 import AdminPage from "./_pages_layouts/admin";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-
 const Page = () => {
   const searchParams = useSearchParams();
 

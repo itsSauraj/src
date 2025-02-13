@@ -26,6 +26,12 @@ const initialState: App = {
   },
 };
 
+/**
+ * Connect to WebSocket
+ * @param {Object} param0 - The token and URL for WebSocket connection
+ * @param {string} param0.token - The authentication token
+ * @param {string} param0.url - The WebSocket URL
+ */
 export const connectWebSocket = createAsyncThunk(
   "notifications/connect",
   async (
@@ -46,6 +52,9 @@ export const connectWebSocket = createAsyncThunk(
   },
 );
 
+/**
+ * Disconnect from WebSocket
+ */
 export const disconnectWebSocket = createAsyncThunk(
   "notifications/disconnect",
   async (_, { rejectWithValue }) => {
@@ -67,30 +76,68 @@ const appSlice = createSlice({
   name: "app",
   initialState: initialState,
   reducers: {
+    /**
+     * Toggle authentication loading state
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object
+     * @param {boolean} action.payload - The loading state
+     */
     toggleAuthLoading: (state, action) => {
       state.auth.isLoading = action.payload;
     },
+    /**
+     * Toggle sidebar visibility
+     * @param {Object} state - The current state
+     */
     toggleSideBar: (state) => {
       state.settings.sidebar = !state.settings.sidebar;
     },
+    /**
+     * Toggle notification setting
+     * @param {Object} state - The current state
+     */
     toggleNotification: (state) => {
       state.settings.notification = !state.settings.notification;
     },
+    /**
+     * Initialize notifications
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object
+     * @param {Notification[]} action.payload - The notifications array
+     */
     initialNotifications: (state, action: PayloadAction<Notification[]>) => {
       state.notifications.items = action.payload;
       state.notifications.unreadCount = action.payload.length;
     },
+    /**
+     * Add a new notification
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object
+     * @param {Notification} action.payload - The new notification
+     */
     addNotification: (state, action: PayloadAction<Notification>) => {
       state.notifications.items.unshift(action.payload);
       if (!action.payload.read) {
         state.notifications.unreadCount += 1;
       }
     },
+    /**
+     * Remove a notification by ID
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object
+     * @param {string} action.payload - The notification ID
+     */
     removeNotification: (state, action: PayloadAction<string>) => {
       state.notifications.items = state.notifications.items.filter(
         (n) => n.id !== action.payload,
       );
     },
+    /**
+     * Mark a notification as read by ID
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object
+     * @param {string} action.payload - The notification ID
+     */
     markAsRead: (state, action: PayloadAction<string>) => {
       const index = state.notifications.items.findIndex(
         (n) => n.id === action.payload,
@@ -104,16 +151,30 @@ const appSlice = createSlice({
         );
       }
     },
+    /**
+     * Mark all notifications as read
+     * @param {Object} state - The current state
+     */
     markAllAsRead: (state) => {
       state.notifications.items.forEach((notification) => {
         notification.read = true;
       });
       state.notifications.unreadCount = 0;
     },
+    /**
+     * Clear all notifications
+     * @param {Object} state - The current state
+     */
     clearNotifications: (state) => {
       state.notifications.items = [];
       state.notifications.unreadCount = 0;
     },
+    /**
+     * Set error message
+     * @param {Object} state - The current state
+     * @param {Object} action - The action object
+     * @param {string | null} action.payload - The error message
+     */
     setError: (state, action: PayloadAction<string | null>) => {
       state.notifications.error = action.payload;
     },
@@ -153,10 +214,17 @@ export const {
   setError,
 } = appSlice.actions;
 
+/**
+ * Set authentication loading state
+ * @param {boolean} isLoading - The loading state
+ */
 const setAuthLoading = (isLoading: boolean) => (dispatch: StoreDispatch) => {
   dispatch(toggleAuthLoading(isLoading));
 };
 
+/**
+ * Toggle sidebar pin state
+ */
 const toogleSideBarPin = () => (dispatch: StoreDispatch) => {
   dispatch(toggleSideBar());
 };

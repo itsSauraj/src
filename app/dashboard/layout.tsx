@@ -18,7 +18,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     setIsMounted(true);
   }, []);
 
-  useNotifications();
+  const { notifications, unreadCount, isConnected, error, isLoading } =
+    useNotifications();
 
   useEffect(() => {
     if (!user.token) {

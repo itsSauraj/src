@@ -11,8 +11,13 @@ import { setAuthLoading } from "@/redux/slice/app";
 import { toggleUser, toggleToken } from "@/redux/slice/user";
 import { apiConfig } from "@/config/api";
 
+/**
+ * Fetches the profile data for a given user ID.
+ * @param {UUID} id - The UUID of the user.
+ * @returns {Promise<any>} The profile data or false if the request fails.
+ */
 const getProfile =
-  (id: UUID) =>
+  (_id?: UUID) =>
   async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
     try {
       dispatch(setAuthLoading(true));
@@ -41,6 +46,11 @@ const getProfile =
     }
   };
 
+/**
+ * Updates the profile with the given form data.
+ * @param {FormData} formData - The form data to update the profile.
+ * @returns {Promise<any>} The updated profile data or false if the request fails.
+ */
 const updateProfile =
   (formData: FormData) =>
   async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
@@ -64,11 +74,11 @@ const updateProfile =
         return response.data;
       }
 
-      toast.error("Failed to get profile data");
+      toast.error("Failed to update profile");
 
       return false;
     } catch (error) {
-      toast.error("Failed to get profile data");
+      toast.error("Failed to update profile");
 
       return false;
     } finally {
@@ -76,6 +86,10 @@ const updateProfile =
     }
   };
 
+/**
+ * Deletes the profile of the current user.
+ * @returns {Promise<any>} True if the profile is deleted successfully, otherwise false.
+ */
 const deleteProfile =
   () =>
   async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
@@ -93,7 +107,6 @@ const deleteProfile =
 
       if (response.status === 200) {
         toast.success("Profile deleted successfully");
-
         dispatch(setAuthLoading(false));
         dispatch(toggleUser(null));
         dispatch(toggleToken(null));
@@ -114,6 +127,11 @@ const deleteProfile =
     }
   };
 
+/**
+ * Changes the password of the current user.
+ * @param {PasswordSchema} data - The new password data.
+ * @returns {Promise<any>} True if the password is changed successfully, otherwise false.
+ */
 const changePassword =
   (data: PasswordSchema) =>
   async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
@@ -134,7 +152,7 @@ const changePassword =
         toast.success("Password changed successfully");
         dispatch(setAuthLoading(false));
 
-        return;
+        return true;
       }
 
       return false;
@@ -144,6 +162,8 @@ const changePassword =
       } else {
         toast.error("Failed to change password");
       }
+
+      return false;
     } finally {
       dispatch(setAuthLoading(false));
     }

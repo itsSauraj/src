@@ -2,12 +2,15 @@
 import type { StoreDispatch, RootState } from "@/redux/store";
 
 import axios from "axios";
-// sonner
 import { toast } from "sonner";
 
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
+/**
+ * Fetches the dashboard report.
+ * @returns {Promise<any>} The dashboard report data or false if an error occurs.
+ */
 const getDashboardReport =
   () =>
   async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
@@ -33,7 +36,6 @@ const getDashboardReport =
 
       return false;
     } catch (error) {
-      // eslint-disable-line
       toast.error("Failed to get dashboard report");
 
       return false;
@@ -42,6 +44,10 @@ const getDashboardReport =
     }
   };
 
+/**
+ * Fetches the dashboard course completion status.
+ * @returns {Promise<any>} The course completion status data or false if an error occurs.
+ */
 const getDashboardCourseCollectionStatus =
   () =>
   async (dispatch: StoreDispatch, getState: () => RootState): Promise<any> => {
@@ -67,7 +73,6 @@ const getDashboardCourseCollectionStatus =
 
       return false;
     } catch (error) {
-      // eslint-disable-line
       toast.error("Failed to get dashboard report");
 
       return false;

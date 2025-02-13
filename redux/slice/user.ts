@@ -37,6 +37,10 @@ const userSlice = createSlice({
 
 const { toggleToken, toggleUser, setUserType } = userSlice.actions;
 
+/**
+ * Validates the token and updates it if necessary.
+ * @param {string} token - The token to validate.
+ */
 const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
   try {
     const new_token = await ValidateToken(token);
@@ -51,6 +55,10 @@ const validateToken = (token: string) => async (dispatch: StoreDispatch) => {
   }
 };
 
+/**
+ * Logs in the user with the provided form data.
+ * @param {LoginRequest} formData - The login request data.
+ */
 const logInUser =
   (formData: LoginRequest) => async (dispatch: StoreDispatch) => {
     dispatch(setAuthLoading(true));
@@ -91,6 +99,9 @@ const logInUser =
     }
   };
 
+/**
+ * Logs out the current user.
+ */
 const logoutUser =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
     const token = getState().user.token;
@@ -105,6 +116,10 @@ const logoutUser =
     dispatch(setUserType(null));
   };
 
+/**
+ * Registers a new user with the provided form data.
+ * @param {any} formData - The registration request data.
+ */
 const registerUser =
   (formData: any) =>
   async (dispatch: StoreDispatch): Promise<LoginRequest | any> => {
@@ -131,6 +146,10 @@ const registerUser =
     }
   };
 
+/**
+ * Verifies the OTP and updates the user state.
+ * @param {string} otp - The OTP to verify.
+ */
 const verifyOTP = (otp: string) => async (dispatch: StoreDispatch) => {
   try {
     const user_id = localStorage.getItem("user_id") as string;

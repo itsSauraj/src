@@ -11,6 +11,10 @@ import { toast } from "sonner";
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
+/**
+ * Fetches all courses.
+ * @returns {Promise<Course[]>} List of courses.
+ */
 const getCourses =
   () =>
   async (
@@ -31,6 +35,13 @@ const getCourses =
     return [];
   };
 
+/**
+ * Fetches course details.
+ * @param {UUID} id - Course ID.
+ * @param {UUID | null} collection_id - Collection ID.
+ * @param {string} user_group - User group.
+ * @returns {Promise<TraineeCourseView>} Course details.
+ */
 const getCourseDetails =
   (id: UUID, collection_id: UUID | null = null, user_group = "admin") =>
   async (
@@ -56,6 +67,11 @@ const getCourseDetails =
     return [];
   };
 
+/**
+ * Deletes a course.
+ * @param {UUID} id - Course ID.
+ * @returns {Promise<boolean>} Deletion status.
+ */
 const deleteCourse =
   (id: UUID) => async (dispatch: StoreDispatch, getState: () => RootState) => {
     dispatch(setAuthLoading(true));
@@ -78,6 +94,11 @@ const deleteCourse =
     }
   };
 
+/**
+ * Creates a new course.
+ * @param {CourseFormData} courseData - Course data.
+ * @returns {Promise<Course>} Created course.
+ */
 const createNewCourse =
   (courseData: CourseFormData) =>
   async (
@@ -104,6 +125,11 @@ const createNewCourse =
     }
   };
 
+/**
+ * Creates a new collection.
+ * @param {FormData} formData - Collection data.
+ * @returns {Promise<CollectionFormData>} Created collection.
+ */
 const createNewCollection =
   (formData: FormData) =>
   async (
@@ -131,6 +157,12 @@ const createNewCollection =
     }
   };
 
+/**
+ * Updates a collection.
+ * @param {UUID} id - Collection ID.
+ * @param {FormData} formData - Collection data.
+ * @returns {Promise<CollectionFormData>} Updated collection.
+ */
 const updateCollection =
   (id: UUID, formData: FormData) =>
   async (
@@ -148,12 +180,16 @@ const updateCollection =
     );
 
     if (response.status === 200) {
-      toast.success("Upadted successfully");
+      toast.success("Updated successfully");
     } else {
       toast.error("Failed to update");
     }
   };
 
+/**
+ * Fetches all course collections.
+ * @returns {Promise<CollectionFormData[]>} List of collections.
+ */
 const getCourseCollection =
   () =>
   async (
@@ -174,6 +210,11 @@ const getCourseCollection =
     return [];
   };
 
+/**
+ * Fetches course collection details.
+ * @param {UUID} id - Collection ID.
+ * @returns {Promise<CollectionFormData>} Collection details.
+ */
 const getCourseCollectionDetails =
   (id: UUID) =>
   async (
@@ -197,6 +238,12 @@ const getCourseCollectionDetails =
     return [];
   };
 
+/**
+ * Deletes a collection or multiple collections.
+ * @param {UUID | UUID[]} id - Collection ID(s).
+ * @param {boolean} many - Flag to indicate multiple deletions.
+ * @returns {Promise<boolean>} Deletion status.
+ */
 const deleteCollection =
   (id: UUID | UUID[], many = false) =>
   async (dispatch: StoreDispatch, getState: () => RootState) => {
@@ -246,6 +293,12 @@ const deleteCollection =
     }
   };
 
+/**
+ * Removes a course from a collection.
+ * @param {UUID} collectoin_id - Collection ID.
+ * @param {UUID} course_id - Course ID.
+ * @returns {Promise<boolean>} Removal status.
+ */
 const removeCourseFromCollection =
   (collectoin_id: UUID, course_id: UUID) =>
   async (dispatch: StoreDispatch, getState: () => RootState) => {
@@ -277,6 +330,12 @@ const removeCourseFromCollection =
     }
   };
 
+/**
+ * Adds a course to a collection.
+ * @param {UUID} collectoin_id - Collection ID.
+ * @param {FormData} formData - Course data.
+ * @returns {Promise<boolean>} Addition status.
+ */
 const addCourseToCollection =
   (collectoin_id: UUID, formData: FormData) =>
   async (dispatch: StoreDispatch, getState: () => RootState) => {
@@ -303,6 +362,11 @@ const addCourseToCollection =
     }
   };
 
+/**
+ * Sets a collection as default.
+ * @param {UUID} id - Collection ID.
+ * @returns {Promise<boolean>} Operation status.
+ */
 const setDefaultCollection =
   (id: UUID) => async (dispatch: StoreDispatch, getState: () => RootState) => {
     dispatch(setAuthLoading(true));

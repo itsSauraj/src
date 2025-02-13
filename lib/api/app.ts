@@ -2,11 +2,9 @@ import type { StoreDispatch, RootState } from "@/redux/store";
 import type { UUID } from "crypto";
 
 import axios from "axios";
-// sonner
 import { toast } from "sonner";
 
 import { apiConfig } from "@/config/api";
-//redux libs
 import {
   markAsRead,
   removeNotification,
@@ -14,6 +12,11 @@ import {
   clearNotifications,
 } from "@/redux/slice/app";
 
+/**
+ * Marks a notification as read.
+ * @param {UUID} id - The ID of the notification to mark as read.
+ * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating success or failure.
+ */
 const markNotificationAsRead =
   (id: UUID) =>
   async (
@@ -43,13 +46,17 @@ const markNotificationAsRead =
       toast.error("Failed to mark notification as read");
 
       return false;
-    } catch (error) { // eslint-disable-line
+    } catch (error) {
       toast.error("Failed to mark notification as read");
 
       return false;
     }
   };
 
+/**
+ * Marks all notifications as read.
+ * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating success or failure.
+ */
 const markAllNotificationAsRead =
   () =>
   async (
@@ -76,11 +83,11 @@ const markAllNotificationAsRead =
         return true;
       }
 
-      toast.error("Failed to mark notification as read");
+      toast.error("Failed to mark notifications as read");
 
       return false;
-    } catch (error) { // eslint-disable-line
-      toast.error("Failed to mark notification as read");
+    } catch (error) {
+      toast.error("Failed to mark notifications as read");
 
       return false;
     }

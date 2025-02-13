@@ -8,11 +8,15 @@ import type {
 } from "@/types/auth/actions";
 
 import axios from "axios";
-// sonner
 import { toast } from "sonner";
 
 import { apiConfig } from "@/config/api";
 
+/**
+ * Registers a new user.
+ * @param {RegistrationRequest} formData - The registration data.
+ * @returns {Promise<LoginResponse | any>} The response data or error.
+ */
 export const register = async (
   formData: RegistrationRequest,
 ): Promise<LoginResponse | any> => {
@@ -28,6 +32,11 @@ export const register = async (
   }
 };
 
+/**
+ * Logs in a user.
+ * @param {LoginRequest} credentials - The login credentials.
+ * @returns {Promise<LoginResponse | any>} The response data or error message.
+ */
 export const login = async (
   credentials: LoginRequest,
 ): Promise<LoginResponse | any> => {
@@ -49,6 +58,12 @@ export const login = async (
   }
 };
 
+/**
+ * Verifies the OTP for a user.
+ * @param {string} user_id - The user ID.
+ * @param {string} otp - The OTP code.
+ * @returns {Promise<LoginResponse | boolean>} The response data or false.
+ */
 export const verifyOtp = async (
   user_id: string,
   otp: string,
@@ -72,6 +87,11 @@ export const verifyOtp = async (
   }
 };
 
+/**
+ * Validates a token.
+ * @param {string} token - The token to validate.
+ * @returns {Promise<string | any>} The new token or null.
+ */
 export const validateToken = async (token: string): Promise<string | any> => {
   try {
     const response = await axios.post(`${apiConfig.url}/auth/user/refresh/`, {
@@ -88,6 +108,11 @@ export const validateToken = async (token: string): Promise<string | any> => {
   }
 };
 
+/**
+ * Logs out a user.
+ * @param {string} token - The token to invalidate.
+ * @returns {Promise<void>}
+ */
 export const logout = async (token: string): Promise<void> => {
   try {
     await axios.post(`${apiConfig.url}/auth/user/logout/`, {

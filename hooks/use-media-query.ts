@@ -1,5 +1,22 @@
-// hooks/use-media-query.ts
 import { useCallback, useEffect, useState } from "react";
+/**
+ * A [Client Component] hook
+ * that lets you *read* the screen size and returns you a boolean.
+ *
+ *
+ * @example
+ * ```ts
+ * "use client"
+ * import { useMediaQuery } from '@/hooks/use-media-query'
+ *
+ * export default function Page() {
+ *  const isMobile = useMediaQuery('(max-width: 768px)')
+ *  // ...
+ *  // ...
+ * }
+ * ```
+ *
+ */
 
 export function useMediaQuery(query: string) {
   const getMatches = useCallback((query: string): boolean => {

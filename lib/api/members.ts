@@ -7,12 +7,15 @@ import type { ResponseMember } from "@/types/dashboard/view";
 import type { UUID } from "crypto";
 
 import axios from "axios";
-// sonner
 import { toast } from "sonner";
 
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
+/**
+ * Fetches the list of mentors.
+ * @returns {Promise<IMemberForm[] | any>}
+ */
 const getMentors =
   () =>
   async (
@@ -36,6 +39,10 @@ const getMentors =
     return [];
   };
 
+/**
+ * Fetches the list of trainees.
+ * @returns {Promise<IMemberForm[] | any>}
+ */
 const getTrainees =
   () =>
   async (
@@ -58,6 +65,12 @@ const getTrainees =
     return [];
   };
 
+/**
+ * Adds a new member.
+ * @param {IMemberForm} formData - The form data for the new member.
+ * @param {FormType} type - The type of the form.
+ * @returns {Promise<IMemberForm | any>}
+ */
 const addMember =
   (formData: IMemberForm, type: FormType) =>
   async (
@@ -110,9 +123,18 @@ const addMember =
     }
   };
 
+/**
+ * Deletes a member or multiple members.
+ * @param {UUID | UUID[]} id - The ID(s) of the member(s) to delete.
+ * @param {boolean} [many=false] - Whether to delete multiple members.
+ * @returns {Promise<boolean>}
+ */
 const deleteMember =
   (id: UUID | UUID[], many = false) =>
-  async (dispatch: StoreDispatch, getState: () => RootState) => {
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<boolean | undefined> => {
     if (many) {
       const response = await axios.delete(`${apiConfig.url}/member/`, {
         headers: {
@@ -147,6 +169,11 @@ const deleteMember =
     }
   };
 
+/**
+ * Fetches information about a specific member.
+ * @param {UUID} id - The ID of the member.
+ * @returns {Promise<ResponseMember | any>}
+ */
 const getMemberInfo =
   (id: UUID) =>
   async (

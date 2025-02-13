@@ -2,11 +2,9 @@ import type { UUID } from "crypto";
 
 import * as yup from "yup";
 
+// Schema for login form validation
 export const loginSchema = yup.object().shape({
-  username: yup
-    .string()
-    .min(3, "Username must be at least 3 characters")
-    .required("Username is required"),
+  username: yup.string().required("Username is required"),
   password: yup
     .string()
     .required("Password is required")
@@ -17,6 +15,7 @@ export const loginSchema = yup.object().shape({
 });
 export type LoginSchema = yup.InferType<typeof loginSchema>;
 
+// Schema for registration form validation
 export const registerSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
   first_name: yup.string().required("First name is required"),
@@ -39,6 +38,7 @@ export const registerSchema = yup.object().shape({
 });
 export type RegisterSchema = yup.InferType<typeof registerSchema>;
 
+// Schema for member form validation
 export const memberSchema = yup.object().shape({
   employee_id: yup
     .string()
@@ -59,12 +59,15 @@ export const memberSchema = yup.object().shape({
     .oneOf([yup.ref("password"), undefined], "Passwords must match"),
 });
 export type MemberSchema = yup.InferType<typeof memberSchema>;
+
+// Interface for member form with additional properties
 export interface IMemberForm
   extends Omit<yup.InferType<typeof memberSchema>, "joining_date"> {
   id: string | UUID;
   joining_date: string | Date;
 }
 
+// Schema for module form validation
 export const moduleSchema = yup.object({
   title: yup.string().required("Module title is required"),
   description: yup.string(),
@@ -81,6 +84,7 @@ export const moduleSchema = yup.object({
 });
 export type ModuleSchema = yup.InferType<typeof moduleSchema>;
 
+// Schema for course form validation
 export const courseSchema = yup.object({
   title: yup.string().required("Course title is required"),
   description: yup.string().required("Course description is required"),
@@ -96,13 +100,13 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ];
 
+// Schema for collection form validation
 export const collectionSchema = yup.object().shape({
   title: yup.string().required("Collection title is required"),
   description: yup.string(),
   alloted_time: yup.number().required("Alloted time is required"),
   image: yup
     .mixed<File | string>()
-    .nullable()
     .nullable()
     .test("fileSize", "Image size must be less than 5MB", (value) => {
       if (!value) return true;
@@ -117,6 +121,7 @@ export const collectionSchema = yup.object().shape({
   courses: yup.array().of(yup.string().uuid()),
 });
 
+// Schema for collection courses form validation
 export const collectionSchemaCourses = yup.object().shape({
   courses: yup.array().of(yup.string().uuid()),
 });
@@ -125,6 +130,7 @@ export type CollectionCoursesFormData = yup.InferType<
   typeof collectionSchemaCourses
 >;
 
+// Schema for user update form validation
 export const userUpdateSchema = yup.object().shape({
   employee_id: yup.string().required("Employee ID is required"),
   first_name: yup.string().required("First Name is required"),
@@ -152,6 +158,8 @@ export const userUpdateSchema = yup.object().shape({
       originalValue ? new Date(originalValue) : null,
     ),
 });
+
+// Schema for user profile update form validation
 export const userProfileUpdateSchema = userUpdateSchema.shape({
   employee_id: yup.string().nullable(),
   phone_number: yup.string().nullable(),
@@ -160,6 +168,7 @@ export type UserProfileUpdateSchema = yup.InferType<
   typeof userProfileUpdateSchema
 >;
 
+// Schema for importing course form validation
 export const ImportCourseSchema = yup
   .object({
     title: yup
@@ -177,6 +186,7 @@ export const ImportCourseSchema = yup
   .required();
 export type ImportFormData = yup.InferType<typeof ImportCourseSchema>;
 
+// Schema for password change form validation
 export const passwordSchema = yup.object().shape({
   current_password: yup.string().required("Current password is required"),
   new_password: yup
@@ -200,6 +210,7 @@ export const passwordSchema = yup.object().shape({
 });
 export type PasswordSchema = yup.InferType<typeof passwordSchema>;
 
+// Schema for email request form validation
 export const emailSchema = yup.object({
   email: yup
     .string()
@@ -208,6 +219,7 @@ export const emailSchema = yup.object({
 });
 export type EmailRequest = yup.InferType<typeof emailSchema>;
 
+// Schema for OTP request form validation
 export const otpSchema = yup.object({
   otp: yup
     .string()
@@ -216,6 +228,7 @@ export const otpSchema = yup.object({
 });
 export type OTPRequest = yup.InferType<typeof otpSchema>;
 
+// Schema for reset password form validation
 export const resetPasswordSchema = yup.object({
   new_password: yup
     .string()
@@ -238,6 +251,7 @@ export const resetPasswordSchema = yup.object({
 });
 export type ResetPasswordRequest = yup.InferType<typeof resetPasswordSchema>;
 
+// Schema for exam schedule form validation
 export const examScheduleSchema = yup.object({
   assigned_trainee: yup.string().required("Trainee selection is required"),
   collection: yup.string().required("Collection ID is required"),

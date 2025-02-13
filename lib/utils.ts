@@ -3,9 +3,20 @@ import type { BreadcrumbItem } from "@/types/index";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+/**
+ * Combines class names using clsx and tailwind-merge.
+ * @param {...ClassValue[]} inputs - The class names to combine.
+ * @returns {string} - The combined class names.
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+/**
+ * Generates breadcrumb items from a given pathname.
+ * @param {string} pathname - The pathname to generate breadcrumbs from.
+ * @returns {BreadcrumbItem[]} - The generated breadcrumb items.
+ */
 export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   const uuidRegex =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -29,6 +40,11 @@ export const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
   });
 };
 
+/**
+ * Formats a duration string into a human-readable format.
+ * @param {string} duration - The duration in seconds.
+ * @returns {string} - The formatted duration.
+ */
 export const formatDuration = (duration: string) => {
   const seconds = parseFloat(duration);
   const hours = Math.floor(seconds / 3600);
@@ -44,6 +60,11 @@ export const formatDuration = (duration: string) => {
   }
 };
 
+/**
+ * Converts a UTC time string to a local date-time string.
+ * @param {string} utcTime - The UTC time string.
+ * @returns {string | undefined} - The local date-time string or undefined if utcTime is null.
+ */
 export const formatDateTimeToLocal = (utcTime: string) => {
   if (utcTime == null) return;
 
@@ -52,6 +73,12 @@ export const formatDateTimeToLocal = (utcTime: string) => {
   return dateObj.toLocaleString();
 };
 
+/**
+ * Gets a color class based on the index and type.
+ * @param {number} index - The index to determine the color.
+ * @param {"border" | "background" | "text"} type - The type of color class to return.
+ * @returns {string} - The color class.
+ */
 export const getColor = (
   index: number,
   type: "border" | "background" | "text",

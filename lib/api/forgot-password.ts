@@ -1,13 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { StoreDispatch } from "@/redux/store";
 
 import axios from "axios";
-// sonner
 import { toast } from "sonner";
 
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
+/**
+ * Sends a password reset email.
+ * @param {string} email - The email address to send the reset link to.
+ * @returns {Promise<any>} - The response data or false if the request failed.
+ */
 const sendResetEmail =
   (email: string) =>
   async (dispatch: StoreDispatch): Promise<any> => {
@@ -16,14 +19,8 @@ const sendResetEmail =
     try {
       const response = await axios.post(
         `${apiConfig.url}/profile/forgot_password/`,
-        {
-          email: email,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
+        { email },
+        { headers: { "Content-Type": "application/json" } },
       );
 
       dispatch(setAuthLoading(false));
@@ -50,6 +47,11 @@ const sendResetEmail =
     }
   };
 
+/**
+ * Verifies the OTP sent to the user's email.
+ * @param {string} otp - The OTP to verify.
+ * @returns {Promise<any>} - The response data or false if the request failed.
+ */
 const verifyOTP =
   (otp: string) =>
   async (dispatch: StoreDispatch): Promise<any> => {
@@ -59,14 +61,10 @@ const verifyOTP =
       const response = await axios.post(
         `${apiConfig.url}/profile/verify_otp/`,
         {
-          otp: otp,
+          otp,
           user_id: localStorage.getItem("user_id"),
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
+        { headers: { "Content-Type": "application/json" } },
       );
 
       dispatch(setAuthLoading(false));
@@ -92,8 +90,15 @@ const verifyOTP =
     }
   };
 
+/**
+ * Resets the user's password.
+ * @param {Object} formData - The new password data.
+ * @param {string} formData.new_password - The new password.
+ * @param {string} formData.confirm_password - The confirmation of the new password.
+ * @returns {Promise<any>} - The response data or false if the request failed.
+ */
 const resetPassword =
-  (formData: { new_password: string; confirm_password: string }) => 
+  (formData: { new_password: string; confirm_password: string }) =>
   async (dispatch: StoreDispatch): Promise<any> => {
     dispatch(setAuthLoading(true));
 
@@ -105,11 +110,7 @@ const resetPassword =
           confirm_password: formData.confirm_password,
           token: localStorage.getItem("reset_token"),
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
+        { headers: { "Content-Type": "application/json" } },
       );
 
       dispatch(setAuthLoading(false));

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { MemberCollection } from "@/types/dashboard/view";
 import type { TrainingReportData } from "@/types/dashboard/report";
@@ -6,12 +7,15 @@ import type { ResponseMiniFiedTraineeCollectionData } from "@/types/dashboard/re
 import { UUID } from "crypto";
 
 import axios from "axios";
-// sonner
 import { toast } from "sonner";
 
 import { setAuthLoading } from "@/redux/slice/app";
 import { apiConfig } from "@/config/api";
 
+/**
+ * Fetches the assigned trainee collection.
+ * @returns {Promise<MemberCollection[] | undefined>}
+ */
 const getTarineeAggignedCollection =
   () =>
   async (
@@ -32,19 +36,25 @@ const getTarineeAggignedCollection =
       }
 
       return undefined;
-    } catch (error) { // eslint-disable-line
+    } catch (error) {
       return undefined;
     } finally {
       dispatch(setAuthLoading(false));
     }
   };
 
+/**
+ * Starts a course for a trainee.
+ * @param {UUID} collection_id - The collection ID.
+ * @param {UUID} course_id - The course ID.
+ * @returns {Promise<Boolean>}
+ */
 const setStartCourse =
   (collection_id: UUID, course_id: UUID) =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<Boolean | any> => {
+  ): Promise<Boolean> => {
     dispatch(setAuthLoading(true));
     const response = await axios.post(
       `${apiConfig.url}/member/${collection_id}/${course_id}`,
@@ -59,19 +69,20 @@ const setStartCourse =
 
     dispatch(setAuthLoading(false));
 
-    if (response.status === 200) {
-      return true;
-    }
-
-    return false;
+    return response.status === 200;
   };
 
+/**
+ * Marks a lesson as complete.
+ * @param {Object} data - The data containing collection_id, course_id, and lesson_id.
+ * @returns {Promise<Boolean>}
+ */
 const markLessonAsComplete =
   (data: { collection_id: UUID; course_id: UUID; lesson_id: UUID }) =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<Boolean | any> => {
+  ): Promise<Boolean> => {
     dispatch(setAuthLoading(true));
     const response = await axios.post(
       `${apiConfig.url}/member/action/lesson`,
@@ -86,13 +97,14 @@ const markLessonAsComplete =
 
     dispatch(setAuthLoading(false));
 
-    if (response.status === 200) {
-      return true;
-    }
-
-    return false;
+    return response.status === 200;
   };
 
+/**
+ * Unmarks a lesson as complete.
+ * @param {Object} data - The data containing collection_id, course_id, and lesson_id.
+ * @returns {Promise<boolean>}
+ */
 const unmarkLessonAsComplete =
   (data: { collection_id: UUID; course_id: UUID; lesson_id: UUID }) =>
   async (
@@ -113,22 +125,25 @@ const unmarkLessonAsComplete =
         },
       );
 
-      dispatch(setAuthLoading(false));
-
       return response.status === 200;
-    } catch (error) { // eslint-disable-line
-      dispatch(setAuthLoading(false));
-
+    } catch (error) {
       return false;
+    } finally {
+      dispatch(setAuthLoading(false));
     }
   };
 
+/**
+ * Fetches the trainee report.
+ * @param {UUID} id - The trainee ID.
+ * @returns {Promise<TrainingReportData | undefined>}
+ */
 const getTraineeReport =
   (id: UUID) =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<TrainingReportData | any> => {
+  ): Promise<TrainingReportData | undefined> => {
     dispatch(setAuthLoading(true));
     try {
       const response = await axios.get(
@@ -146,19 +161,24 @@ const getTraineeReport =
       }
 
       return undefined;
-    } catch (error) { // eslint-disable-line
+    } catch (error) {
       return undefined;
     } finally {
       dispatch(setAuthLoading(false));
     }
   };
 
+/**
+ * Fetches the minified trainee collection data.
+ * @param {UUID} trainee_id - The trainee ID.
+ * @returns {Promise<ResponseMiniFiedTraineeCollectionData | undefined>}
+ */
 const getMiniFiedTraineeCollectionData =
   (trainee_id: UUID) =>
   async (
     dispatch: StoreDispatch,
     getState: () => RootState,
-  ): Promise<ResponseMiniFiedTraineeCollectionData | any> => {
+  ): Promise<ResponseMiniFiedTraineeCollectionData | undefined> => {
     dispatch(setAuthLoading(true));
 
     try {
@@ -172,20 +192,24 @@ const getMiniFiedTraineeCollectionData =
         },
       );
 
-      dispatch(setAuthLoading(false));
-
       if (response.status === 200) {
         return response.data;
       }
 
       return undefined;
-    } catch (error) { // eslint-disable-line
+    } catch (error) {
       return undefined;
     } finally {
       dispatch(setAuthLoading(false));
     }
   };
 
+/**
+ * Assigns a course collection to a trainee.
+ * @param {UUID} trainee_id - The trainee ID.
+ * @param {UUID[]} courses - The array of course IDs.
+ * @returns {Promise<Boolean>}
+ */
 const assignCourseCollection =
   (trainee_id: UUID, courses: UUID[]) =>
   async (
@@ -206,8 +230,6 @@ const assignCourseCollection =
         },
       );
 
-      dispatch(setAuthLoading(false));
-
       if (response.status === 201) {
         toast.success("Courses assigned successfully");
 
@@ -217,7 +239,7 @@ const assignCourseCollection =
       toast.error("Failed to assign courses");
 
       return false;
-    } catch (error) { // eslint-disable-line  
+    } catch (error) {
       toast.error("Failed to assign courses");
 
       return false;
@@ -226,9 +248,18 @@ const assignCourseCollection =
     }
   };
 
+/**
+ * Deassigns a course collection from a trainee.
+ * @param {UUID} trainee_id - The trainee ID.
+ * @param {UUID[]} courses - The array of course IDs.
+ * @returns {Promise<Boolean>}
+ */
 const deassignCourseCollection =
   (trainee_id: UUID, courses: UUID[]) =>
-  async (dispatch: StoreDispatch, getState: () => RootState) => {
+  async (
+    dispatch: StoreDispatch,
+    getState: () => RootState,
+  ): Promise<Boolean> => {
     dispatch(setAuthLoading(true));
 
     try {
@@ -249,7 +280,7 @@ const deassignCourseCollection =
 
         return false;
       }
-    } catch (error) { // eslint-disable-line
+    } catch (error) {
       toast.error("Failed to deassign courses");
 
       return false;

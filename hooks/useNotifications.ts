@@ -14,11 +14,71 @@ import {
 } from "@/redux/slice/app";
 import { WebSocketService } from "@/services/webSocket";
 
+/**
+ * A [Client Component] hook
+ * that manages notifications using WebSocket and Redux.
+ *
+ * This hook connects to a WebSocket server, listens for notifications,
+ * and updates the Redux store accordingly. It also displays toast messages
+ * for new notifications.
+ *
+ *
+ * @example
+ *
+ * ```ts
+ * // TypeDeclaration
+ * interface NotificationState {
+ *  items: Notification[];
+ *  unreadCount: number;
+ *  isConnected: boolean;
+ *  error: string | null;
+ *  isLoading: boolean;
+ * }
+ *
+ * // Redux Toolkit Slice
+ * // state.app.notifications
+ *
+ * const notificationInitialState: NotificationState = {
+ *  items: [],
+ *  unreadCount: 0,
+ *  isConnected: false,
+ *  error: null,
+ *  isLoading: false,
+ *  };
+ * ```
+ *
+ * *Usage in a component*
+ *
+ * ```ts
+ * "use client"
+ * import { useNotifications } from '@/hooks/useNotifications'
+ *
+ * export default function Page() {
+ *  const { notifications, unreadCount, isConnected, error, isLoading } = useNotifications();
+ *  // ...
+ *  // ...
+ * }
+ * ```
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author https://github.com/itssauraj - Saurabh Yadav
+ */
+
 export const useNotifications = () => {
   const dispatch = useDispatch<StoreDispatch>();
-  const { items, unreadCount, isConnected, error, isLoading } = useSelector(
-    (state: RootState) => state.app.notifications,
-  );
+  const {
+    items,
+    unreadCount,
+    isConnected,
+    error,
+    isLoading,
+  }: {
+    items: Notification[];
+    unreadCount: number;
+    isConnected: boolean;
+    error: string | null;
+    isLoading: boolean;
+  } = useSelector((state: RootState) => state.app.notifications);
   const token = useSelector((state: RootState) => state.user.token);
 
   useEffect(() => {
