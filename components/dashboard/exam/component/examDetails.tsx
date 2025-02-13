@@ -12,6 +12,7 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,11 +23,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { LinkBadge } from "@/components/collection/status-badge";
 
 const ExamDetails = ({
+  critical,
   details,
   onCancelExam,
+  onEditExam,
 }: {
+  critical: boolean;
   details: Exam;
   onCancelExam: React.Dispatch<React.SetStateAction<boolean>>;
+  onEditExam: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const formatDate = useMemo(
     () => (dateString: string) => {
@@ -62,20 +67,26 @@ const ExamDetails = ({
               Upcoming
             </Badge>
           </div>
-          <div className="flex gap-2">
-            <Button className="gap-2" variant="outline">
-              <Edit className="h-4 w-4" />
-              Edit
-            </Button>
-            <Button
-              className="gap-2"
-              variant="destructive"
-              onClick={() => onCancelExam((value) => !value)}
-            >
-              <Trash2 className="h-4 w-4" />
-              Cancel Exam
-            </Button>
-          </div>
+          {!critical && (
+            <div className="flex gap-2">
+              <Button
+                className="gap-2"
+                variant="outline"
+                onClick={() => onEditExam((value) => !value)}
+              >
+                <Edit className="h-4 w-4" />
+                Edit
+              </Button>
+              <Button
+                className="gap-2"
+                variant="destructive"
+                onClick={() => onCancelExam((value) => !value)}
+              >
+                <Trash2 className="h-4 w-4" />
+                Cancel Exam
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -149,30 +160,45 @@ const ExamDetails = ({
             </CardHeader>
             <CardContent>
               <div className="flex items-start gap-4">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src="" />
-                  <AvatarFallback>
-                    {getInitials(
-                      details.assigned_trainee.first_name,
-                      details.assigned_trainee.last_name,
-                    )}
-                  </AvatarFallback>
-                </Avatar>
+                <Link
+                  href={`/dashboard/trainees/${details.assigned_trainee.id}`}
+                >
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage
+                      src={
+                        process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH +
+                        details.assigned_trainee.avatar
+                      }
+                    />
+                    <AvatarFallback>
+                      {getInitials(
+                        details.assigned_trainee.first_name,
+                        details.assigned_trainee.last_name,
+                      )}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
                 <div className="space-y-3">
                   <div>
-                    <p className="font-medium">
+                    <Link
+                      className="font-medium hover:underline"
+                      href={`/dashboard/trainees/${details.assigned_trainee.id}`}
+                    >
                       {details.assigned_trainee.first_name}{" "}
                       {details.assigned_trainee.last_name}
-                    </p>
+                    </Link>
                     <div className="flex items-center text-sm text-muted-foreground">
-                      <Mail className="h-4 w-4 mr-2" />
-                      {details.assigned_trainee.email}
+                      <Link
+                        className="flex items-center hover:underline"
+                        href={`mailto:${details.assigned_trainee.email}`}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        {details.assigned_trainee.email}
+                      </Link>
                     </div>
                   </div>
-                  <Button className="gap-2" size="sm" variant="outline">
-                    <Mail className="h-4 w-4" />
-                    Contact Trainee
-                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -186,7 +212,12 @@ const ExamDetails = ({
             <CardContent>
               <div className="flex items-start gap-4">
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src="" />
+                  <AvatarImage
+                    src={
+                      process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH +
+                      details.assigned_mentor.avatar
+                    }
+                  />
                   <AvatarFallback>
                     {getInitials(
                       details.assigned_mentor.first_name,
@@ -201,14 +232,17 @@ const ExamDetails = ({
                       {details.assigned_mentor.last_name}
                     </p>
                     <div className="flex items-center text-sm text-muted-foreground">
-                      <Mail className="h-4 w-4 mr-2" />
-                      {details.assigned_mentor.email}
+                      <Link
+                        className="flex items-center hover:underline"
+                        href={`mailto:${details.assigned_mentor.email}`}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        {details.assigned_mentor.email}
+                      </Link>
                     </div>
                   </div>
-                  <Button className="gap-2" size="sm" variant="outline">
-                    <Mail className="h-4 w-4" />
-                    Contact Mentor
-                  </Button>
                 </div>
               </div>
             </CardContent>

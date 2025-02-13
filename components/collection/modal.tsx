@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export function ModalDialog({
+  noTrigger,
   state,
   setState,
   type,
@@ -23,6 +24,7 @@ export function ModalDialog({
   className,
   disabled,
 }: {
+  noTrigger?: boolean;
   state: boolean;
   setState: (open: boolean) => void;
   type?: "add" | "import";
@@ -39,17 +41,19 @@ export function ModalDialog({
 
   return (
     <Dialog open={state} onOpenChange={setState}>
-      <CreateToolTipT
-        content={title}
-        trigger={
-          <DialogTrigger asChild>
-            <Button>
-              {icons[type || "add"]}
-              {title}
-            </Button>
-          </DialogTrigger>
-        }
-      />
+      {!noTrigger && (
+        <CreateToolTipT
+          content={title}
+          trigger={
+            <DialogTrigger asChild>
+              <Button>
+                {icons[type || "add"]}
+                {title}
+              </Button>
+            </DialogTrigger>
+          }
+        />
+      )}
       <DialogContent
         className={cn("sm:max-w-[425px]", className)}
         onPointerDownOutside={(e) => disabled && e.preventDefault()}

@@ -134,7 +134,7 @@ const CardOptions = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            className="h-8 w-8 p-0 hover:bg-primary-300 rounded-full hover:text-white"
+            className="h-8 w-8 p-0 rounded-lg hover:bg-white"
             variant="ghost"
           >
             <span className="sr-only">Open menu</span>

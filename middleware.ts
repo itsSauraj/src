@@ -15,10 +15,7 @@ export function middleware(request: NextRequest) {
 
   const loginUrl = new URL("/auth/login", request.url);
   const dashboardUrl = new URL("/dashboard", request.url);
-  const examRoute = new URL(
-    `/dashboard/exam?user=${encodeURIComponent(userType as string)}`,
-    request.url,
-  );
+  const examRoute = new URL(`/dashboard/exam`, request.url);
 
   const protectedPaths = ["/dashboard", "/profile", "/settings"];
 
@@ -43,8 +40,22 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  if (pathname === "/dashboard/exam") {
+  if (pathname.startsWith("/dashboard/exam")) {
     if (request.nextUrl.href !== examRoute.href) {
+      const examRoute = new URL(
+        `${pathname}?user=${encodeURIComponent(userType as string)}`,
+        request.url,
+      );
+
+      if (request.nextUrl.href !== examRoute.href) {
+        return NextResponse.redirect(examRoute);
+      }
+    } else {
+      const examRoute = new URL(
+        `${pathname}?user=${encodeURIComponent(userType as string)}`,
+        request.url,
+      );
+
       return NextResponse.redirect(examRoute);
     }
   }

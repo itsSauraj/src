@@ -7,12 +7,14 @@ import type { StoreDispatch } from "@/redux/store";
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Empty } from "antd";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import ExamDetails from "./component/examDetails";
 
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import Loader from "@/components/ui/loader";
+import ExamSchedulingForm from "@/components/dashboard/exam/admin/schedule";
+import { ModalDialog } from "@/components/collection/modal";
 // API
 import { getExamDetails, cancelScheduledExam } from "@/lib/api";
 
@@ -20,7 +22,10 @@ const ExamScheduleDetails = ({ id }: { id: UUID }) => {
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState<Exam | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const [openEdit, setOpenEdit] = useState<boolean>(false);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const dispatch = useDispatch<StoreDispatch>();
 
@@ -49,7 +54,12 @@ const ExamScheduleDetails = ({ id }: { id: UUID }) => {
 
   return details ? (
     <>
-      <ExamDetails details={details} onCancelExam={setOpen}/>
+      <ExamDetails
+        critical={searchParams.get("user") !== "admin"}
+        details={details}
+        onCancelExam={setOpen}
+        onEditExam={setOpenEdit}
+      />
       <MyAlertDialog
         description="Are you sure you want to cancel this exam?"
         setOpen={setOpen}
@@ -57,6 +67,20 @@ const ExamScheduleDetails = ({ id }: { id: UUID }) => {
         onContinue={handleCancelConfirm}
         onOpen={open}
       />
+      <ModalDialog
+        noTrigger
+        description="Schedule Exam"
+        setState={setOpenEdit}
+        state={openEdit}
+        title="Schedule Exam"
+      >
+        <ExamSchedulingForm
+          defaultValues={details}
+          setSchedule={setDetails}
+          setState={setOpenEdit}
+          type="update-single"
+        />
+      </ModalDialog>
     </>
   ) : (
     <div className="w-full h-full flex items-center justify-center">

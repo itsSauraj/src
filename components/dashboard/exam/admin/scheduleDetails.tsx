@@ -12,6 +12,7 @@ import {
   Book,
   MoreVertical,
 } from "lucide-react";
+import { FaArrowRightLong } from "react-icons/fa6";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -151,27 +152,45 @@ const ExamScheduleList = ({
               </div>
 
               {/* Mentor Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  <p className="text-sm font-medium">Mentor</p>
+              <div className="space-y-4 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-primary" />
+                    <p className="text-sm font-medium">Mentor</p>
+                  </div>
+                  <div className="pl-7 space-y-2">
+                    <p className="font-medium">
+                      {schedule.assigned_mentor.first_name}{" "}
+                      {schedule.assigned_mentor.last_name}
+                    </p>
+                    <CreateToolTipT
+                      content={schedule.assigned_mentor.email}
+                      trigger={
+                        <a
+                          className="text-sm text-muted-foreground underline"
+                          href={`mailto:${schedule.assigned_mentor.email}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          {schedule.assigned_mentor.email}
+                        </a>
+                      }
+                    />
+                  </div>
                 </div>
-                <div className="pl-7 space-y-2">
-                  <p className="font-medium">
-                    {schedule.assigned_mentor.first_name}{" "}
-                    {schedule.assigned_mentor.last_name}
-                  </p>
+                <div className="flex w-full  justify-end">
                   <CreateToolTipT
-                    content={schedule.assigned_mentor.email}
+                    content="View Exam Details"
                     trigger={
-                      <a
-                        className="text-sm text-muted-foreground underline"
-                        href={`mailto:${schedule.assigned_mentor.email}`}
-                        rel="noreferrer"
-                        target="_blank"
+                      <Link
+                        className="text-primary"
+                        href={`/dashboard/exam/${schedule.id}`}
                       >
-                        {schedule.assigned_mentor.email}
-                      </a>
+                        <FaArrowRightLong
+                          className="w-10 text-3xl hover:scale-110
+                    transition-all duration-150 ease-in-out"
+                        />
+                      </Link>
                     }
                   />
                 </div>

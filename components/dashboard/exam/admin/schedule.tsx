@@ -51,7 +51,7 @@ const ExamSchedulingForm = ({
   setSchedule,
   setState,
 }: {
-  type?: "schedule" | "update";
+  type?: "schedule" | "update" | "update-single";
   defaultValues?: Exam;
   setSchedule: any;
   setState: any;
@@ -87,7 +87,7 @@ const ExamSchedulingForm = ({
           case "schedule":
             await dispatch(scheduleExam(formData)).then((data) => {
               form.reset();
-              setSchedule((prev: any) => [data, ...prev]);
+              setSchedule((prev: Exam[]) => [data, ...prev]);
               setState(false);
             });
             break;
@@ -96,7 +96,7 @@ const ExamSchedulingForm = ({
               updateExam(defaultValues?.id as UUID, formData, checked),
             ).then((data: Exam) => {
               form.reset();
-              setSchedule((prev: any) => {
+              setSchedule((prev: Exam[]) => {
                 const index = prev.findIndex(
                   (item: Exam) => item.id === defaultValues?.id,
                 );
@@ -107,6 +107,15 @@ const ExamSchedulingForm = ({
 
                 return prev;
               });
+              setState(false);
+            });
+            break;
+          case "update-single":
+            await dispatch(
+              updateExam(defaultValues?.id as UUID, formData, checked),
+            ).then((data: Exam) => {
+              form.reset();
+              setSchedule(data);
               setState(false);
             });
             break;
