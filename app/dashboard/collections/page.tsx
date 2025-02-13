@@ -1,8 +1,8 @@
 "use client";
 
+import type { UUID } from "crypto";
 import type { CollectionFormData } from "@/dependencies/yup";
 import type { StoreDispatch, RootState } from "@/redux/store";
-import type { UUID } from "crypto";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,6 @@ import { ModalDialog } from "@/components/collection/modal";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/ui/loader";
-import { ScrollArea } from "@/components/ui/scroll-area";
 // form
 import { AddCollection } from "@/components/dashboard/forms";
 // API
@@ -55,7 +54,7 @@ const CollectoinsPage = () => {
     }
   };
 
-  const deleteMultipleMentors = () => {
+  const deleteMultipleCollections = () => {
     if (selectedRowId && selectedRowId.length > 0) {
       dispatch(deleteCollection(selectedRowId, true)).then(() => {
         dispatch(getCourseCollection()).then((data) => {
@@ -131,7 +130,7 @@ const CollectoinsPage = () => {
           description="Are you sure you want to delete selected collections?"
           setOpen={setOpenAlertDeleteMultiple}
           title="Delete Collections"
-          onContinue={deleteMultipleMentors}
+          onContinue={deleteMultipleCollections}
           onOpen={openAlertDeleteMultiple}
         />
       </div>

@@ -4,7 +4,7 @@ import type { IMemberForm } from "@/dependencies/yup";
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { UUID } from "crypto";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "antd";
 
@@ -44,27 +44,25 @@ const TraineesPage = () => {
     });
   }, []);
 
-  const deleteMentor = () => {
+  const deleteTrainee = useCallback(() => {
     if (deletableID) {
       dispatch(deleteMember(deletableID)).then(() => {
-        dispatch(getTrainees()).then((data) => {
-          setRowData(data);
-        });
+        setRowData((prev) => prev.filter((item) => item.id !== deletableID));
+        setDeletableID(null);
       });
-      setDeletableID(null);
     }
-  };
+  }, [deletableID, dispatch]);
 
-  const deleteMultipleMentors = () => {
+  const deleteMultipleTrainees = useCallback(() => {
     if (selectedRowId && selectedRowId.length > 0) {
       dispatch(deleteMember(selectedRowId, true)).then(() => {
-        dispatch(getTrainees()).then((data) => {
-          setRowData(data);
-        });
+        setRowData((prev) =>
+          prev.filter((item) => !selectedRowId.includes(item.id as UUID)),
+        );
+        setSelectedRowId(null);
       });
-      setSelectedRowId(null);
     }
-  };
+  }, [selectedRowId, dispatch]);
 
   return (
     <>
@@ -121,14 +119,14 @@ const TraineesPage = () => {
         description="Are you sure you want to delete this trainee?"
         setOpen={setOpenAlert}
         title="Delete Trainee"
-        onContinue={deleteMentor}
+        onContinue={deleteTrainee}
         onOpen={openAlert}
       />
       <MyAlertDialog
         description="Are you sure you want to delete selected trainees?"
         setOpen={setOpenAlertDeleteMultiple}
         title="Delete Trainees"
-        onContinue={deleteMultipleMentors}
+        onContinue={deleteMultipleTrainees}
         onOpen={openAlertDeleteMultiple}
       />
     </>

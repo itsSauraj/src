@@ -4,7 +4,7 @@ import type { IMemberForm } from "@/dependencies/yup";
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { UUID } from "crypto";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "antd";
 
@@ -44,25 +44,26 @@ const MentorsPage = () => {
     });
   }, []);
 
-  const deleteMentor = () => {
+
+  const deleteMentor = useCallback(() => {
     if (deletableID) {
       dispatch(deleteMember(deletableID)).then(() => {
-        dispatch(getMentors()).then((data) => {
-          setRowData(data);
-        });
+        setRowData((prev) => prev.filter((item) => item.id !== deletableID));
+        setDeletableID(null);
       });
     }
-  };
+  }, [deletableID, dispatch]);
 
-  const deleteMultipleMentors = () => {
+  const deleteMultipleMentors = useCallback(() => {
     if (selectedRowId && selectedRowId.length > 0) {
       dispatch(deleteMember(selectedRowId, true)).then(() => {
-        dispatch(getMentors()).then((data) => {
-          setRowData(data);
-        });
+        setRowData((prev) =>
+          prev.filter((item) => !selectedRowId.includes(item.id as UUID)),
+        );
+        setSelectedRowId(null);
       });
     }
-  };
+  }, [selectedRowId, dispatch]);
 
   return (
     <>

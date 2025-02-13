@@ -66,9 +66,9 @@ export const CourseDashboard = () => {
   const onConfirmDelete = () => {
     if (deleteCourseID) {
       dispatch(deleteCourse(deleteCourseID)).then(() => {
-        dispatch(getCourses()).then((data) => {
-          setCourses(data);
-        });
+        setCourses((prev) =>
+          prev.filter((course) => course.id !== deleteCourseID),
+        );
       });
     }
     setOpenAlert(false);

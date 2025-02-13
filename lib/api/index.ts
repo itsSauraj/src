@@ -50,6 +50,14 @@ import {
 } from "./profile";
 // forgot-password
 import { sendResetEmail, verifyOTP, resetPassword } from "./forgot-password";
+// Examination
+import {
+  scheduleExam,
+  getScheduledExam,
+  getExamDetails,
+  cancelScheduledExam,
+  updateExam,
+} from "./examination";
 
 export {
   // App
@@ -97,4 +105,10 @@ export {
   sendResetEmail,
   verifyOTP,
   resetPassword,
+  // Examination
+  scheduleExam,
+  getScheduledExam,
+  getExamDetails,
+  cancelScheduledExam,
+  updateExam,
 };

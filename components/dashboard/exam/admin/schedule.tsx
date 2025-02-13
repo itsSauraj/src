@@ -1,6 +1,7 @@
 "use client";
 
 import type { UUID } from "crypto";
+import type { Exam } from "@/types/dashboard/exam";
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { ExamScheduleRequest, IMemberForm } from "@/dependencies/yup";
 import type { ResponseMiniFiedTraineeCollectionData } from "@/types/dashboard/report";
@@ -9,11 +10,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Loader2, Clock } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { format } from "date-fns";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -30,6 +29,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { examScheduleSchema } from "@/dependencies/yup";
@@ -38,40 +41,81 @@ import {
   getMentors,
   getTrainees,
   getMiniFiedTraineeCollectionData,
+  scheduleExam,
+  updateExam,
 } from "@/lib/api";
 
-const ExamSchedulingForm = () => {
+const ExamSchedulingForm = ({
+  type = "schedule",
+  defaultValues,
+  setSchedule,
+  setState,
+}: {
+  type?: "schedule" | "update";
+  defaultValues?: Exam;
+  setSchedule: any;
+  setState: any;
+}) => {
   const dispatch = useDispatch<StoreDispatch>();
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const [mentors, setMentors] = React.useState<IMemberForm[]>([]);
   const [trainees, setTrainees] = React.useState<IMemberForm[]>([]);
   const [traineeCollections, setTraineeCollections] =
     React.useState<ResponseMiniFiedTraineeCollectionData | null>(null);
+  const [checked, setChecked] = React.useState(false);
+
+  const initialValues = {
+    assigned_trainee: (defaultValues?.assigned_trainee.id as UUID) ?? "",
+    collection: (defaultValues?.collection.id as UUID) ?? "",
+    exam_date: (defaultValues?.exam_date as unknown as Date) ?? "",
+    exam_time: (defaultValues?.exam_time as string) ?? "",
+    duration: defaultValues?.duration ?? 30,
+    assigned_mentor: (defaultValues?.assigned_mentor.id as UUID) ?? "",
+    exam_details: (defaultValues?.exam_details as string) ?? "",
+  };
 
   const form = useForm<ExamScheduleRequest>({
     resolver: yupResolver(examScheduleSchema),
-    defaultValues: {
-      assigned_trainee: "",
-      collection: "",
-      exam_date: undefined,
-      exam_time: "",
-      duration: 60,
-      assigned_mentor: "",
-      exam_details: "",
-    },
+    defaultValues: initialValues,
     mode: "onChange",
   });
 
   const onSubmit = React.useCallback(
     async (formData: ExamScheduleRequest) => {
       try {
-        // await dispatch(scheduleExam(formData));
-        console.log("Exam scheduled:", formData);
+        switch (type) {
+          case "schedule":
+            await dispatch(scheduleExam(formData)).then((data) => {
+              form.reset();
+              setSchedule((prev: any) => [data, ...prev]);
+              setState(false);
+            });
+            break;
+          case "update":
+            await dispatch(
+              updateExam(defaultValues?.id as UUID, formData, checked),
+            ).then((data: Exam) => {
+              form.reset();
+              setSchedule((prev: any) => {
+                const index = prev.findIndex(
+                  (item: Exam) => item.id === defaultValues?.id,
+                );
+
+                prev[index] = {
+                  ...data,
+                };
+
+                return prev;
+              });
+              setState(false);
+            });
+            break;
+        }
       } catch (error) {
       console.error("Failed to schedule exam:", error); // eslint-disable-line
       }
     },
-    [form],
+    [form, checked],
   );
 
   useEffect(() => {
@@ -91,7 +135,7 @@ const ExamSchedulingForm = () => {
             form.getValues().assigned_trainee as UUID,
           ),
         ).then((data) => {
-          setTraineeCollections(data);
+          setTraineeCollections(data as ResponseMiniFiedTraineeCollectionData);
         });
     }
   }, [dispatch, form.watch("assigned_trainee")]);
@@ -182,6 +226,7 @@ const ExamSchedulingForm = () => {
                     <FormItem className="flex flex-col">
                       <FormLabel>Exam Date</FormLabel>
                       <Input
+                        className="cursor-pointer"
                         min={format(new Date(), "yyyy-MM-dd")}
                         placeholder="Exam Date"
                         type="date"
@@ -205,8 +250,11 @@ const ExamSchedulingForm = () => {
                       <FormLabel>Exam Time</FormLabel>
                       <FormControl>
                         <div className="relative">
-                          <Input type="time" {...field} className="pl-10" />
-                          <Clock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            type="time"
+                            {...field}
+                            className="cursor-pointer"
+                          />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -279,6 +327,19 @@ const ExamSchedulingForm = () => {
                   )}
                 />
               </div>
+              <div className="py-2 flex gap-2 items-center">
+                <Checkbox
+                  checked={checked}
+                  name="send-notification"
+                  onClick={() => setChecked(!checked)}
+                />
+                <Label
+                  htmlFor="send-notification"
+                  onClick={() => setChecked(!checked)}
+                >
+                  Send update notification.
+                </Label>
+              </div>
             </div>
           </ScrollArea>
 
@@ -288,6 +349,8 @@ const ExamSchedulingForm = () => {
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Scheduling Exam...
               </>
+            ) : type === "update" ? (
+              "Update Exam"
             ) : (
               "Schedule Exam"
             )}
