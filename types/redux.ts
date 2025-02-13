@@ -17,13 +17,19 @@ export type User = {
   userType?: "admin" | "mentor" | "trainee" | null;
 };
 
+export interface notificationSender {
+  id: string | UUID;
+  name: string;
+  avatar: string;
+}
+
 export interface Notification {
   created_at: string;
   id: string | UUID;
   message: string;
   read: boolean;
   recipient: string | UUID;
-  sender: string | UUID;
+  sender: notificationSender;
   title: string;
   type: "success" | "error" | "info" | "warning";
 }

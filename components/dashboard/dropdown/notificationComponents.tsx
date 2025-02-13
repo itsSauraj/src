@@ -1,13 +1,17 @@
 "use client";
 
-import type { Notification } from "@/types/redux";
 import type { UUID } from "crypto";
+import type { Notification } from "@/types/redux";
 
-import * as React from "react";
+import React from "react";
 import { IoIosNotifications } from "react-icons/io";
+import { format, parseISO } from "date-fns";
+import { useRouter } from "next/navigation";
 
 import { ReadOneButton, ReadAllButton } from "./readButtons";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -58,35 +62,13 @@ export const NotiicationBell = ({
   );
 };
 
-export const NotificationCard = ({
-  notification,
-  inDetail = false,
-}: {
-  notification: Notification;
-  inDetail?: boolean;
-}) => (
-  <div
-    className="p-2 hover:bg-neutral-300 dark:hover:bg-neutral-700 border-b-1 relative
-    trainstion-all duration-200 ease-linear border-neutral-200 dark:border-neutral-700
-  "
-  >
-    <ReadOneButton id={notification.id as UUID} />
-    <h3 className="text-sm font-semibold">
-      {notification.title ?? "Notification"}
-    </h3>
-    <span className={cn("text-[10px]", !inDetail && "line-clamp-2")}>
-      {notification.message ?? "No message available"}
-    </span>
-  </div>
-);
-
 export const NotificationGrid = ({
   notifications,
 }: {
   notifications: Notification[];
 }) => {
   return (
-    <div className="max-h-72 overflow-y-scroll rounded-md border no-scrollbar">
+    <div className="max-h-80 overflow-y-scroll rounded-md no-scrollbar flex flex-col gap-1">
       {notifications.slice(0, 3).map((notification) => (
         <NotificationCard key={notification.id} notification={notification} />
       ))}
@@ -107,14 +89,19 @@ export const AllNotificationDialog = ({
 }) => {
   return (
     <Dialog open={state} onOpenChange={setState}>
-      <DialogContent className={cn("sm:max-w-[425px] rounded-md", className)}>
+      <DialogContent
+        className={cn(
+          "sm:h-[100svh] md:h-[75svh] lg:h-[60svh] max-w-[425px] lg:max-w-[520px] rounded-md",
+          className,
+        )}
+      >
         <DialogHeader className="flex flex-row justify-between items-center">
           <DialogTitle className="captalize w-max">
             All Notifications
           </DialogTitle>
           <ReadAllButton />
         </DialogHeader>
-        <div className="max-h-[60vh] overflow-y-scroll rounded-md border no-scrollbar">
+        <div className="max-h-[60vh] overflow-y-scroll rounded-md no-scrollbar flex flex-col gap-1">
           {notifications.map((notification) => (
             <NotificationCard
               key={notification.id}
@@ -125,5 +112,81 @@ export const AllNotificationDialog = ({
         </div>
       </DialogContent>
     </Dialog>
+  );
+};
+
+// Utils functions
+const getInitials = (name: string) => {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+};
+
+export const NotificationCard = ({
+  notification,
+  inDetail = false,
+}: {
+  notification: Notification;
+  inDetail?: boolean;
+}) => {
+  const router = useRouter();
+
+  const handleNotificationClick = (notification: Notification) => {
+    switch (notification.type) {
+      case "success":
+        break;
+    }
+  };
+
+  return (
+    <Card
+      key={notification.id}
+      className={`cursor-pointer transition-colors hover:bg-muted/50 ${
+        !notification.read ? "border-l-4 border-l-primary" : ""
+      }`}
+      onClick={() => handleNotificationClick(notification)}
+    >
+      <CardContent className="p-2">
+        <div className="flex gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage
+              src={
+                (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
+                notification.sender.avatar
+              }
+            />
+            <AvatarFallback className="uppercase">
+              {notification.sender.name &&
+                getInitials(notification.sender.name)}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex-1">
+            <div className="flex justify-between items-start relative">
+              <div>
+                <p className="font-medium line-clamp-1">{notification.title}</p>
+                <p
+                  className={cn(
+                    "text-xs text-muted-foreground",
+                    inDetail ? "line-clamp-3" : " line-clamp-2",
+                  )}
+                >
+                  {notification.message}
+                </p>
+              </div>
+              <ReadOneButton id={notification.id as UUID} />
+            </div>
+
+            <div className="flex justify-between items-center mt-2">
+              <p className="text-xs text-muted-foreground">
+                {format(parseISO(notification.created_at), "PPp")}
+              </p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

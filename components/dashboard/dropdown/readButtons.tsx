@@ -29,7 +29,7 @@ export const ReadOneButton = ({ id }: { id: UUID }) => {
       content="Close"
       trigger={
         <Button
-          className="px-1 h-6 absolute top-1 right-1 hover:text-red-500"
+          className="px-1 h-6 absolute top-0 right-0 hover:text-red-500"
           variant="link"
           onClick={handleRead}
         >
