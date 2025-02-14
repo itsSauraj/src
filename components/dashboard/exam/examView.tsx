@@ -69,10 +69,10 @@ const ExamScheduleDetails = ({ id }: { id: UUID }) => {
       />
       <ModalDialog
         noTrigger
-        description="Schedule Exam"
+        description=""
         setState={setOpenEdit}
         state={openEdit}
-        title="Schedule Exam"
+        title="Update Exam Schedule"
       >
         <ExamSchedulingForm
           defaultValues={details}

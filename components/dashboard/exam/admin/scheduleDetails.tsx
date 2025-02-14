@@ -24,13 +24,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { CreateToolTipT } from "@/components/collection/tooltip";
+import { cn } from "@/lib/utils";
 
 const ExamScheduleList = ({
+  className,
   schedules,
   handleActionClick,
+  userType = "admin",
 }: {
+  className?: string;
   schedules: Exam[];
-  handleActionClick: (id: UUID, action: "cancel" | "edit") => void;
+  handleActionClick?: (id: UUID, action: "cancel" | "edit") => void;
+  userType: "admin" | "trainee" | "mentor";
 }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -44,13 +49,22 @@ const ExamScheduleList = ({
 
   const handleDropdownActionClick = (id: UUID, action: "cancel" | "edit") => {
     setOpenDropdown(null);
-    handleActionClick(id, action);
+    if (handleActionClick) {
+      handleActionClick(id, action);
+    }
   };
 
   return (
-    <div className="w-full lg:max-w-[80%] mx-auto p-4 space-y-4">
+    <div
+      className={cn(
+        "w-full lg:max-w-[80%] mx-auto p-4 space-y-4",
+        userType === "trainee" && 
+        "lg:max-w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-center space-y-0",
+        className,
+      )}
+    >
       {schedules.map((schedule) => (
-        <Card key={schedule.id} className="overflow-hidden">
+        <Card key={schedule.id} className="overflow-hidden h-full">
           <CardHeader className="bg-muted/50">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
@@ -59,46 +73,54 @@ const ExamScheduleList = ({
                   {schedule.collection.title}
                 </CardTitle>
               </div>
-              <DropdownMenu
-                open={openDropdown === schedule.id}
-                onOpenChange={(open) =>
-                  setOpenDropdown(open ? schedule.id : null)
-                }
-              >
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost">
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() =>
-                      handleDropdownActionClick(schedule.id as UUID, "edit")
-                    }
-                  >
-                    Edit Schedule
-                  </DropdownMenuItem>
-                  <Link href={`/dashboard/exam/${schedule.id}`}>
-                    <DropdownMenuItem>View Details</DropdownMenuItem>
-                  </Link>
-                  <DropdownMenuItem
-                    className="text-destructive"
-                    onClick={() =>
-                      handleDropdownActionClick(schedule.id as UUID, "cancel")
-                    }
-                  >
-                    Cancel Exam
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {(userType === "admin" || userType === "mentor") && (
+                <DropdownMenu
+                  open={openDropdown === schedule.id}
+                  onOpenChange={(open) =>
+                    setOpenDropdown(open ? schedule.id : null)
+                  }
+                >
+                  <DropdownMenuTrigger asChild>
+                    <Button size="icon" variant="ghost">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() =>
+                        handleDropdownActionClick(schedule.id as UUID, "edit")
+                      }
+                    >
+                      Edit Schedule
+                    </DropdownMenuItem>
+                    <Link href={`/dashboard/exam/${schedule.id}`}>
+                      <DropdownMenuItem>View Details</DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuItem
+                      className="text-destructive"
+                      onClick={() =>
+                        handleDropdownActionClick(schedule.id as UUID, "cancel")
+                      }
+                    >
+                      Cancel Exam
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div
+              className={cn(
+                "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
+                userType === "trainee" && "lg:grid-cols-2",
+              )}
+            >
               {/* Date and Time Section */}
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-primary" />
+                <div className="flex items-start gap-2">
+                  <Calendar className="h-4 w-4 text-primary" />
                   <div>
                     <p className="text-sm text-muted-foreground">Date</p>
                     <p className="font-medium">
@@ -106,8 +128,8 @@ const ExamScheduleList = ({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-primary" />
+                <div className="flex items-start gap-2">
+                  <Clock className="h-4 w-4 text-primary" />
                   <div>
                     <p className="text-sm text-muted-foreground">Time</p>
                     <p className="font-medium">
@@ -115,8 +137,8 @@ const ExamScheduleList = ({
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Timer className="h-5 w-5 text-primary" />
+                <div className="flex items-start gap-2">
+                  <Timer className="h-4 w-4 text-primary" />
                   <div>
                     <p className="text-sm text-muted-foreground">Duration</p>
                     <p className="font-medium">{schedule.duration} minutes</p>
@@ -125,31 +147,33 @@ const ExamScheduleList = ({
               </div>
 
               {/* Trainee Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-primary" />
-                  <p className="text-sm font-medium">Trainee</p>
+              {(userType === "admin" || userType === "mentor") && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-primary" />
+                    <p className="text-sm font-medium">Trainee</p>
+                  </div>
+                  <div className="pl-7 space-y-2">
+                    <p className="font-medium">
+                      {schedule.assigned_trainee.first_name}{" "}
+                      {schedule.assigned_trainee.last_name}
+                    </p>
+                    <CreateToolTipT
+                      content={schedule.assigned_trainee.email}
+                      trigger={
+                        <a
+                          className="text-sm text-muted-foreground underline"
+                          href={`mailto:${schedule.assigned_trainee.email}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          {schedule.assigned_trainee.email}
+                        </a>
+                      }
+                    />
+                  </div>
                 </div>
-                <div className="pl-7 space-y-2">
-                  <p className="font-medium">
-                    {schedule.assigned_trainee.first_name}{" "}
-                    {schedule.assigned_trainee.last_name}
-                  </p>
-                  <CreateToolTipT
-                    content={schedule.assigned_trainee.email}
-                    trigger={
-                      <a
-                        className="text-sm text-muted-foreground underline"
-                        href={`mailto:${schedule.assigned_trainee.email}`}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        {schedule.assigned_trainee.email}
-                      </a>
-                    }
-                  />
-                </div>
-              </div>
+              )}
 
               {/* Mentor Section */}
               <div className="space-y-4 flex flex-col justify-between">

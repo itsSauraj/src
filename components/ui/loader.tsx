@@ -1,12 +1,10 @@
-"use client";
-
 import MoonLoader from "react-spinners/MoonLoader";
 import Image from "next/image";
 
 export default function Loader() {
   return (
     <div className="flex justify-center items-center h-full w-full">
-      <MoonLoader color="#6e6f72" />
+      <MoonLoader className="animate-spin" color="#6e6f72" />
     </div>
   );
 }

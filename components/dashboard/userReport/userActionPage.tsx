@@ -40,7 +40,7 @@ export default function UserActionPage({
         value={activeTab}
         onValueChange={setActiveTab}
       >
-        <TabsList>
+        <TabsList className="w-max ml-5 mt-3">
           <TabsTrigger value="user-report">User Report</TabsTrigger>
           <TabsTrigger value="course-progress">Course Progress</TabsTrigger>
           <TabsTrigger value="courses-assignment">

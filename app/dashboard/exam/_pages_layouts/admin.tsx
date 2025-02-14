@@ -7,6 +7,7 @@ import type { Exam } from "@/types/dashboard/exam";
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { Empty } from "antd";
+import { useSearchParams } from "next/navigation";
 
 // componets
 import ExamSchedulingForm from "@/components/dashboard/exam/admin/schedule";
@@ -20,13 +21,14 @@ import Loader from "@/components/ui/loader";
 import { getScheduledExam, cancelScheduledExam } from "@/lib/api";
 
 const MentorsPage = () => {
+  const dispatch = useDispatch<StoreDispatch>();
+  const searchParams = useSearchParams();
+
   const [rowData, setRowData] = useState<Exam[]>([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(searchParams.get("trainee") ? true : false);
   const [openCancel, setOpenCancel] = useState(false);
   const [selectedExam, setSelectedExam] = useState<UUID | null>(null);
   const [formType, setFormType] = useState<"update" | "schedule">("schedule");
-
-  const dispatch = useDispatch<StoreDispatch>();
 
   useEffect(() => {
     dispatch(getScheduledExam())
@@ -79,10 +81,12 @@ const MentorsPage = () => {
       <div className="flex flex-col w-full h-full gap-3">
         <div className="flex justify-end gap-2">
           <ModalDialog
-            description="Schedule Exam"
+            description=""
             setState={setOpen}
             state={open}
-            title="Schedule Exam"
+            title={
+              formType === "update" ? "Update Exam Schedule" : "Schedule Exam"
+            }
           >
             <ExamSchedulingForm
               defaultValues={

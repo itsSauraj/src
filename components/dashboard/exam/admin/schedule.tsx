@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Loader2 } from "lucide-react";
 import { format } from "date-fns";
+import { useSearchParams } from "next/navigation";
 
 import {
   Form,
@@ -57,6 +58,8 @@ const ExamSchedulingForm = ({
   setState: any;
 }) => {
   const dispatch = useDispatch<StoreDispatch>();
+  const searchParams = useSearchParams();
+
   const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
   const [mentors, setMentors] = React.useState<IMemberForm[]>([]);
   const [trainees, setTrainees] = React.useState<IMemberForm[]>([]);
@@ -65,8 +68,14 @@ const ExamSchedulingForm = ({
   const [checked, setChecked] = React.useState(false);
 
   const initialValues = {
-    assigned_trainee: (defaultValues?.assigned_trainee.id as UUID) ?? "",
-    collection: (defaultValues?.collection.id as UUID) ?? "",
+    assigned_trainee:
+      (defaultValues?.assigned_trainee.id as UUID) ??
+      searchParams.get("trainee") ??
+      "",
+    collection:
+      (defaultValues?.collection.id as UUID) ??
+      searchParams.get("collection") ??
+      "",
     exam_date: (defaultValues?.exam_date as unknown as Date) ?? "",
     exam_time: (defaultValues?.exam_time as string) ?? "",
     duration: defaultValues?.duration ?? 30,
@@ -336,19 +345,21 @@ const ExamSchedulingForm = ({
                   )}
                 />
               </div>
-              <div className="py-2 flex gap-2 items-center">
-                <Checkbox
-                  checked={checked}
-                  name="send-notification"
-                  onClick={() => setChecked(!checked)}
-                />
-                <Label
-                  htmlFor="send-notification"
-                  onClick={() => setChecked(!checked)}
-                >
-                  Send update notification.
-                </Label>
-              </div>
+              {type === "update" && (
+                <div className="py-2 flex gap-2 items-center">
+                  <Checkbox
+                    checked={checked}
+                    name="send-notification"
+                    onClick={() => setChecked(!checked)}
+                  />
+                  <Label
+                    htmlFor="send-notification"
+                    onClick={() => setChecked(!checked)}
+                  >
+                    Send update notification.
+                  </Label>
+                </div>
+              )}
             </div>
           </ScrollArea>
 

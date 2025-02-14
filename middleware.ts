@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get("token")?.value;
   const userType = request.cookies.get("group")?.value;
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
 
   const loginUrl = new URL("/auth/login", request.url);
   const dashboardUrl = new URL("/dashboard", request.url);
@@ -42,8 +42,22 @@ export function middleware(request: NextRequest) {
 
   if (pathname.startsWith("/dashboard/exam")) {
     if (request.nextUrl.href !== examRoute.href) {
+      const uniqueParams = new URLSearchParams();
+
+      searchParams.forEach((value, key) => {
+        if (!uniqueParams.has(key)) {
+          uniqueParams.append(key, value);
+        }
+      });
+      if (!uniqueParams.has("user")) {
+        uniqueParams.append("user", userType as string);
+      } else {
+        userType !== uniqueParams.get("user") &&
+          uniqueParams.set("user", userType as string);
+      }
+
       const examRoute = new URL(
-        `${pathname}?user=${encodeURIComponent(userType as string)}`,
+        `${pathname}?${uniqueParams.toString()}`,
         request.url,
       );
 

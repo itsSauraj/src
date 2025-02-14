@@ -252,13 +252,21 @@ export const resetPasswordSchema = yup.object({
 export type ResetPasswordRequest = yup.InferType<typeof resetPasswordSchema>;
 
 // Schema for exam schedule form validation
+const yesterday = () => {
+  const date = new Date();
+
+  date.setDate(date.getDate() - 1);
+
+  return date;
+};
+
 export const examScheduleSchema = yup.object({
   assigned_trainee: yup.string().required("Trainee selection is required"),
   collection: yup.string().required("Collection ID is required"),
   exam_date: yup
     .date()
     .required("Exam date is required")
-    .min(new Date(), "Exam date must be in the future"),
+    .min(yesterday(), "Exam date must be in the future"),
   exam_time: yup.string().required("Exam time is required"),
   duration: yup
     .number()

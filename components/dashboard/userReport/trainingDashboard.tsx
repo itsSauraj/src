@@ -9,6 +9,7 @@ import { Progress } from "antd";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { themeProgressText, getProgressColor } from "@/lib/utils_components";
+import { LinkBadge } from "@/components/collection/status-badge";
 
 export const TrainingDashboard = ({ data }: { data: TrainingReportData }) => {
   const calculateOverallProgress = () => {
@@ -95,7 +96,11 @@ export const TrainingDashboard = ({ data }: { data: TrainingReportData }) => {
       </div>
       <div className="grid gap-6 mt-6 md:grid-cols-3">
         {data.collections.map((collection, index) => (
-          <ReportCollectionsCard key={index} collection={collection} />
+          <ReportCollectionsCard
+            key={index}
+            collection={collection}
+            trainee_id={data.trainee.id}
+          />
         ))}
       </div>
     </div>
@@ -113,10 +118,10 @@ export const StatCard = ({
 }) => (
   <Card className="h-full">
     <CardContent className="pt-6">
-      <div className="flex items-center space-x-2">
-        <Icon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-        <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+      <div className="flex flex-col">
+        <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
+        <div className="flex gap-1 items-center">
+          <Icon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
           <h3 className="text-2xl font-bold">{value}</h3>
         </div>
       </div>
@@ -126,8 +131,10 @@ export const StatCard = ({
 
 export const ReportCollectionsCard = ({
   collection,
+  trainee_id,
 }: {
   collection: Collection;
+  trainee_id: string;
 }) => {
   const getCourseCardContentHeight =
     collection.courses.length > 3 ? "h-40" : "h-auto";
@@ -136,7 +143,7 @@ export const ReportCollectionsCard = ({
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="relative">
         <div className="flex items-center space-x-4">
           <div className="relative h-16 w-16">
             <Progress
@@ -176,6 +183,14 @@ export const ReportCollectionsCard = ({
             </div>
           </div>
         </div>
+        {collection.is_completed && (
+          <span className="absolute top-0 right-2">
+            <LinkBadge
+              href={`/dashboard/exam?collection=${collection.id}&trainee=${trainee_id}`}
+              value="create exam"
+            />
+          </span>
+        )}
       </CardHeader>
       <CardContent className="p-4 border-t-1">
         <ScrollArea
