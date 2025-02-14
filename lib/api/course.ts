@@ -181,6 +181,8 @@ const updateCollection =
 
     if (response.status === 200) {
       toast.success("Updated successfully");
+
+      return response.data;
     } else {
       toast.error("Failed to update");
     }

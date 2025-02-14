@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import type { UUID } from "crypto";
@@ -13,6 +12,7 @@ import { Pencil, Loader2, Upload, X } from "lucide-react";
 import { MdDelete } from "react-icons/md";
 import { useDropzone } from "react-dropzone";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 
 import CourseSection from "./courseSection";
 
@@ -36,6 +36,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { CreateToolTipT } from "@/components/collection/tooltip";
+import { cn } from "@/lib/utils";
 //APIS
 import {
   updateCollection,
@@ -159,27 +160,34 @@ function CollectionView({
   return (
     <div className="py-6 space-y-6 h-full">
       <Card className="w-full h-full flex flex-col">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 relative">
-          {collection.image && (
+        <CardHeader
+          className={cn(
+            "flex flex-row items-center justify-between space-y-0 relative",
+            isEditing && "border-b-1",
+          )}
+        >
+          {collection.image && !isEditing && (
             <div className="w-full h-full overflow-hidden rounded-lg absolute top-0 left-0 opacity-20 pointer-events-none">
-              <img
+              <Image
                 alt={collection.title}
                 className="w-full h-full object-cover"
+                height={120}
                 src={
                   (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
                   collection.image
                 }
+                width={300}
               />
             </div>
           )}
           {isEditing ? (
             <Form {...form}>
               <form
-                className="space-y-4 w-full"
+                className="space-y-1 w-full"
                 onSubmit={form.handleSubmit(handleUpdate as any)}
               >
-                <div className="flex gap-4 justify-between items-center">
-                  <div className="flex flex-col gap-4 w-full">
+                <div className="flex gap-2 justify-between items-center">
+                  <div className="flex flex-col gap-2 w-full">
                     <div className="flex gap-4 flex-grow">
                       <FormField
                         control={form.control}
@@ -232,17 +240,18 @@ function CollectionView({
                           <div className="relative">
                             <div
                               {...getRootProps()}
-                              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer
+                              className={`border-2 border-dashed rounded-lg p-1 text-center cursor-pointer
                                     ${isDragActive ? "border-primary bg-primary/10" : "border-border"}`}
                             >
                               <input {...getInputProps()} />
                               {preview ? (
                                 <div className="relative max-h-[120px]">
-                                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                                  <img
+                                  <Image
                                     alt="Preview"
                                     className="rounded h-[120px] w-[300px] object-cover"
+                                    height={120}
                                     src={preview}
+                                    width={300}
                                   />
                                   <Button
                                     className="absolute top-2 right-2"
@@ -296,6 +305,10 @@ function CollectionView({
                         variant="outline"
                         onClick={() => {
                           form.reset();
+                          setPreview(
+                            (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
+                              collection.image,
+                          );
                           setIsEditing(false);
                         }}
                       >
