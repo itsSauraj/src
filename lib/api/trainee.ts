@@ -171,7 +171,7 @@ const getTraineeReport =
 /**
  * Fetches the minified trainee collection data.
  * @param {UUID} trainee_id - The trainee ID.
- * @returns {Promise<ResponseMiniFiedTraineeCollectionData | undefined>}
+ * @returns {Promise<ResponseMiniFiedTraineeCollectionData | undefined>} trainee collection data.
  */
 const getMiniFiedTraineeCollectionData =
   (trainee_id: UUID) =>

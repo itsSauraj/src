@@ -114,6 +114,7 @@ const logoutUser =
     dispatch(toggleToken(null));
     dispatch(toggleUser(null));
     dispatch(setUserType(null));
+    dispatch(setAuthLoading(false));
   };
 
 /**

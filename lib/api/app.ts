@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { StoreDispatch, RootState } from "@/redux/store";
 import type { UUID } from "crypto";
 

@@ -1,3 +1,36 @@
+/**
+ * WebSocketService is a singleton class that manages WebSocket connections.
+ */
+/**
+ * The WebSocketService class provides a singleton service for managing WebSocket connections.
+ * It allows connecting to a WebSocket server, sending and receiving messages, and managing listeners for incoming messages.
+ *
+ * @example
+ * // Get the singleton instance
+ * const wsService = WebSocketService.getInstance();
+ *
+ * // Connect to the WebSocket server
+ * wsService.connect('your-auth-token', 'wss://your-websocket-url')
+ *   .then(() => {
+ *     console.log('Connected to WebSocket server');
+ *   })
+ *   .catch((error) => {
+ *     console.error('Failed to connect to WebSocket server', error);
+ *   });
+ *
+ * // Add a listener for incoming messages
+ * const removeListener = wsService.addListener((data) => {
+ *   console.log('Received data:', data);
+ * });
+ *
+ * // Check if the WebSocket is connected
+ * if (wsService.isConnected()) {
+ *   console.log('WebSocket is connected');
+ * }
+ *
+ * // Disconnect from the WebSocket server
+ * wsService.disconnect();
+ */
 export class WebSocketService {
   private static instance: WebSocketService;
   private socket: WebSocket | null = null;

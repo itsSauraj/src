@@ -63,7 +63,7 @@ const CourseView = ({ collection_id }: { collection_id: UUID }) => {
 
   const handleStartCourse = () => {
     dispatch(setStartCourse(collection_id, course_id)).then((data) => {
-      setIsStared(data);
+      setIsStared(data as boolean);
     });
   };
 

@@ -44,7 +44,6 @@ const MentorsPage = () => {
     });
   }, []);
 
-
   const deleteMentor = useCallback(() => {
     if (deletableID) {
       dispatch(deleteMember(deletableID)).then(() => {

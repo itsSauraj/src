@@ -165,9 +165,11 @@ export default function CourseTransfer({
 
   useEffect(() => {
     dispatch(getMiniFiedTraineeCollectionData(trainee_id)).then(
-      (data: ResponseMiniFiedTraineeCollectionData) => {
-        setAvailableCourses(data.available_collections);
-        setAssignedCourses(data.assigned_collections);
+      (data: ResponseMiniFiedTraineeCollectionData | undefined) => {
+        if (data) {
+          setAvailableCourses(data.available_collections);
+          setAssignedCourses(data.assigned_collections);
+        }
       },
     );
   }, []);
@@ -192,9 +194,13 @@ export default function CourseTransfer({
           );
           setSelectedAvailable([]);
         }
-        dispatch(getTraineeReport(trainee_id)).then((data) => {
-          setTraineeReport(data);
-        });
+        dispatch(getTraineeReport(trainee_id)).then(
+          (data: TrainingReportData | undefined) => {
+            if (data) {
+              setTraineeReport(data);
+            }
+          },
+        );
       },
     );
   };
@@ -218,9 +224,13 @@ export default function CourseTransfer({
           );
           setSelectedAssigned([]);
         }
-        dispatch(getTraineeReport(trainee_id)).then((data) => {
-          setTraineeReport(data);
-        });
+        dispatch(getTraineeReport(trainee_id)).then(
+          (data: TrainingReportData | undefined) => {
+            if (data) {
+              setTraineeReport(data);
+            }
+          },
+        );
       },
     );
   };

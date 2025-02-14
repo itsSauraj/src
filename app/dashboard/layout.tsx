@@ -18,6 +18,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     setIsMounted(true);
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { notifications, unreadCount, isConnected, error, isLoading } =
     useNotifications();
 

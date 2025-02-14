@@ -131,6 +131,7 @@ export const NotificationCard = ({
   notification: Notification;
   inDetail?: boolean;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const router = useRouter();
 
   const handleNotificationClick = (notification: Notification) => {

@@ -7,6 +7,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 //icons
 import { X } from "lucide-react";
+import { MdClearAll } from "react-icons/md";
 
 import { markNotificationAsRead, markAllNotificationAsRead } from "@/lib/api";
 //Components
@@ -55,13 +56,9 @@ export const ReadAllButton = () => {
     <CreateToolTipT
       content="Close All"
       trigger={
-        <Button
-          className="text-sm h-max px-2 py-1"
-          variant="outline"
-          onClick={handleReadAll}
-        >
-          Close All
-        </Button>
+        <button className="h-max p-[2px] mr-2 mt-2" onClick={handleReadAll}>
+          <MdClearAll className="text-2xl hover:text-red-500" />
+        </button>
       }
     />
   );

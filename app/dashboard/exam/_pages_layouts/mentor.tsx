@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const mentor = () => {
-  return (
-    <div>mentor</div>
-  )
-}
+  return <div>mentor</div>;
+};
 
-export default mentor
+export default mentor;
