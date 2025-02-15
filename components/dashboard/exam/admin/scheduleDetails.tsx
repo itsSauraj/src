@@ -35,7 +35,7 @@ const ExamScheduleList = ({
   className?: string;
   schedules: Exam[];
   handleActionClick?: (id: UUID, action: "cancel" | "edit") => void;
-  userType: "admin" | "trainee" | "mentor";
+  userType?: "admin" | "trainee" | "mentor";
 }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -58,8 +58,8 @@ const ExamScheduleList = ({
     <div
       className={cn(
         "w-full lg:max-w-[80%] mx-auto p-4 space-y-4",
-        userType === "trainee" && 
-        "lg:max-w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-center space-y-0",
+        userType === "trainee" &&
+          "lg:max-w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-center space-y-0",
         className,
       )}
     >
