@@ -34,8 +34,8 @@ export const NotiicationBell = ({
       content="Notifications"
       trigger={
         <div
-          className="relative hover:bg-primary-200 p-2 rounded-full dark:hover:bg-neutral-700
-        trainstion-all duration-200 ease-linear border-primary-200 dark:border-neutral-700"
+          className="relative hover:bg-accent/20 p-2 rounded-full dark:hover:bg-primary/30
+        trainstion-all duration-200 ease-linear"
         >
           <IoIosNotifications className="text-white text-[1rem] md:text-[1.5rem] lg:text-[2rem]" />
           {notify && (

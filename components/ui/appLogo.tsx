@@ -5,15 +5,13 @@ import Image from "next/image";
 export const Logo = () => {
   return (
     <Link
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-      href="#"
+      className="flex space-x-2 items- text-sm text-black py-1 relative z-20"
+      href="/"
     >
-      <div className="h-5 w-6 rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0">
-        <Image alt="logo" height={25} src="/abra-icon.png" width={25} />
-      </div>
+      <Image alt="logo" height={25} src="/abra-icon.png" width={25} />
       <motion.span
         animate={{ opacity: 1 }}
-        className="font-medium text-white whitespace-pre"
+        className="text-white whitespace-pre uppercase text-xl font-extrabold h-[25px]"
         initial={{ opacity: 0 }}
       >
         Abra
@@ -24,12 +22,10 @@ export const Logo = () => {
 export const LogoIcon = () => {
   return (
     <Link
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+      className="font-normal flex space-x-2 text-sm text-black py-1 relative z-20"
       href="#"
     >
-      <div className="h-5 w-6 rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0">
-        <Image alt="logo" height={25} src="/abra-icon.png" width={25} />
-      </div>
+      <Image alt="logo" height={25} src="/abra-icon.png" width={25} />
     </Link>
   );
 };

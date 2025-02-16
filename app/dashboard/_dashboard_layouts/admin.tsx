@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 // dashboard_components
 import { CourseCollectionChart } from "@/components/dashboard/charts";
 import { InfoCardsLink } from "@/components/collection/infoCards";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   getDashboardReport,
   getDashboardCourseCollectionStatus,
@@ -74,25 +75,27 @@ const AdminPageDashboard = () => {
   if (!reportData && !isLoading) return null;
 
   return (
-    <div>
-      <section className="flex gap-3 flex-wrap">
-        {reportData?.map((card, index) => (
-          <MemoizedInfoCard
-            key={`${index}-${card.title}`}
-            count={card.count}
-            index={index}
-            title={card.title}
-          />
-        ))}
-      </section>
-      <section className="flex gap-3 mt-6">
-        {graphData ? (
-          <CourseCollectionChart data={graphData} />
-        ) : (
-          <Skeleton className="flex-grow h-[250px]" />
-        )}
-      </section>
-    </div>
+    <ScrollArea className="h-[90svh]">
+      <div className="p-2">
+        <section className="flex gap-3 flex-wrap">
+          {reportData?.map((card, index) => (
+            <MemoizedInfoCard
+              key={`${index}-${card.title}`}
+              count={card.count}
+              index={index}
+              title={card.title}
+            />
+          ))}
+        </section>
+        <section className="flex gap-3 mt-6">
+          {graphData ? (
+            <CourseCollectionChart data={graphData} />
+          ) : (
+            <Skeleton className="flex-grow h-[250px]" />
+          )}
+        </section>
+      </div>
+    </ScrollArea>
   );
 };
 

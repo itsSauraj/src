@@ -88,7 +88,7 @@ const InfoCardsLink = ({
       <Card
         className={cn(
           "flex-1 flex flex-col items-center justify-center min-w-[250px] border-t-4",
-          "hover:shadow-lg dark:hover:shadow-white/10",
+          "hover:shadow-lg dark:hover:shadow-white/10 dark:bg-accent",
           colorText,
           colorBorder,
         )}

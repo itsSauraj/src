@@ -71,7 +71,7 @@ const ModuleComponent: React.FC<ModuleComponentProps> = ({
   const moduleProgress = calculateProgress(module.lessons);
 
   return (
-    <div className="mb-2 border p-2 rounded">
+    <div className="mb-2 border p-2 rounded ">
       <div className="flex justify-between items-center mb-2">
         <span>{module.title}</span>
         <Badge color="default" text={`Module ${module.sequence}`} />
@@ -157,6 +157,7 @@ export const ComprehensiveTrainingReport: React.FC<{
   const collectionItems = data.collections.map((collection) => {
     const courseItems = collection.courses.map((course) => ({
       key: course.id,
+      className: "dark:bg-card/70",
       label: (
         <div key={course.id} className="flex justify-between items-center">
           <div>
@@ -185,6 +186,7 @@ export const ComprehensiveTrainingReport: React.FC<{
 
     return {
       key: collection.id,
+      className: "dark:bg-card/70",
       label: (
         <div key={collection.id} className="flex justify-between items-center">
           <div>
@@ -209,9 +211,9 @@ export const ComprehensiveTrainingReport: React.FC<{
         </div>
       ),
       children: (
-        <div className="space-y-4">
+        <div className="space-y-4 dark:bg-card/70">
           <CollectionProgress {...collection} />
-          <Collapse accordion items={courseItems} />
+          <Collapse accordion className="dark:bg-card/70" items={courseItems} />
         </div>
       ),
     };
@@ -221,6 +223,7 @@ export const ComprehensiveTrainingReport: React.FC<{
     <div className="p-6 space-y-6">
       <Collapse
         accordion
+        className="dark:bg-card/70"
         defaultActiveKey={data.collections.map((c) => c.id)}
         items={collectionItems}
       />

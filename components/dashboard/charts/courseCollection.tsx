@@ -4,6 +4,7 @@ import type { CourseCompletionStatus } from "@/types/dashboard/report";
 import type { AgChartOptions } from "ag-charts-community";
 
 import React, { memo, useMemo } from "react";
+import { useTheme } from "next-themes";
 import { AgCharts as AgChartsReact } from "ag-charts-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +14,30 @@ const AdminDashboard = ({
 }: {
   data: CourseCompletionStatus[] | any[];
 }) => {
+  const theme = useTheme();
+
   const chartOptions = useMemo<AgChartOptions>(
     () => ({
-      theme: "ag-default",
+      theme: theme.theme === "dark" ? "ag-default-dark" : "ag-default",
+      background: {
+        fill: "transparent",
+      },
+      palette: {
+        fills: [
+          "hsl(220, 70%, 50%)",
+          "hsl(160, 60%, 45%)",
+          "hsl(30, 80%, 55%)",
+          "hsl(280, 65%, 60%)",
+          "hsl(340, 75%, 55%)",
+        ],
+        strokes: [
+          "hsl(220, 70%, 50%)",
+          "hsl(160, 60%, 45%)",
+          "hsl(30, 80%, 55%)",
+          "hsl(280, 65%, 60%)",
+          "hsl(340, 75%, 55%)",
+        ],
+      },
       data: data || [],
       series: [
         {
@@ -73,7 +95,7 @@ const AdminDashboard = ({
         panKey: "ctrl",
       },
     }),
-    [data],
+    [theme],
   );
 
   if (!data) {
@@ -81,7 +103,7 @@ const AdminDashboard = ({
   }
 
   return (
-    <Card className="h-max flex-grow">
+    <Card className="h-max flex-grow  dark:bg-accent">
       <CardHeader>
         <CardTitle>Course Completion Status</CardTitle>
       </CardHeader>

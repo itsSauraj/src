@@ -55,7 +55,7 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Card className="w-full lg:max-w-[450px]">
+      <Card className="w-full lg:max-w-[450px] bg-accent">
         <CardHeader>
           <CardTitle>Change Password</CardTitle>
           <p className="text-sm text-gray-500">
@@ -76,6 +76,7 @@ const ChangePassword = () => {
                     <FormLabel>Current Password</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         placeholder="Current Password"
                         type="password"
                         {...field}
@@ -94,6 +95,7 @@ const ChangePassword = () => {
                     <FormLabel>New Password</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         placeholder="New Password"
                         type="password"
                         {...field}
@@ -112,6 +114,7 @@ const ChangePassword = () => {
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         placeholder="Confirm Password"
                         type="password"
                         {...field}
@@ -137,7 +140,7 @@ const ChangePassword = () => {
             user?.groups && ["trainee", "mentor"].includes(user.groups[0])
           ) && (
             <Alert
-              className="flex flex-col gap-1 justify-center"
+              className="flex flex-col gap-1 justify-center dark:tect-red-600"
               variant="destructive"
             >
               <IoAlertCircle className="h-4 w-4" />

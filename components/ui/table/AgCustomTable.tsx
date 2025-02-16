@@ -33,12 +33,13 @@ const customLight = themeQuartz.withPart(iconSetQuartzBold).withParams({
 });
 
 const customDark = themeQuartz.withPart(iconSetQuartzBold).withParams({
-  accentColor: "#FFFFFF",
-  backgroundColor: "#404040",
+  accentColor: "hsl(217.2, 32.6%, 17.5%)",
+  backgroundColor: "hsl(217.2 32.6% 10.5%)",
   browserColorScheme: "inherit",
-  chromeBackgroundColor: "#2D2C2C",
-  foregroundColor: "#FFF",
+  chromeBackgroundColor: "hsl(222.2, 84%, 4.9%)",
+  foregroundColor: "hsl(210, 40%, 98%)",
   headerFontSize: 14,
+  headerBackgroundColor: "hsl(217.2 32.6% 17.5%)",
 });
 
 ModuleRegistry.registerModules([AllCommunityModule]);

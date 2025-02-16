@@ -95,7 +95,7 @@ const UserProfileUpdate = () => {
   if (!isMounted) return <UserProfileUpdateSkeleton />;
 
   return (
-    <Card className="flex-1">
+    <Card className="flex-1 dark:bg-accent h-max">
       <CardHeader>
         <div className="flex items-center gap-6">
           <div className="relative w-24 h-24">
@@ -149,6 +149,7 @@ const UserProfileUpdate = () => {
                       <FormControl>
                         <Input
                           disabled
+                          className="dark:bg-card/10"
                           placeholder="Employee ID"
                           {...field}
                           value={field.value ?? ""}
@@ -167,7 +168,11 @@ const UserProfileUpdate = () => {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="Username" {...field} />
+                      <Input
+                        className="dark:bg-card/10"
+                        placeholder="Username"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -181,7 +186,11 @@ const UserProfileUpdate = () => {
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input
+                        className="dark:bg-card/10"
+                        placeholder="First Name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -195,7 +204,11 @@ const UserProfileUpdate = () => {
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Last Name" {...field} />
+                      <Input
+                        className="dark:bg-card/10"
+                        placeholder="Last Name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -209,7 +222,12 @@ const UserProfileUpdate = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" type="email" {...field} />
+                      <Input
+                        className="dark:bg-card/10"
+                        placeholder="Email"
+                        type="email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -224,6 +242,7 @@ const UserProfileUpdate = () => {
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         placeholder="Phone Number"
                         {...field}
                         value={field.value ?? ""}
@@ -242,6 +261,7 @@ const UserProfileUpdate = () => {
                     <FormLabel>Date of Birth</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         max={format(new Date(), "yyyy-MM-dd")}
                         placeholder="Date of Birth"
                         type="date"
@@ -266,6 +286,7 @@ const UserProfileUpdate = () => {
                     <FormLabel>Joining Date</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         max={format(new Date(), "yyyy-MM-dd")}
                         placeholder="Joining Date"
                         type="date"
@@ -290,6 +311,7 @@ const UserProfileUpdate = () => {
                     <FormLabel>Address</FormLabel>
                     <FormControl>
                       <Input
+                        className="dark:bg-card/10"
                         placeholder="Address"
                         {...field}
                         value={field.value ?? ""}

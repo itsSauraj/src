@@ -145,7 +145,7 @@ export default function UserPage({
   }
 
   return (
-    <Card className={cn(className)}>
+    <Card className={cn("dark:bg-accent", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="text-xl font-semibold">
           User Information
@@ -172,7 +172,12 @@ export default function UserPage({
             content={!isEditing ? "Edit" : "Save"}
             trigger={
               <Button
-                className={cn("px-3", !isEditing ? "bg-white" : "bg-blue-500")}
+                className={cn(
+                  "px-3",
+                  !isEditing
+                    ? "bg-white  dark:bg-neutral-700"
+                    : "bg-blue-500  dark:bg-blue-700 text-white",
+                )}
                 variant={isEditing ? "default" : "outline"}
                 onClick={() => {
                   if (!isEditing) {
@@ -225,7 +230,7 @@ export default function UserPage({
                           renderDateInput(key, form.control)
                         ) : (
                           <Input
-                            className="w-full h-10"
+                            className="w-full h-10 dark:bg-card/10"
                             id={key}
                             {...form.register(key as keyof ResponseMember)}
                             placeholder={formatLabel(key)}
@@ -241,11 +246,14 @@ export default function UserPage({
                         )}
                       </>
                     ) : (
-                      <div className="rounded-lg bg-muted p-2 text-sm h-10 flex items-center">
+                      <div
+                        className="rounded-lg bg-muted p-2 text-sm h-10 flex items-center dark:bg-card/60 pl-3 border-1
+                      "
+                      >
                         {isDateField && value
                           ? new Date(value).toLocaleDateString()
                           : value || (
-                              <span className="text-gray-500">
+                              <span className="text-gray-500 dark:bg-card/10">
                                 No {formatLabel(key)}
                               </span>
                             )}

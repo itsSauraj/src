@@ -18,6 +18,7 @@ import {
 import { CreateToolTipT } from "@/components/collection/tooltip";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { logoutUser } from "@/redux/slice/user";
+import { ThemeSwitch } from "@/components/theme-switch";
 
 export function ProfileDropDown() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -61,9 +62,9 @@ export function ProfileDropDown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuItem>
+        <DropdownMenuItem>
           <ThemeSwitch />
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
         {/* <DropdownMenuSeparator /> */}
         <DropdownMenuItem
           className="text-red-500 hover:text-red-500"

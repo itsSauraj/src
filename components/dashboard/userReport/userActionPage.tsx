@@ -34,13 +34,13 @@ export default function UserActionPage({
   }, [activeTab]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       <Tabs
         defaultValue="user-report"
         value={activeTab}
         onValueChange={setActiveTab}
       >
-        <TabsList className="w-max ml-5 mt-3">
+        <TabsList className="w-max ml-5 mt-3 dark:bg-card/60">
           <TabsTrigger value="user-report">User Report</TabsTrigger>
           <TabsTrigger value="course-progress">Course Progress</TabsTrigger>
           <TabsTrigger value="courses-assignment">

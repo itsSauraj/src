@@ -1,11 +1,11 @@
 "use client";
 
 import type { UUID } from "crypto";
-import type { StoreDispatch } from "@/redux/store";
+import type { StoreDispatch, RootState } from "@/redux/store";
 import type { Exam } from "@/types/dashboard/exam";
 
 import { useState, useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Empty } from "antd";
 import { useSearchParams } from "next/navigation";
 
@@ -23,6 +23,7 @@ import { getScheduledExam, cancelScheduledExam } from "@/lib/api";
 const MentorsPage = () => {
   const dispatch = useDispatch<StoreDispatch>();
   const searchParams = useSearchParams();
+  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
 
   const [rowData, setRowData] = useState<Exam[]>([]);
   const [open, setOpen] = useState(searchParams.get("trainee") ? true : false);
@@ -72,7 +73,7 @@ const MentorsPage = () => {
     }
   }, [selectedExam]);
 
-  if (rowData.length === 0) {
+  if (isLoading && rowData.length === 0) {
     return <Loader />;
   }
 

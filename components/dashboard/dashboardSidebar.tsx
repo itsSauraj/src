@@ -30,13 +30,13 @@ export function SideBar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-primary dark:bg-card w-full flex-1 mx-auto \
-        border border-neutral-200 dark:border-neutral-700 overflow-hidden",
+        "rounded-md flex flex-col md:flex-row bg-primary w-full flex-1 mx-auto \
+        border border-neutral-200 dark:border-neutral-700 overflow-hidden dark:bg-accent",
         "h-screen w-screen",
       )}
     >
       <SidebarUI open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
+        <SidebarBody className="justify-between gap-y-10  dark:bg-accent">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden pt-1">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
@@ -63,11 +63,11 @@ export function SideBar({ children }: { children: React.ReactNode }) {
         </SidebarBody>
       </SidebarUI>
       <div className="flex flex-1">
-        <div className="flex flex-col flex-1 ">
+        <div className="flex flex-col flex-1">
           <PagePanel className="hidden md:flex" />
           <div
             className="w-full h-full p-2 lg:p-4 border-neutral-200 dark:border-neutral-700 bg-white \
-            dark:bg-card/60 rounded-tl-2xl flex-grow "
+            rounded-tl-2xl flex-grow dark:bg-card"
           >
             {children}
           </div>
