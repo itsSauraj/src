@@ -143,7 +143,7 @@ const ExamSchedulingForm = ({
     dispatch(getMentors()).then((data) => {
       setMentors(data);
     });
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     {

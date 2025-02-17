@@ -8,8 +8,6 @@ import type {
 } from "@/types/auth/actions";
 
 import axios from "axios";
-import { toast } from "sonner";
-
 import { apiConfig } from "@/config/api";
 
 /**
@@ -119,6 +117,6 @@ export const logout = async (token: string): Promise<void> => {
       token: token,
     });
   } catch (error) {
-    toast.error("Error logging out");
+    return;
   }
 };

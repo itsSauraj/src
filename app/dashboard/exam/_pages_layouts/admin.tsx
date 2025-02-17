@@ -1,11 +1,11 @@
 "use client";
 
 import type { UUID } from "crypto";
-import type { StoreDispatch, RootState } from "@/redux/store";
+import type { StoreDispatch } from "@/redux/store";
 import type { Exam } from "@/types/dashboard/exam";
 
 import { useState, useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Empty } from "antd";
 import { useSearchParams } from "next/navigation";
 
@@ -23,7 +23,7 @@ import { getScheduledExam, cancelScheduledExam } from "@/lib/api";
 const MentorsPage = () => {
   const dispatch = useDispatch<StoreDispatch>();
   const searchParams = useSearchParams();
-  const isLoading = useSelector((state: RootState) => state.app.auth.isLoading);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [rowData, setRowData] = useState<Exam[]>([]);
   const [open, setOpen] = useState(searchParams.get("trainee") ? true : false);
@@ -34,12 +34,13 @@ const MentorsPage = () => {
   useEffect(() => {
     dispatch(getScheduledExam())
       .then((data) => {
+        setIsLoading(false);
         setRowData(data);
       })
       .catch((error) => {
         console.error(error); // eslint-disable-line no-console
       });
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     !open && setFormType("schedule");

@@ -104,9 +104,7 @@ const logInUser =
  */
 const logoutUser =
   () => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    const token = getState().user.token;
-
-    await logout(token);
+    const token: string | null = localStorage.getItem("token");
 
     localStorage.removeItem("token");
     deleteCookie("token");
@@ -115,6 +113,8 @@ const logoutUser =
     dispatch(toggleUser(null));
     dispatch(setUserType(null));
     dispatch(setAuthLoading(false));
+
+    token && (await logout(token));
   };
 
 /**

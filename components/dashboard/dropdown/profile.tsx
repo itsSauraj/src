@@ -62,9 +62,9 @@ export function ProfileDropDown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        {/* <DropdownMenuItem>
           <ThemeSwitch />
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         {/* <DropdownMenuSeparator /> */}
         <DropdownMenuItem
           className="text-red-500 hover:text-red-500"

@@ -24,19 +24,26 @@ const getMentors =
   ): Promise<IMemberForm[] | any> => {
     dispatch(setAuthLoading(true));
 
-    const response = await axios.get(`${apiConfig.url}/user/mentor/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().user.token}`,
-      },
-    });
+    try {
+      const response = await axios.get(`${apiConfig.url}/user/mentor/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      });
 
-    dispatch(setAuthLoading(false));
-    if (response.status === 200) {
-      return response.data;
+      dispatch(setAuthLoading(false));
+      if (response.status === 200) {
+        return response.data;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Failed to get mentors");
+
+      return [];
+    } finally {
+      dispatch(setAuthLoading(false));
     }
-
-    return [];
   };
 
 /**
@@ -50,19 +57,24 @@ const getTrainees =
     getState: () => RootState,
   ): Promise<IMemberForm[] | any> => {
     dispatch(setAuthLoading(true));
-    const response = await axios.get(`${apiConfig.url}/user/trainee/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getState().user.token}`,
-      },
-    });
+    try {
+      const response = await axios.get(`${apiConfig.url}/user/trainee/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getState().user.token}`,
+        },
+      });
 
-    dispatch(setAuthLoading(false));
-    if (response.status === 200) {
-      return response.data;
+      dispatch(setAuthLoading(false));
+      if (response.status === 200) {
+        return response.data;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      return [];
+    } finally {
+      dispatch(setAuthLoading(false));
     }
-
-    return [];
   };
 
 /**
