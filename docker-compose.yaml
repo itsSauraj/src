@@ -1,0 +1,12 @@
+services:
+  abraweb:
+    container_name: abraweb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env

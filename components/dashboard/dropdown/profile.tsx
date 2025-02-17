@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import type { StoreDispatch, RootState } from "@/redux/store";
@@ -18,6 +19,7 @@ import {
 import { CreateToolTipT } from "@/components/collection/tooltip";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { logoutUser } from "@/redux/slice/user";
+// eslint-disable-next-line unused-imports/no-unused-imports
 import { ThemeSwitch } from "@/components/theme-switch";
 
 export function ProfileDropDown() {
