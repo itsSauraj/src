@@ -4,13 +4,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 's3.amazonaws.com',
-        port: '',
-        pathname: '/my-bucket/**',
-        search: '',
-      },
-      {
-        protocol: 'https',
         hostname: 'assets.aceternity.com',
         port: '',
         pathname: '/**',
