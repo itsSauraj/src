@@ -19,6 +19,7 @@ Tech stack:
 - [axios](https://axios-http.com/docs/intro)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [eslint(for type checks and code check)](https://eslint.org/)
+- Docker and Docker compose
 
 ## Installation
 
@@ -28,6 +29,7 @@ Tech stack:
 - Recommended node verion is __v22.12.0__
 - [Git](https://git-scm.com/downloads) >= __2.43.0__ *(for version control)*
 - Browser (Recommended latest version).
+- Docker
 
 
 ### To install the application you will require its backend also which you will get at
@@ -79,7 +81,7 @@ Note: before creating build you will need to have file `.env.production` contain
   ```
   *Runnng the container after the build*
   ```bash
-  docker run -d -p 8080:80 abra-fe
+  docker run -d -p 3000:3000 abra-fe
   ```
   __*Note `-d` is `optional`*__
 
@@ -100,7 +102,7 @@ Licensed under the MIT license
 
 # Lets begin with what the project is?
 ### Overview
-This project is a comprehensive platform for managing trainees, courses, and assessments while facilitating effective communication and collaboration among trainees, mentors, and administrators. It focuses on tracking course progress, conducting evaluations, and providing feedback.
+This project is a comprehensive platform for managing trainees, courses, and assessments while facilitating effective communication and collaboration among trainees, mentors, and administrators. It focuses on tracking course progress and conducting evaluations.
 
 ### Roles and Features
   
