@@ -1,163 +1,148 @@
-# Information for Developers
+# Training Management Platform - Frontend
 
-## This project is hosted on render as a test
-To view the demo of the project [click me](https://abra-front-end.onrender.com) or visit [https://abra-front-end.onrender.com](https://abra-front-end.onrender.com)
+A comprehensive frontend application for managing trainees, courses, and assessments. The platform facilitates effective communication and collaboration among trainees, mentors, and administrators.
 
-## Technologies Used for the project are
-`Note: Backend is powered by Django (a python framework)`
+[![Demo](https://img.shields.io/badge/Demo-Render-blue)](https://abra-front-end.onrender.com)
+[![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](#)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)](https://www.docker.com/)
+[![React](https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB)](https://rect.dev)
+[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff)](#)
+[![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=fff)](https://git-scm.com/downloads)
 
-Tech stack:
+## Live Demo
+Visit [https://abra-front-end.onrender.com](https://abra-front-end.onrender.com)
+
+## Tech Stack
+
 - [Next.js 15](https://nextjs.org/docs/getting-started)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS (for css)](https://tailwindcss.com/)
-- [ShadCDN (primary)](https://ui.shadcn.com/)
-- [Tailwind Variants (with tw)](https://tailwind-variants.org)
-- [NextUI v2 (some components)](https://nextui.org/)
-- [Yup](https://www.npmjs.com/package/yup)
-- [React Hook Form(with yup)](https://react-hook-form.com/)
-- [React icons](https://react-icons.github.io/react-icons/)
-- [axios](https://axios-http.com/docs/intro)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [ShadCDN](https://ui.shadcn.com/) (Primary UI Component Library)
+- [NextUI v2](https://nextui.org/) (Additional Components)
+- [Tailwind Variants](https://tailwind-variants.org)
+- [Yup](https://www.npmjs.com/package/yup) & [React Hook Form](https://react-hook-form.com/)
+- [React Icons](https://react-icons.github.io/react-icons/)
 - [Redux Toolkit](https://redux-toolkit.js.org/)
-- [eslint(for type checks and code check)](https://eslint.org/)
-- Docker and Docker compose
+- [Axios](https://axios-http.com/docs/intro)
+- ESLint for type checking and code quality
+- Docker and Docker Compose
+
+## Prerequisites
+
+- VSCode or any code editor
+- NodeJS >= v18.18 (Recommended: v22.12.0)
+- Git >= 2.43.0
+- Modern web browser
+- Docker (optional)
+- Backend API ([core repository](https://github.com/itssaurabh/core.git))
 
 ## Installation
 
-### Preinstallation setup and requirements
-- VSCode or any code editor
-- NodeJS >= __v18.18__
-- Recommended node verion is __v22.12.0__
-- [Git](https://git-scm.com/downloads) >= __2.43.0__ *(for version control)*
-- Browser (Recommended latest version).
-- Docker
+1. **Clone the repositories**
 
+   Backend:
+   ```bash
+   git clone https://github.com/itssaurabh/core.git
+   ```
 
-### To install the application you will require its backend also which you will get at
+   Frontend:
+   ```bash
+   git clone https://github.com/itssauraj/src.git
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+   ```bash
+   cp .env.sample .env
+   # Update the values according to your system
+   ```
+
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+
+## Building for Production
+
+### Manual Build
+
+1. Create `.env.production` file (can copy from `.env` for local testing)
+
+2. Create production build
+   ```bash
+   npm run build
+   ```
+
+3. Start production server
+   ```bash
+   npm run start
+   ```
+
+### Docker Build
+
+Build image:
 ```bash
-git clone https://github.com/itssaurabh/core.git
+docker build -t abra-fe .
 ```
-### For our frontend application you can get it here.
-Lets begin the installation:
+
+Run container:
 ```bash
-git clone https://github.com/itssauraj/src.git
+docker run -d -p 3000:3000 abra-fe
 ```
 
-#### Install dependencies
-
-```bash
-npm install
-```
-#### Update environment varaible
-Create a copy of `.env.sample` named as `.env` and then update the values according to your system
-
-#### Run the development server
+### Docker Compose
 
 ```bash
-npm run dev
+docker compose up --build
 ```
 
-## Creating a build
+## Features
 
-Note: before creating build you will need to have file `.env.production` containing the values required for the production. You can simply keep the same values as `.env` if you are planning to run the build on your local machine.
+### For Trainees
+- Course Management/Assessment
+  - View assigned collections with details
+  - Access course details
+  - Track learning progress
+- Performance Tracking
+  - Daily and cumulative time tracking
+  - Course completion monitoring
+- Examination
+  - View scheduled exams
+  - Access exam details at scheduled time
+- Notifications for upcoming exams
 
-* __Mannual build using npm__
+### For Administrators
+- Course Management
+  - Add, import, view, and delete courses
+  - Create and manage course collections
+  - Bulk import courses from folder structures
+- Trainee Management
+  - Add trainees and generate credentials
+  - Assign tasks, courses, and mentors
+  - View performance reports
+- Exam Management
+  - Schedule exams
+  - Assign mentors
+  - Send notifications
+- Analytics
+  - Detailed performance reports
+  - Course completion tracking
+- Notification System
+  - Course start/completion alerts
+  - Email notifications
 
-  Once you are done with the appication update you can create a build of the application using
-  ```bash
-  npm run build
-  ```
-  *When you create a build you will might get errors related to your typing so please take a look at you code and update the changes wherever required and hinted by the eslint*
+### For Mentors
+*This panel is currently under development*
 
-  Once the build is sucessfully build you can run it using
-  ```bash
-  npm run start
-  ```
+## Accessing the Application
 
-* __Buidling a docker image__
-
-  This project supports docker build you can create a docker image build usng the below command
-  ```bash
-  docker buidx build -t abra-fe .
-  ```
-  *Runnng the container after the build*
-  ```bash
-  docker run -d -p 3000:3000 abra-fe
-  ```
-  __*Note `-d` is `optional`*__
-
-  <hr/>
-  
-  This project can also be run using a `docker-compose` just run.
-  ```bash
-  docker compose up --build
-  ```
-  *Note this will build a docker image named as `abraweb` and then run it in a container `(abraweb)`*
-
-### Viewing the project live on local (production/development)
-This link for development is same and also the production link on the local machine is same. *Once the `development` or the `production` server is running visit `localhost:3000` or click here [localhost:3000](http://localhost:3000)
+Visit [http://localhost:3000](http://localhost:3000) after starting either the development or production server.
 
 ## License
+
 Licensed under the MIT license
-
-
-# Lets begin with what the project is?
-### Overview
-This project is a comprehensive platform for managing trainees, courses, and assessments while facilitating effective communication and collaboration among trainees, mentors, and administrators. It focuses on tracking course progress and conducting evaluations.
-
-### Roles and Features
-  
-  * __Roles__
-
-    - Admin
-    - Trainee
-    - Mentor
-
-  * __Features__
-
-    *Trainee related features that are implemented follows:*
-    - __Course Management/Assessment:__ 
-      - View assigned collectoin with details (title, time, progress).
-      - Can view Collection and course details.
-      - Can start the course and the need to manually check mark as learned each module the users learns. *Note videos are not beign available they will be provided manually to them.*
-
-    - __Performance/Corurse Tracking:__
-      - Track time spent on each course (daily logs and cumulative total).
-      - Highlight excessive time taken to complete courses in reports.
-
-    - __Examination:__
-      - View exams scheduled for them.
-      - Exam basic details are available to the trainee but the notes of the exam which containe the details like questions are available after the time has hit the examination date and time.
-
-    - __Notifications:__
-      - Alerts for upcoming exams.
-
-    *Admin related features that are implemented follows:*
-
-      - __Course Management:__
-        - Add, import, View and delete courses.
-        - Create collection of courses which will be assigned to the trainees. Need to have at least 1 defualt course and collection to create a trainee.
-        - Courses can be directly imported from the folder structure you have it will by default take the videos files also recursively read and map the folder you select. *(This feature might not work on all the browsers.)*
-
-      - __Trainee Management:__
-        - Add new trainees and generate login credentials.
-        - Assign tasks, courses, and mentors to trainees.
-        - View and analyze reports for each trainee.
-        - Add extra collections/courses to them if required.
-
-      - __Exam and Feedback Management:__
-        - Schedule and assign mentors for exams.
-        - Alert/Notificaiton will be sent to the trainee on their profile and also on the email.
-        
-      - __Advanced Analytics:__
-        - Generate detailed reports on trainee performance and course trends.
-        - Monitor average course completion times and overdue tasks.
-
-      - __Notifications and Alerts:__
-        - Alerts for new course starts or completions by trainees.
-        - Alerts related to collection complete will be sent via email also.
-
-    *Mentor related features that are implemented follows:*
-
-    __*With regret this panel has not being implemented yet*__
-
-
