@@ -92,7 +92,7 @@ export const MobileSidebar = ({
   }, []);
 
   useEffect(() => {
-    setOpen(false);
+    isMobile && setOpen(false);
   }, [isMobile, pathname]);
 
   return (

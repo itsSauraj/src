@@ -46,32 +46,46 @@ export default function CourseCard({
     <Card className={cn("dark:bg-neutral-800 flex flex-col", className)}>
       <CardHeader
         className={cn(
-          "relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30 rounded-xl",
-          !course.image && "bg-primary-200",
+          "rounded-t-xl h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30 rounded-xl p-0 relative",
+          !course.image &&
+            "bg-gradient-to-r from-primary-600/80 to-primary-400/60 overflow-hidden",
         )}
       >
-        {course.image && (
+        {course.image ? (
           <img
             alt={course.title}
-            className="absolute top-0 left-0 pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-30"
+            className="pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-70"
             src={(process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + course.image}
           />
+        ) : (
+          <div className="w-full h-full flex gap-5 flex-wrap text-gray-100 items-center justify-center scale-105">
+            {Array.from({ length: 30 }).map((_, index) => (
+              <span
+                key={index}
+                className="opacity-30 pointer-events-none selection:not-sr-only
+                  -rotate-[30deg] text-sm
+                "
+              >
+                {course.title.split(" ")[0]}
+              </span>
+            ))}
+          </div>
         )}
-        <CardTitle className="z-20">
-          <button
-            className="text-2xl hover:underline cursor-pointer max-w-fit mr-4"
-            onClick={handleCourseView}
-          >
-            {course.title}
-          </button>
-        </CardTitle>
         <CardOptions
           courseID={course.id}
           handleDeleteAction={handleDeleteAction}
           handleEditAction={handleEditAction}
         />
       </CardHeader>
-      <CardContent className="flex-grow space-y-4 p-4">
+      <CardTitle className="z-20 text-left pt-2">
+        <button
+          className="text-xl hover:underline cursor-pointer max-w-fit mr-4 text-left px-4"
+          onClick={handleCourseView}
+        >
+          {course.title}
+        </button>
+      </CardTitle>
+      <CardContent className="flex-grow px-4">
         <p className="line-clamp-3 overflow-y-scroll no-scrollbar text-sm text-neutral-500">
           {course.description}
         </p>

@@ -1,7 +1,7 @@
 "use client";
 
 import type { UUID } from "crypto";
-import type { CollectionFormData } from "@/dependencies/yup";
+import type { UpdateCollectionFormData } from "@/dependencies/yup";
 import type { Course, CourseCollection } from "@/types/dashboard/view";
 import type { StoreDispatch } from "@/redux/store";
 
@@ -16,13 +16,7 @@ import Image from "next/image";
 
 import CourseSection from "./courseSection";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -60,7 +54,9 @@ function CollectionView({
   const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [preview, setPreview] = useState<string | null>(
-    (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + collection.image,
+    collection.image
+      ? (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") + collection.image
+      : null,
   );
 
   const form = useForm({
@@ -69,6 +65,7 @@ function CollectionView({
       description: collection.description,
       alloted_time: collection.alloted_time,
       image: collection.image,
+      removed: false,
     },
   });
 
@@ -78,6 +75,7 @@ function CollectionView({
       description: collection.description,
       alloted_time: collection.alloted_time,
       image: collection.image,
+      removed: false,
     });
   }, [collection]);
 
@@ -105,15 +103,17 @@ function CollectionView({
 
   const removeImage = () => {
     form.setValue("image", undefined);
+    form.setValue("removed", true);
     setPreview(null);
   };
 
-  const handleUpdate = (data: CollectionFormData) => {
+  const handleUpdate = (data: UpdateCollectionFormData) => {
     const formData = new FormData();
 
     formData.append("title", data.title);
     formData.append("description", data.description?.toString() || "");
     formData.append("alloted_time", data.alloted_time?.toString() || "");
+    formData.append("removed", data.removed?.toString());
     if (data.image) {
       if (data.image instanceof File) {
         formData.append("image", data.image);
@@ -158,32 +158,45 @@ function CollectionView({
   };
 
   return (
-    <div className="py-6 space-y-6 h-full">
+    <div className="space-y-6 h-full">
       <Card className="w-full h-full flex flex-col">
         <CardHeader
           className={cn(
-            "flex flex-row items-center justify-between space-y-0 relative",
+            "flex flex-row items-center justify-between space-y-0 relative bg-accent \
+            rounded-xl h-max",
             isEditing && "border-b-1",
           )}
         >
-          {collection.image && !isEditing && (
-            <div className="w-full h-full overflow-hidden rounded-lg absolute top-0 left-0 opacity-20 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+            {collection.image && !isEditing ? (
               <Image
+                fill
                 alt={collection.title}
-                className="w-full h-full object-cover"
-                height={120}
+                className="pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-70"
                 src={
                   (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
                   collection.image
                 }
-                width={300}
               />
-            </div>
-          )}
+            ) : (
+              <div className="w-full h-full flex gap-5 flex-wrap text-primary/40 relative z-10 overflow-hidden">
+                {Array.from({ length: 100 }).map((_, index) => (
+                  <span
+                    key={index}
+                    className="selection:not-sr-only
+                          -rotate-[30deg] text-sm opacity-20
+                        "
+                  >
+                    {collection.title.split(" ")[0]}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
           {isEditing ? (
             <Form {...form}>
               <form
-                className="space-y-1 w-full"
+                className="space-y-1 w-full flex flex-col justify-center gap-2"
                 onSubmit={form.handleSubmit(handleUpdate as any)}
               >
                 <div className="flex gap-2 justify-between items-center">
@@ -196,7 +209,7 @@ function CollectionView({
                           <FormItem className="flex-grow">
                             <FormLabel>Title</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input className="border-primary/40" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -209,7 +222,7 @@ function CollectionView({
                           <FormItem className="max-w-[150px]">
                             <FormLabel>Alloted time (in days)</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input className="border-primary/40" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -223,7 +236,10 @@ function CollectionView({
                         <FormItem>
                           <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Textarea {...field} className="resize-none" />
+                            <Textarea
+                              className="border-primary/40 resize-none"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -320,51 +336,41 @@ function CollectionView({
               </form>
             </Form>
           ) : (
-            <div className="flex justify-between gap-2 z-10 w-full">
-              <div className="space-y-2">
-                <CardTitle className="text-3xl">{collection.title}</CardTitle>
-                <CardDescription>
-                  <p className="max-h-[4em] overflow-hidden w-full">
-                    {collection.description}
-                  </p>
-                </CardDescription>
-              </div>
-              <div className="flex gap-2">
-                <CreateToolTipT
-                  content="Edit Collection"
-                  trigger={
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                  }
-                />
-                <CreateToolTipT
-                  content="Delete Collection"
-                  trigger={
-                    <Button
-                      disabled={collection.is_default}
-                      size="icon"
-                      variant="destructive"
-                      onClick={() => {
-                        collection.is_default ? null : setOpenAlert(true);
-                      }}
-                    >
-                      <MdDelete className="h-4 w-4" />
-                    </Button>
-                  }
-                />
-                <MyAlertDialog
-                  description="Are you sure you want to delete this Collection?"
-                  setOpen={setOpenAlert}
-                  title="Delete Collection"
-                  onContinue={handleDelete}
-                  onOpen={openAlert}
-                />
-              </div>
+            <div className="flex gap-2 w-full z-30 justify-end">
+              <CreateToolTipT
+                content="Edit Collection"
+                trigger={
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Pencil className="h-4" />
+                  </Button>
+                }
+              />
+              <CreateToolTipT
+                content="Delete Collection"
+                trigger={
+                  <Button
+                    disabled={collection.is_default}
+                    size="icon"
+                    variant="destructive"
+                    onClick={() => {
+                      collection.is_default ? null : setOpenAlert(true);
+                    }}
+                  >
+                    <MdDelete className="h-4 w-4" />
+                  </Button>
+                }
+              />
+              <MyAlertDialog
+                description="Are you sure you want to delete this Collection?"
+                setOpen={setOpenAlert}
+                title="Delete Collection"
+                onContinue={handleDelete}
+                onOpen={openAlert}
+              />
             </div>
           )}
         </CardHeader>
@@ -374,6 +380,7 @@ function CollectionView({
             courses={availableCourses}
             handleOnOpenChange={handleOnOpenChange}
             handleRemoveCourse={handleRemoveCourse}
+            isEditing={isEditing}
             setCollection={setCollection}
           />
         </CardContent>

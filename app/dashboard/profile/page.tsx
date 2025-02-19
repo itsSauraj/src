@@ -8,8 +8,8 @@ import {
 
 const UserProfilePage = () => {
   return (
-    <ScrollArea className="h-[80svh] lg:h-[85svh] sm:p-2">
-      <div className="flex flex-col lg:flex-row h-[80svh] gap-5">
+    <ScrollArea className="h-[90svh] lg:h-[85svh] relative">
+      <div className="flex flex-col lg:flex-row gap-5 h-full">
         <UserProfileUpdate />
         <ChangePassword />
       </div>

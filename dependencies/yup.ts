@@ -126,6 +126,11 @@ export const collectionSchemaCourses = yup.object().shape({
   courses: yup.array().of(yup.string().uuid()),
 });
 export type CollectionFormData = yup.InferType<typeof collectionSchema>;
+export type UpdateCollectionFormData = yup.InferType<
+  typeof collectionSchema
+> & {
+  removed: boolean;
+};
 export type CollectionCoursesFormData = yup.InferType<
   typeof collectionSchemaCourses
 >;

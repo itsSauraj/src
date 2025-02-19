@@ -95,7 +95,7 @@ const UserProfileUpdate = () => {
   if (!isMounted) return <UserProfileUpdateSkeleton />;
 
   return (
-    <Card className="flex-1 dark:bg-accent h-max">
+    <Card className="flex-1 dark:bg-accent flex-grow">
       <CardHeader>
         <div className="flex items-center gap-6">
           <div className="relative w-24 h-24">

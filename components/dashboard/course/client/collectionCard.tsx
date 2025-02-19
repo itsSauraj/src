@@ -83,25 +83,43 @@ export const CollectionCard = ({
           <Card
             key={metadata["collection"].id}
             className={cn(
-              "md:max-w-[300px] lg:max-w-[350px] p-0 rounded-xl flex-grow relative",
+              "md:max-w-[300px] lg:max-w-[350px] p-0 rounded-xl flex-grow relative flex flex-col",
               className,
             )}
           >
             <CardHeader
-              className="relative rounded-t-xl min-h-[120px] w-full bg-neutral-300/30 \
-              dark:bg-neutal-700/30"
+              className={cn(
+                "rounded-t-xl h-[120px] w-full bg-neutral-300/30 dark:bg-neutal-700/30 rounded-xl p-0 relative",
+                !metadata["collection"].image &&
+                  "bg-gradient-to-r from-primary-600/80 to-primary-400/60 overflow-hidden",
+              )}
             >
-              {metadata["collection"].image && (
+              {metadata["collection"].image ? (
                 <Image
                   alt={metadata["collection"].title}
-                  className="absolute top-0 left-0 pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-40"
+                  className="pointer-events-none z-10 w-full object-cover h-full rounded-xl opacity-70"
                   fill={true}
                   src={
                     (process.env.NEXT_PUBLIC_ROOT_IMAGE_PATH || "") +
                     metadata["collection"].image
                   }
                 />
+              ) : (
+                <div className="w-full h-full flex gap-5 flex-wrap text-gray-100">
+                  {Array.from({ length: 20 }).map((_, index) => (
+                    <span
+                      key={index}
+                      className="opacity-30 pointer-events-none selection:not-sr-only
+                        -rotate-[30deg]
+                      "
+                    >
+                      {metadata["collection"].title.split(" ")[0]}
+                    </span>
+                  ))}
+                </div>
               )}
+            </CardHeader>
+            <CardContent className="p-4 h-max">
               <CardTitle className="z-20">
                 <button
                   className="text-2xl hover:underline"
@@ -110,13 +128,11 @@ export const CollectionCard = ({
                   {metadata["collection"].title}
                 </button>
               </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 p-4 h-max">
               <p className="line-clamp-5 text-xs text-gray-700">
                 {metadata["collection"].description}
               </p>
             </CardContent>
-            <CardFooter className="flex flex-col items-center gap-2">
+            <CardFooter className="flex flex-col items-center gap-2 justify-between flex-grow">
               <div className="flex flex-col gap-1 flex-grow w-full">
                 <div className="flex flex-col items-start w-full px-2">
                   <span className="text-[12px] capitalize">

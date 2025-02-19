@@ -2,7 +2,7 @@
 
 import type { RootState } from "@/redux/store";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 
@@ -18,7 +18,6 @@ import { PagePanel } from "@/components/dashboard/panel";
 import { ProfileAvatar } from "@/components/dashboard/dropdown/profile";
 import { CreateToolTipT } from "@/components/collection/tooltip";
 //hooks
-import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function SideBar({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -36,30 +35,55 @@ export function SideBar({ children }: { children: React.ReactNode }) {
       )}
     >
       <SidebarUI open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-y-10  dark:bg-accent">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden pt-1">
-            {open ? <Logo /> : <LogoIcon />}
-            <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => {
-                if (
-                  link.for &&
-                  !link.for.some((forUser) => userTypes.includes(forUser))
-                ) {
-                  return null;
-                }
+        <SidebarBody className="dark:bg-accent p-0">
+          <div className="flex flex-col h-full justify-between py-2">
+            <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden px-5 py-3">
+              {open ? <Logo /> : <LogoIcon />}
+              <div className="mt-8 flex flex-col gap-2">
+                {links.map((link, idx) => {
+                  if (
+                    link.for &&
+                    !link.for.some((forUser) => userTypes.includes(forUser))
+                  ) {
+                    return null;
+                  }
 
-                return (
-                  <SidebarLink key={idx} className="text-white" link={link} />
-                );
-              })}
+                  return (
+                    <SidebarLink key={idx} className="text-white" link={link} />
+                  );
+                })}
+              </div>
+            </div>
+            <div className="px-2">
+              <CreateToolTipT
+                content="My profile"
+                trigger={
+                  <Link
+                    className="flex items-center border-2 rounded-full w-max p-[1px]"
+                    href={"/dashboard/profile"}
+                  >
+                    {open ? (
+                      <div
+                        className="bg-white flex items-center gap-2 border-2 rounded-full w-max
+                      hover:opacity-85
+                    "
+                      >
+                        <ProfileAvatar
+                          avatar={userAvatar}
+                          username={username}
+                        />
+                        <span className="pr-2">
+                          {user.first_name} {user.last_name}
+                        </span>
+                      </div>
+                    ) : (
+                      <ProfileAvatar avatar={userAvatar} username={username} />
+                    )}
+                  </Link>
+                }
+              />
             </div>
           </div>
-          <CreateToolTipT
-            content="My Account"
-            trigger={
-              <ProfileLink userAvatar={userAvatar} username={username} />
-            }
-          />
         </SidebarBody>
       </SidebarUI>
       <div className="flex flex-1">
@@ -76,28 +100,3 @@ export function SideBar({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-export const ProfileLink = ({
-  userAvatar,
-  username,
-}: {
-  userAvatar: string;
-  username: string;
-}) => {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
-  return !isDesktop ? (
-    <Link href={"/dashboard/profile"}>
-      <ProfileAvatar avatar={userAvatar} username={username} />
-    </Link>
-  ) : null;
-};

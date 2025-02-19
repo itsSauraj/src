@@ -15,12 +15,14 @@ const CourseSection = ({
   courses,
   collection,
   handleRemoveCourse,
+  isEditing = false,
   setCollection,
   handleOnOpenChange,
 }: {
   courses: Course[];
   collection: CourseCollection;
   handleRemoveCourse: (courseId: UUID) => void;
+  isEditing?: boolean;
   setCollection: (data: CourseCollection) => void;
   handleOnOpenChange: (id: UUID) => void;
 }) => {
@@ -29,6 +31,14 @@ const CourseSection = ({
   return (
     <>
       <div className="flex justify-end gap-2 h-max">
+        {!isEditing && (
+          <div className="flex flex-col justify-between w-full">
+            <h3 className="font-bold text-lg md:text-xl">{collection.title}</h3>
+            <p className="line-clamp-2 text-xs text-neutral-700 overflow-hidden w-full">
+              {collection.description}
+            </p>
+          </div>
+        )}
         <ModalDialog
           description="Add a new mentor to your training group"
           setState={setOpen}

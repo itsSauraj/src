@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IoAlertCircle } from "react-icons/io5";
+import { IoIosLogOut } from "react-icons/io";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,11 +21,13 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { MyAlertDialog } from "@/components/collection/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { passwordSchema } from "@/dependencies/yup";
 //APIS
+import { logoutUser } from "@/redux/slice/user";
 import { changePassword, deleteProfile } from "@/lib/api";
 
 const ChangePassword = () => {
@@ -55,14 +58,14 @@ const ChangePassword = () => {
 
   return (
     <>
-      <Card className="w-full lg:max-w-[450px] bg-accent">
+      <Card className="w-full lg:max-w-[450px] dark:bg-accent">
         <CardHeader>
           <CardTitle>Change Password</CardTitle>
           <p className="text-sm text-gray-500">
             Ensure your account is secure by using a strong password
           </p>
         </CardHeader>
-        <CardContent className="flex flex-row md:flex-col gap-4">
+        <CardContent className="flex flex-col gap-4">
           <Form {...passwordForm}>
             <form
               className="space-y-2 flex flex-col w-full"
@@ -140,19 +143,19 @@ const ChangePassword = () => {
             user?.groups && ["trainee", "mentor"].includes(user.groups[0])
           ) && (
             <Alert
-              className="flex flex-col gap-1 justify-center dark:tect-red-600"
+              className="flex flex-col gap-1 justify-center dark:tect-red-600 bg-red-300/20"
               variant="destructive"
             >
               <IoAlertCircle className="h-4 w-4" />
               <AlertTitle>Delete Account</AlertTitle>
-              <AlertDescription>
+              <AlertDescription className="text-neutral-400 flex flex-col gap-2">
                 Once you delete your account, there is no going back. Please be
                 certain.
                 <div className="flex items-center gap-2">
                   <div className="flex items-center me-4">
                     <Checkbox
                       checked={deleteChecked}
-                      className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 data-[state=checked]:bg-red-500"
                       id="red-checkbox"
                       onClick={() => setDeleteChecked(!deleteChecked)}
                     />
@@ -177,6 +180,13 @@ const ChangePassword = () => {
               </div>
             </Alert>
           )}
+          <Separator />
+          <Button
+            className="bg-neutral-400 text-white hover:bg-neutral-500"
+            onClick={() => dispatch(logoutUser())}
+          >
+            Logout <IoIosLogOut />
+          </Button>
         </CardContent>
       </Card>
       <MyAlertDialog
