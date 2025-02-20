@@ -73,7 +73,7 @@ export function SideBar({ children }: { children: React.ReactNode }) {
                           username={username}
                         />
                         <span className="pr-2">
-                          {user.first_name} {user.last_name}
+                          {user && user.first_name} {user && user.last_name}
                         </span>
                       </div>
                     ) : (
