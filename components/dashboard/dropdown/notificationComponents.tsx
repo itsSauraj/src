@@ -12,6 +12,7 @@ import { ReadOneButton, ReadAllButton } from "./readButtons";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -90,26 +91,25 @@ export const AllNotificationDialog = ({
   return (
     <Dialog open={state} onOpenChange={setState}>
       <DialogContent
-        className={cn(
-          "sm:h-[100svh] md:h-[75svh] lg:h-[60svh] max-w-[425px] lg:max-w-[520px] rounded-md",
-          className,
-        )}
+        className={cn("max-h-[90vh] lg:max-h-[80svh] rounded-md", className)}
       >
-        <DialogHeader className="flex flex-row justify-between items-center">
+        <DialogHeader className="flex flex-row justify-between items-center h-max w-full">
           <DialogTitle className="captalize w-max">
             All Notifications
           </DialogTitle>
           <ReadAllButton />
         </DialogHeader>
-        <div className="max-h-[60vh] overflow-y-scroll rounded-md no-scrollbar flex flex-col gap-1">
-          {notifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              inDetail
-              notification={notification}
-            />
-          ))}
-        </div>
+        <ScrollArea className="max-h-[70svh] lg:max-h-[60svh]">
+          <div className="max-h-full flex flex-col gap-2">
+            {notifications.map((notification) => (
+              <NotificationCard
+                key={notification.id}
+                inDetail
+                notification={notification}
+              />
+            ))}
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

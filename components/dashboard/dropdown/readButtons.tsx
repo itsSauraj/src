@@ -27,7 +27,7 @@ export const ReadOneButton = ({ id }: { id: UUID }) => {
 
   return (
     <CreateToolTipT
-      content="Close"
+      content="Clear"
       trigger={
         <Button
           className="px-1 h-6 absolute top-0 right-0 hover:text-red-500"
@@ -54,7 +54,7 @@ export const ReadAllButton = () => {
 
   return (
     <CreateToolTipT
-      content="Close All"
+      content="Clear All"
       trigger={
         <button className="h-max p-[2px] mr-2 mt-2" onClick={handleReadAll}>
           <MdClearAll className="text-2xl hover:text-red-500" />
